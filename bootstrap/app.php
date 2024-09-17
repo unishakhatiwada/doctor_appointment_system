@@ -15,8 +15,8 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         // Add your middleware here
         $middleware->alias([
-           'admin_auth'=> AdminAuthMiddleware::class,
-            'admin_guest'=> AdminGuestMiddleware::class,
+            'admin_auth' => AdminAuthMiddleware::class,
+            'admin_guest' => AdminGuestMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
