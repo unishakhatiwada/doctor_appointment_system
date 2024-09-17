@@ -1,14 +1,29 @@
-@extends('layouts.admin')
-
+@extends('admin.layouts.app')
 @section('content')
-    <div class="container">
-        <h1>Welcome, {{ Auth::guard('admin')->user()->name }}</h1>
-        <a href="{{ route('admin.logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-            Logout
-        </a>
-
-        <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
-            @csrf
-        </form>
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0"> Admin Dashboard</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Dashboard v1</li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
     </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <h1>Hello Admin</h1>
+            </div>
+    </section>
+    <!-- /.content -->
+
 @endsection
