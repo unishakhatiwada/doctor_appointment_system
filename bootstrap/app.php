@@ -11,7 +11,8 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        // Add your middleware here
+        //$middleware->append(\App\Http\Middleware\AuthenticateAdmin::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
