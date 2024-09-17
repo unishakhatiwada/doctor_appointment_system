@@ -20,7 +20,9 @@ class AdminAuthMiddleware
         if (Auth::check()&& Auth::user()->hasAnyRole($role)) {
             return $next($request);
         }
-        abort(403);
-        //return redirect()->route('admin.login');
+        Auth::logout();
+        return back()->withErrors([
+            'email' => 'You do not have access to this page.',
+        ]);
     }
 }
