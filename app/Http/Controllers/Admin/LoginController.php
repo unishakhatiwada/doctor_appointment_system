@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class AuthController extends Controller
+class LoginController extends Controller
 {
     // Show login form
     public function showLoginForm()
@@ -24,21 +24,18 @@ class AuthController extends Controller
 
       if(Auth::attempt($request->only('email', 'password')))
       {
-          return redirect()->route('admin.dashboard');
+          $user = Auth::user();
+          if ($user->hasRole('admin')) {
+              return redirect()->route('admin.dashboard');
+          }
+            Auth::logout();
+          return back()->withErrors([
+              'email' => 'You do not have access to this page.',
+          ]);
       }
       return back()->withErrors([
           'email' => 'The provided credentials do not match our records.',
       ]);
     }
 
-
-
-
-    // Handle logout request
-    public function logout()
-    {
-        Auth::guard('admin')->logout();
-
-        return redirect('/admin/login');
-    }
 }

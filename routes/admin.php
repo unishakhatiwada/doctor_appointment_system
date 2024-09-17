@@ -1,15 +1,16 @@
 <?php
+
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\LoginController;
 use Illuminate\Support\Facades\Route;
 
 // Admin routes
-Route::prefix('admin')->group(function (){
-    Route::get('/login', [App\Http\Controllers\Admin\AuthController::class, 'showLoginForm'])->name('admin.login');
-    Route::post('/login', [App\Http\Controllers\Admin\AuthController::class, 'login']);
-    Route::post('/logout', [App\Http\Controllers\Admin\AuthController::class, 'logout'])->name('admin.logout');
+Route::middleware(['admin_guest'])->group(function () {
+    Route::get('admin/login', [LoginController::class, 'showLoginForm'])->name('admin.login.page');
+    Route::post('admin/login', [LoginController::class, 'login'])->name('admin.login');
+});
+Route::middleware(['admin_auth:admin'])->group(function () {
+    Route::get('admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('admin/logout', [DashboardController::class, 'logout'])->name('admin.logout');
 
-    Route::middleware('auth:admin')->group(function () {
-    Route::get('dashboard', [App\Http\Controllers\Admin\AdminDashboardController::class, 'index'])->name('admin.dashboard');
-//        Route::resource('departments', App\Http\Controllers\Admin\DepartmentController::class);
-//        Route::resource('doctors', App\Http\Controllers\Admin\DoctorController::class);
-    });
 });
