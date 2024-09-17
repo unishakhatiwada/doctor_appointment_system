@@ -17,16 +17,22 @@ class AuthController extends Controller
     // Handle login request
     public function login(Request $request)
     {
-        $credentials = $request->only('email', 'password');
-
-        if (Auth::guard('admin')->attempt($credentials)) {
-            return redirect()->intended('admin/dashboard');
-        }
-
-        return redirect()->back()->withErrors([
-            'error' => 'Invalid credentials.',
+        $request->validate([
+            'email' => 'required|string|email',
+            'password' => 'required|string',
         ]);
+
+      if(Auth::attempt($request->only('email', 'password')))
+      {
+          return redirect()->route('admin.dashboard');
+      }
+      return back()->withErrors([
+          'email' => 'The provided credentials do not match our records.',
+      ]);
     }
+
+
+
 
     // Handle logout request
     public function logout()
