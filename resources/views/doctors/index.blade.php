@@ -9,11 +9,8 @@
 @section('content')
     <div class="container">
         <div class="card">
-            <div class="card-header">Manage Departments</div>
+            <div class="card-header">Manage Doctors</div>
             <div class="card-body">
-{{--                <a class="btn btn-primary btn-lg" href="{{route('departments.create')}}">--}}
-{{--                    Create--}}
-{{--                </a>--}}
                 {{ $dataTable->table() }}
             </div>
         </div>

@@ -47,7 +47,7 @@
     </div>
     <!-- /.content-wrapper -->
     <footer class="main-footer">
-        <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
+        <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">Doctor Appointment</a>.</strong>
         All rights reserved.
         <div class="float-right d-none d-sm-inline-block">
             <b>Version</b> 3.1.0
@@ -97,11 +97,7 @@
 <!-- DataTables -->
 <script type="text/javascript" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 
-<main class="py-4">
-    @yield('content')
-</main>
 </div>
-
 @stack('scripts')
 </body>
 </html>
