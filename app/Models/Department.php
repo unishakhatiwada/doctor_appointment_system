@@ -9,8 +9,15 @@ use Illuminate\Database\Eloquent\Model;
 class Department extends Model
 {
     use HasFactory;
-    protected static function newFactory(): DepartmentFactory
+
+    protected $fillable = [
+        'code',
+        'name',
+        'description',
+    ];
+    public function doctors()
     {
-        return DepartmentFactory::new();
+        return $this->hasMany(Doctor::class, 'department_id');
     }
+
 }
