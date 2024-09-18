@@ -17,6 +17,10 @@ return new class extends Migration
             $table->string('name');
             $table->string('description')->nullable();
             $table->timestamps();
+
+            // Optionally, you can add indexes to frequently searched columns
+            $table->index('code');
+            $table->index('name');
         });
     }
 

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::table('departments', function (Blueprint $table) {
             $table->foreignId('doctor_id')
                 ->after('id')
+                ->nullable()
                 ->constrained(table: 'doctors')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');

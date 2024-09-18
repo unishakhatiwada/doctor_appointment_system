@@ -31,5 +31,10 @@ class DatabaseSeeder extends Seeder
 
         $user->assignRole($user_role);
         $admin->assignRole($admin_role);
+
+        $this->call([
+            DepartmentSeeder::class,
+            DoctorSeeder::class,
+        ]);
     }
 }

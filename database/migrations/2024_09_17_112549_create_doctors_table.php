@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('doctors', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('dep_id')
+            $table->foreignId('department_id')
+                ->nullable()
                 ->constrained(table: 'departments', column: 'id')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
