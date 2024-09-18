@@ -24,7 +24,7 @@
     <!-- Daterange picker -->
     <link rel="stylesheet" href="{{asset('Admin/plugins/daterangepicker/daterangepicker.css')}}">
     <!-- summernote -->
-    <link rel="stylesheet" href="{{asset('Admin/plugins/summernote/summernote-bs4.min.css')}}">
+    <link rel="stylesheet" href="{{asset('Admin/plugins/summernote/suDoctors	mmernote-bs4.min.css')}}">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -43,7 +43,7 @@
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-        @yield('content');
+        @yield('content')
     </div>
     <!-- /.content-wrapper -->
     <footer class="main-footer">
@@ -59,7 +59,7 @@
         <!-- Control sidebar content goes here -->
     </aside>
     <!-- /.control-sidebar -->
-</div>
+
 <!-- ./wrapper -->
 
 <!-- jQuery -->
@@ -87,10 +87,21 @@
 <!-- Tempusdominus Bootstrap 4 -->
 <script src="{{asset('Admin/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js')}}"></script>
 <!-- Summernote -->
-<script src="p{{asset('Admin/plugins/summernote/summernote-bs4.min.js')}}"></script>
+{{--<script src="p{{asset('Admin/plugins/summernote/summernote-bs4.min.js')}}"></script>--}}
 <!-- overlayScrollbars -->
 <script src="{{asset('Admin/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js')}}"></script>
 <!-- AdminLTE App -->
 <script src="{{asset('Admin/dist/js/adminlte.js')}}"></script>
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<!-- DataTables -->
+<script type="text/javascript" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+
+<main class="py-4">
+    @yield('content')
+</main>
+</div>
+
+@stack('scripts')
 </body>
 </html>

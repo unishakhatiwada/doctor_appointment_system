@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\DepartmentsDataTable;
 use Illuminate\Http\Request;
 
 class DepartmentController extends Controller
@@ -9,9 +10,9 @@ class DepartmentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(DepartmentsDataTable $dataTable)
     {
-        //
+        return $dataTable->render('departments.index');
     }
 
     /**

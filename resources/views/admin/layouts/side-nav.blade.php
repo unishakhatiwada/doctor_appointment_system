@@ -2,7 +2,7 @@
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
         <img src="{{asset('Admin/dist/img/AdminLTELogo.png')}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">AdminLTE 3</span>
+        <span class="brand-text font-weight-light">Doctor Appointment System</span>
     </a>
 
     <!-- Sidebar -->
@@ -51,14 +51,14 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="{{route('departments.index')}}" class="nav-link">
                         <i class="nav-icon fas fa-copy"></i>
-                        <p>
-                            Departments
+                        <p>Departments
                             <i class="fas fa-angle-left right"></i>
                             <span class="badge badge-info right">6</span>
                         </p>
                     </a>
+                </li>
                 <li class="nav-header">RESOURCES</li>
                 <li class="nav-item">
                     <a href="pages/calendar.html" class="nav-link">
