@@ -60,9 +60,6 @@
                         @endforeach
                         </tbody>
                     </table>
-
-                    <!-- Pagination Links -->
-                    {{ $doctors->links() }}
                 @endif
             </div>
         </div>
@@ -70,6 +67,13 @@
         <!-- Back Button -->
         <div class="mt-4">
             <a href="{{ route('departments.index') }}" class="btn btn-secondary">Back to Departments</a>
+
+            <a href="{{ route('departments.addDoctorForm', $department->id) }}" class="btn btn-primary">Add Doctor</a>
         </div>
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
     </div>
 @endsection

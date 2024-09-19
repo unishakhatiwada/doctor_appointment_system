@@ -15,7 +15,12 @@ Route::middleware(['admin_auth:admin'])->prefix('admin')->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('logout', [DashboardController::class, 'logout'])->name('admin.logout');
 
-    Route::resource('departments', DepartmentController::class)->names('departments');
+
     Route::resource('doctors', DoctorController::class)->names('doctors');
     Route::get('/doctors/{doctor}/assign', [DoctorController::class, 'assign'])->name('doctors.assign');
+
+    Route::resource('departments', DepartmentController::class)->names('departments');
+    Route::get('/departments/{department}/add-doctors', [DepartmentController::class, 'addDoctorForm'])->name('departments.addDoctorForm');
+    Route::post('/departments/{department}/add-doctors', [DepartmentController::class, 'addDoctors'])->name('departments.addDoctors');
+
 });

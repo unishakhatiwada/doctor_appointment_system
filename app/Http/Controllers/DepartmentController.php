@@ -64,4 +64,33 @@ class DepartmentController extends Controller
 
         return redirect()->route('departments.index')->with('success', 'Department deleted successfully.');
     }
+
+    public function addDoctorForm(Department $department): View
+    {
+        // Get all doctors who are not currently assigned to this department
+        $doctors = Doctor::whereDoesntHave('department', function ($query) use ($department) {
+            $query->where('id', $department->id);
+        })->get();
+
+        return view('departments.add-doctors', compact('department', 'doctors'));
+    }
+
+    public function addDoctors(Request $request, Department $department)
+    {
+        // Validate the incoming doctor_ids array
+        $request->validate([
+            'doctor_ids' => 'required|array',
+            'doctor_ids.*' => 'exists:doctors,id',
+        ]);
+
+        // Get doctors not already assigned to the department
+        Doctor::whereIn('id', $request->doctor_ids)
+            ->where('department_id', '!=', $department->id) // Ensure only unassigned doctors are updated
+            ->update(['department_id' => $department->id]);
+
+        // Redirect back to the department's show page with a success message
+        return redirect()->route('departments.show', $department->id)->with('success', 'Doctors added successfully.');
+    }
+
+
 }
