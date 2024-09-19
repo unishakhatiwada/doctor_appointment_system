@@ -32,9 +32,16 @@ class DepartmentController extends Controller
         return redirect()->route('departments.index')->with('success', 'Department created successfully.');
     }
 
-    public function show(Department $department): View
+    public function show(Request $request, Department $department): View
     {
-        $doctors = $department->doctors()->get();
+        $query = $department->doctors();
+
+
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->input('search') . '%');
+        }
+        $doctors = $query->paginate(10);
+
         return view('departments.show', compact('department' , 'doctors'));
     }
 

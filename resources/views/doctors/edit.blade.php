@@ -8,65 +8,51 @@
             @csrf
             @method('PUT')
 
-            <div class="mb-3">
-                <label for="name" class="form-label">Doctor's Name</label>
-                <input type="text" class="form-control" id="name" name="name" value="{{ old('name', $doctor->name) }}" required>
-                @error('name')
-                <div class="text-danger">{{ $message }}</div>
-                @enderror
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" name="name" class="form-control" value="{{ old('name', $doctor->name) }}" required>
             </div>
 
-            <div class="mb-3">
-                <label for="department" class="form-label">Department</label>
-                <select name="dep_id" id="department" class="form-control" required>
-                    <option value="">Select Department</option>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" name="email" class="form-control" value="{{ old('email', $doctor->email) }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone</label>
+                <input type="text" name="phone" class="form-control" value="{{ old('phone', $doctor->phone) }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="address">Address</label>
+                <input type="text" name="address" class="form-control" value="{{ old('address', $doctor->address) }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="status">Status</label>
+                <select name="status" class="form-control">
+                    <option value="active" {{ $doctor->status == 'active' ? 'selected' : '' }}>Active</option>
+                    <option value="inactive" {{ $doctor->status == 'inactive' ? 'selected' : '' }}>Inactive</option>
+                </select>
+            </div>
+
+            <!-- Department Assignment -->
+            <div class="form-group">
+                <label for="department_id">Department</label>
+                <select name="department_id" class="form-control" required>
                     @foreach($departments as $department)
-                        <option value="{{ $department->id }}" {{ old('dep_id', $doctor->dep_id) == $department->id ? 'selected' : '' }}>
+                        <option value="{{ $department->id }}" {{ $doctor->department_id == $department->id ? 'selected' : '' }}>
                             {{ $department->name }}
                         </option>
                     @endforeach
                 </select>
-                @error('dep_id')
-                <div class="text-danger">{{ $message }}</div>
-                @enderror
             </div>
 
-            <div class="mb-3">
-                <label for="address" class="form-label">Address</label>
-                <input type="text" class="form-control" id="address" name="address" value="{{ old('address', $doctor->address) }}" required>
-                @error('address')
-                <div class="text-danger">{{ $message }}</div>
-                @enderror
-            </div>
+            <!-- Save Button -->
+            <button type="submit" class="btn btn-primary">Save Changes</button>
 
-            <div class="mb-3">
-                <label for="phone" class="form-label">Phone</label>
-                <input type="text" class="form-control" id="phone" name="phone" value="{{ old('phone', $doctor->phone) }}" required>
-                @error('phone')
-                <div class="text-danger">{{ $message }}</div>
-                @enderror
-            </div>
-
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" value="{{ old('email', $doctor->email) }}" required>
-                @error('email')
-                <div class="text-danger">{{ $message }}</div>
-                @enderror
-            </div>
-
-            <div class="mb-3">
-                <label for="status" class="form-label">Status</label>
-                <select name="status" id="status" class="form-control" required>
-                    <option value="active" {{ old('status', $doctor->status) == 'active' ? 'selected' : '' }}>Active</option>
-                    <option value="inactive" {{ old('status', $doctor->status) == 'inactive' ? 'selected' : '' }}>Inactive</option>
-                </select>
-                @error('status')
-                <div class="text-danger">{{ $message }}</div>
-                @enderror
-            </div>
-
-            <button type="submit" class="btn btn-primary">Update Doctor</button>
+            <!-- Cancel Button -->
+            <a href="{{ route('doctors.show', $doctor->id) }}" class="btn btn-secondary">Cancel</a>
         </form>
     </div>
 @endsection

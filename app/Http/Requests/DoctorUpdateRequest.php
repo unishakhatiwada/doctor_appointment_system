@@ -22,11 +22,12 @@ class DoctorUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string',
-            'email' => 'required|string|email|unique:doctors,email',
-            'phone' => 'required|string|unique:doctors,phone',
-            'address' => 'required|string',
-            'status' => 'required|in:active,inactive',
+            'name' => 'string',
+            'email' => 'string|email',
+            'phone' => 'string',
+            'address' => 'string',
+            'status' => 'in:active,inactive',
+            'department_id' => 'required|exists:departments,id',
         ];
     }
 }

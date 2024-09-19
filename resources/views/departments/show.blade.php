@@ -15,13 +15,23 @@
             </div>
         </div>
 
+        <!-- Search Doctors by Name -->
+        <form method="GET" action="{{ route('departments.show', $department->id) }}" class="mb-4">
+            <div class="input-group">
+                <input type="text" name="search" class="form-control" placeholder="Search doctors by name" value="{{ request()->get('search') }}">
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </div>
+        </form>
+
         <!-- Associated Doctors in Table -->
         <div class="card">
             <div class="card-header">
                 <h3>Doctors in {{ $department->name }}</h3>
             </div>
             <div class="card-body">
-                @if($department->doctors->isEmpty())
+                @if($doctors->isEmpty())
                     <p>No doctors assigned to this department.</p>
                 @else
                     <table class="table table-bordered">
@@ -32,20 +42,27 @@
                             <th>Phone</th>
                             <th>Address</th>
                             <th>Status</th>
+                            <th>Actions</th>
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($department->doctors as $doctor)
+                        @foreach($doctors as $doctor)
                             <tr>
                                 <td>{{ $doctor->name }}</td>
                                 <td>{{ $doctor->email }}</td>
                                 <td>{{ $doctor->phone }}</td>
                                 <td>{{ $doctor->address }}</td>
                                 <td>{{ $doctor->status }}</td>
+                                <td>
+                                    <a href="{{ route('doctors.show', $doctor->id) }}" class="btn btn-info btn-sm">View</a>
+                                </td>
                             </tr>
                         @endforeach
                         </tbody>
                     </table>
+
+                    <!-- Pagination Links -->
+                    {{ $doctors->links() }}
                 @endif
             </div>
         </div>

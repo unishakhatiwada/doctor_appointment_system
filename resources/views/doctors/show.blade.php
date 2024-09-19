@@ -1,5 +1,6 @@
 @extends('admin.layouts.app')
 
+
 @section('content')
     <div class="container">
         <h1>Doctor Details</h1>
@@ -9,16 +10,26 @@
                 <h2>{{ $doctor->name }}</h2>
             </div>
             <div class="card-body">
-                <p><strong>Address:</strong> {{ $doctor->address }}</p>
-                <p><strong>Phone:</strong> {{ $doctor->phone }}</p>
                 <p><strong>Email:</strong> {{ $doctor->email }}</p>
-                <p><strong>Status:</strong> {{ ucfirst($doctor->status) }}</p>
-                <p><strong>Department:</strong> {{ $doctor->department->name }}</p>
+                <p><strong>Phone:</strong> {{ $doctor->phone }}</p>
+                <p><strong>Address:</strong> {{ $doctor->address }}</p>
+                <p><strong>Status:</strong> {{ $doctor->status }}</p>
+                <p><strong>Department:</strong>
+                    {{ $doctor->department ? $doctor->department->name : 'No department assigned' }}
+                </p>
             </div>
-            <div class="card-footer">
-                <a href="{{ route('doctors.index') }}" class="btn btn-primary">Back to List</a>
-            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mt-4">
+            <!-- Back to Department Button -->
+            <a href="{{ route('departments.show', $doctor->department_id) }}" class="btn btn-secondary">Dr.{{($doctor->name)}}'s Department</a>
+
+            <!-- Add Doctor to Department Button -->
+            <a href="{{ route('doctors.assign', $doctor->id) }}" class="btn btn-primary">Edit Doctor Department</a>
+
+            <!-- Edit Doctor Button -->
+            <a href="{{ route('doctors.edit', $doctor->id) }}" class="btn btn-warning">Edit Doctor</a>
         </div>
     </div>
 @endsection
-

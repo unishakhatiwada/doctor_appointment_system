@@ -22,6 +22,7 @@ class DoctorController extends Controller
     public function create():View
     {
         $departments = Department::all();
+
         return view('doctors.create', compact('departments'));
     }
 
@@ -43,14 +44,23 @@ class DoctorController extends Controller
     public function edit(Doctor $doctor):View
     {
         $departments = Department::all();
+
         return view('doctors.edit', compact('doctor', 'departments'));
     }
 
     public function update(DoctorUpdateRequest $request, Doctor $doctor):RedirectResponse
     {
+
         $doctor->update($request->all());
 
-        return redirect()->route('doctors.index')->with('success', 'Doctor updated successfully.');
+        return redirect()->route('doctors.index', $doctor->id)->with('success', 'Doctor updated successfully.');
+    }
+
+    public function assign(Doctor $doctor)
+    {
+        $departments = Department::all();
+
+        return view('doctors.assign', compact('doctor', 'departments'));
     }
 
     public function destroy(Doctor $doctor):RedirectResponse
