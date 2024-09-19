@@ -6,6 +6,7 @@ use App\DataTables\DepartmentsDataTable;
 use App\Http\Requests\DepartmentStoreRequest;
 use App\Http\Requests\DepartmentUpdateRequest;
 use App\Models\Department;
+use App\Models\Doctor;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
@@ -19,23 +20,22 @@ class DepartmentController extends Controller
 
     public function create(): View
     {
-        return view('departments.create');
+        $doctors = Doctor::all();
+        return view('departments.create', compact('doctors'));
     }
 
     public function store(DepartmentStoreRequest $request): RedirectResponse
     {
-        Department::create([
-            'code' => $request['code'],
-            'name' => $request['name'],
-            'description' => $request['description'],
-        ]);
+        $validated = $request->validated();
+        Department::create($validated);
 
         return redirect()->route('departments.index')->with('success', 'Department created successfully.');
     }
 
-    public function show(string $id)
+    public function show(Department $department): View
     {
-        //
+        $doctors = $department->doctors()->get();
+        return view('departments.show', compact('department' , 'doctors'));
     }
 
     public function edit(Department $department):View
@@ -45,13 +45,10 @@ class DepartmentController extends Controller
 
     public function update(DepartmentUpdateRequest $request, Department $department):RedirectResponse
     {
-        $department->update([
-            'code' => $request->code,
-            'name' => $request->name,
-            'description' => $request->description,
-        ]);
+        $department->update($request->only('name', 'code', 'description'));
 
         return redirect()->route('departments.index')->with('success', 'Department updated successfully.');
+
     }
 
     public function destroy(Department $department): RedirectResponse

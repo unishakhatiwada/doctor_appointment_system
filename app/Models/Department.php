@@ -14,6 +14,7 @@ class Department extends Model
         'code',
         'name',
         'description',
+        'doctor_id'
     ];
     public function doctors()
     {

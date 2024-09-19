@@ -6,6 +6,8 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class DepartmentStoreRequest extends FormRequest
 {
+    public mixed $doctor_id;
+
     public function authorize(): bool
     {
         return true;
