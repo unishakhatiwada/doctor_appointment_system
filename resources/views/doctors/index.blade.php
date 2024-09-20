@@ -8,8 +8,14 @@
 
 @section('content')
     <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('doctors.index') }}">Doctors</a></li>
+            </ol>
+        </nav>
         <div class="card">
-            <div class="card-header">Manage Doctors</div>
+            <div class="card-header h2 text-purple">Manage Doctors</div>
             <div class="card-body">
                 {{ $dataTable->table() }}
             </div>

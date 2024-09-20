@@ -41,18 +41,18 @@
                         </p>
                     </a>
                 <li class="nav-item">
-                    <a href="{{route('doctors.index')}}" class="nav-link "  >
-                        <i class="nav-icon fas fa fa-user-md "></i>
-                        <p>
-                            Doctors
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
                     <a href="{{route('departments.index')}}" class="nav-link">
                         <i class="nav-icon fas fa fa-medkit"></i>
                         <p>
                             Departments
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{route('doctors.index')}}" class="nav-link "  >
+                        <i class="nav-icon fas fa fa-user-md "></i>
+                        <p>
+                            Doctors
                         </p>
                     </a>
                 </li>

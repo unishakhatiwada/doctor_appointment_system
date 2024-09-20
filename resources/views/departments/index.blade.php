@@ -8,12 +8,15 @@
 
 @section('content')
     <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('departments.index') }}">Departments</a></li>
+            </ol>
+        </nav>
         <div class="card">
-            <div class="card-header">Manage Departments</div>
+            <div class="card-header h2 text-purple">Manage Departments</div>
             <div class="card-body">
-{{--                <a class="btn btn-primary btn-lg" href="{{route('departments.create')}}">--}}
-{{--                    Create--}}
-{{--                </a>--}}
                 {{ $dataTable->table() }}
             </div>
         </div>
