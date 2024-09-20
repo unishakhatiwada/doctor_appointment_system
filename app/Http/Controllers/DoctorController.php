@@ -28,7 +28,7 @@ class DoctorController extends Controller
 
     public function store(DoctorStoreRequest $request):RedirectResponse
     {
-        Doctor::create($request->all());
+        Doctor::create($request->validated());
 
         return redirect()->route('doctors.index')->with('success', 'Doctor added successfully.');
     }
@@ -50,8 +50,7 @@ class DoctorController extends Controller
 
     public function update(DoctorUpdateRequest $request, Doctor $doctor):RedirectResponse
     {
-
-        $doctor->update($request->all());
+        $doctor->update($request->validated());
 
         return redirect()->route('doctors.index', $doctor->id)->with('success', 'Doctor updated successfully.');
     }
