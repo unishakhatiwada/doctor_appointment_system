@@ -52,7 +52,7 @@
             <button type="submit" class="btn btn-primary">Save Changes</button>
 
             <!-- Cancel Button -->
-            <a href="{{ route('doctors.show', $doctor->id) }}" class="btn btn-secondary">Cancel</a>
+            <a href="{{ route('doctors.index', $doctor->id) }}" class="btn btn-secondary">Cancel</a>
         </form>
     </div>
 @endsection
