@@ -1,6 +1,5 @@
 @extends('admin.layouts.app')
 
-
 @section('content')
     <div class="container">
         <h1>Doctor Details</h1>
@@ -22,13 +21,17 @@
 
         <!-- Action Buttons -->
         <div class="mt-4">
-            <!-- Back to Department Button -->
-            <a href="{{ route('departments.show', $doctor->department_id) }}" class="btn btn-secondary">Dr.{{($doctor->name)}}'s Department</a>
+            @if($doctor->department_id)
+                <!-- If department is assigned, show the view department button -->
+                <a href="{{ route('departments.show', ['department' => $doctor->department_id]) }}" class="btn btn-secondary">
+                    Dr. {{ $doctor->name }}'s Department
+                </a>
+            @else
+                <!-- If no department is assigned, show the add department button -->
+                <a href="{{ route('doctors.assign', $doctor->id) }}" class="btn btn-primary">Assign to Department</a>
+            @endif
 
-            <!-- Add Doctor to Department Button -->
-            <a href="{{ route('doctors.assign', $doctor->id) }}" class="btn btn-primary">Edit Doctor Department</a>
-
-            <!-- Edit Doctor Button -->
+            <!-- Edit Doctor Button (always visible) -->
             <a href="{{ route('doctors.edit', $doctor->id) }}" class="btn btn-warning">Edit Doctor</a>
         </div>
     </div>

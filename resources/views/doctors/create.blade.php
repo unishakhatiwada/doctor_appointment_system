@@ -1,7 +1,5 @@
 @extends('admin.layouts.app')
 
-@extends('layouts.app')
-
 @section('content')
     <div class="container">
         <h1>Add New Doctor</h1>
@@ -19,7 +17,7 @@
 
             <div class="mb-3">
                 <label for="department" class="form-label">Department</label>
-                <select name="department_id" id="department" class="form-control" required>
+                <select name="department_id" id="department" class="form-control">
                     <option value="">Select Department</option>
                     @foreach($departments as $department)
                         <option value="{{ $department->id }}" {{ old('department_id') == $department->id ? 'selected' : '' }}>
@@ -27,7 +25,7 @@
                         </option>
                     @endforeach
                 </select>
-                @error('dep_id')
+                @error('department_id')
                 <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
@@ -67,6 +65,29 @@
                 @enderror
             </div>
 
+            <!-- BS Date Input -->
+            <div class="mb-3">
+                <label for="dob_bs" class="form-label">Date of Birth (BS)</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="dob_bs" name="dob_bs" placeholder="YYYY/MM/DD" required>
+                    <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                </div>
+                @error('dob_bs')
+                <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <!-- AD Date Input -->
+            <div class="mb-3">
+                <label for="dob_ad" class="form-label">Date of Birth (AD)</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="dob_ad" name="dob_ad" placeholder="YYYY-MM-DD" required>
+                    <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                </div>
+                @error('dob_ad')
+                <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
             <button type="submit" class="btn btn-primary">Add Doctor</button>
         </form>
     </div>

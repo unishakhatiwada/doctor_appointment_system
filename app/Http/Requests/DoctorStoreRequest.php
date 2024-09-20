@@ -21,12 +21,15 @@ class DoctorStoreRequest extends FormRequest
      */
     public function rules(): array
     {
+
         return [
             'name' => 'required|string',
             'email' => 'required|string|email|unique:doctors,email',
             'phone' => 'required|string|unique:doctors,phone',
             'address' => 'required|string',
             'status' => 'required|in:active,inactive',
+            'date_of_birth_ad' => 'nullable|date',
+            'date_of_birth_bs' => 'nullable|string',
         ];
     }
 }

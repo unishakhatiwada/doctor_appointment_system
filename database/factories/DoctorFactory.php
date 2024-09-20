@@ -20,11 +20,15 @@ class DoctorFactory extends Factory
 
     public function definition(): array
     {
+        $adDate = $this->faker->date('Y-m-d');
+        $bsDate = $this->faker->date('Y-m-d');
         return [
             'name' => $this->faker->name, // Random name for the doctor
             'address' => $this->faker->address, // Random address
             'phone' => $this->faker->unique()->phoneNumber, // Unique phone number
             'email' => $this->faker->unique()->safeEmail, // Unique email address
+            'date_of_birth_ad' => $adDate,
+            'date_of_birth_bs' => $bsDate,
             'status' => 'active', // Set default status to active
             'department_id' => Department::factory(), // Create and link a new department
         ];
