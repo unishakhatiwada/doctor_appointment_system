@@ -56,17 +56,20 @@ class DoctorsDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('name'),
-            Column::make('address'),
-            Column::make('phone'),
-            Column::make('email'),
-            Column::make('status'),
-            Column::make('created_at'),
-            Column::make('updated_at'),
+            Column::make('name')
+                ->width(10),
+            Column::make('address')
+                ->width(10),
+            Column::make('phone')
+                ->width(10),
+            Column::make('email')
+                ->width(10),
+            Column::make('status')
+                ->width(10),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
-                ->width(60)
+                ->width(150)
                 ->addClass('text-center'),
         ];
     }
