@@ -19,7 +19,6 @@
     <div class="login-logo">
         <a href="../../index2.html"><b>Admin</b>Panel</a>
     </div>
-    <!-- /.login-logo -->
     <div class="card">
         <div class="card-body login-card-body">
             <p class="login-box-msg">Sign in C panel</p>
@@ -50,7 +49,7 @@
                 </div>
 
                 <div class="input-group mb-3">
-                    <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" placeholder="Password">
+                    <input type="password" name="password" id="password" class="form-control @error('password') is-invalid @enderror" placeholder="Password">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-eye" id="toggle-password" style="cursor: pointer;"></span>
@@ -59,18 +58,14 @@
                 </div>
 
                 <div class="row">
-                    <!-- /.col -->
                     <div class="col-12 text-right">
                         <button type="submit" class="btn btn-dark">Sign In</button>
                     </div>
-                    <!-- /.col -->
                 </div>
             </form>
         </div>
-        <!-- /.login-card-body -->
     </div>
 </div>
-<!-- /.login-box -->
 
 <!-- jQuery -->
 <script src="{{asset('Admin/plugins/jquery/jquery.min.js')}}"></script>
@@ -78,6 +73,17 @@
 <script src="{{asset('Admin/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 <!-- AdminLTE App -->
 <script src="{{asset('Admin/dist/js/adminlte.min.js')}}"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#toggle-password').on('click', function () {
+            const passwordField = $('#password');
+            const type = passwordField.attr('type') === 'password' ? 'text' : 'password';
+            passwordField.attr('type', type);
+            $(this).toggleClass('fa-eye fa-eye-slash');
+        });
+    });
+</script>
 
 </body>
 </html>
