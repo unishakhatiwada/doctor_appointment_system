@@ -17,14 +17,41 @@
             </div>
 
             <!-- Address Input -->
+            <!-- Province Selection -->
             <div class="mb-3">
-                <label for="address" class="form-label">Address</label>
-                <input type="text" class="form-control" id="address" name="address" value="{{ old('address') }}" required>
-                @error('address')
+                <label for="province" class="form-label">Province</label>
+                <select name="province_id" id="province" class="form-control">
+                    <option value="">Select Province</option>
+                    @foreach($provinces as $province)
+                        <option value="{{ $province->id }}">{{ $province->nepali_name }}</option>
+                    @endforeach
+                </select>
+                @error('province_id')
                 <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
 
+            <!-- District Selection -->
+            <div class="mb-3">
+                <label for="district" class="form-label">District</label>
+                <select name="district_id" id="district" class="form-control" disabled>
+                    <option value="">Select District</option>
+                </select>
+                @error('district_id')
+                <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <!-- Municipality Selection -->
+            <div class="mb-3">
+                <label for="municipality" class="form-label">Municipality</label>
+                <select name="municipality_id" id="municipality" class="form-control" disabled>
+                    <option value="">Select Municipality</option>
+                </select>
+                @error('municipality_id')
+                <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
             <!-- Phone Input -->
             <div class="mb-3">
                 <label for="phone" class="form-label">Phone</label>
@@ -98,4 +125,35 @@
             <button type="submit" class="btn btn-primary">Add Doctor</button>
         </form>
     </div>
+    <script>
+        document.getElementById('province').addEventListener('change', function() {
+            const provinceId = this.value;
+            const districtSelect = document.getElementById('district');
+            districtSelect.disabled = false;
+
+            fetch(`/districts/${provinceId}`)
+                .then(response => response.json())
+                .then(data => {
+                    districtSelect.innerHTML = '<option value="">Select District</option>';
+                    data.forEach(district => {
+                        districtSelect.innerHTML += `<option value="${district.id}">${district.district_nepali_name}</option>`;
+                    });
+                });
+        });
+
+        document.getElementById('district').addEventListener('change', function() {
+            const districtId = this.value;
+            const municipalitySelect = document.getElementById('municipality');
+            municipalitySelect.disabled = false;
+
+            fetch(`/municipalities/${districtId}`)
+                .then(response => response.json())
+                .then(data => {
+                    municipalitySelect.innerHTML = '<option value="">Select Municipality</option>';
+                    data.forEach(municipality => {
+                        municipalitySelect.innerHTML += `<option value="${municipality.id}">${municipality.muni_name}</option>`;
+                    });
+                });
+        });
+    </script>
 @endsection

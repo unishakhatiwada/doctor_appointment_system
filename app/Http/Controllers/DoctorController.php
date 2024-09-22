@@ -10,6 +10,7 @@ use App\Models\Department;
 use App\Models\Doctor;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class DoctorController extends Controller
@@ -22,8 +23,9 @@ class DoctorController extends Controller
     public function create():View
     {
         $departments = Department::all();
+        $provinces = DB::table('provinces')->get();
 
-        return view('doctors.create', compact('departments'));
+        return view('doctors.create', compact('departments','provinces'));
     }
 
     public function store(DoctorStoreRequest $request):RedirectResponse

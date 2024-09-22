@@ -19,7 +19,7 @@ return new class extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->string('name');
-            $table->string('address');
+            $table->string('address')->nullable();
             $table->string('phone')->unique();
             $table->string('email')->unique();
             $table->string('status')->default('active');
