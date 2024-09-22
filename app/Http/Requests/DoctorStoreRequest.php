@@ -26,6 +26,7 @@ class DoctorStoreRequest extends FormRequest
                 'unique:doctors,phone',
             ],
             'email' => 'required|string|email|unique:doctors,email',
+            'password' => 'required|string|min:8|confirmed',
             'province_id' => 'required|exists:provinces,id',
             'district_id' => 'required|exists:districts,id',
             'municipality_id' => 'required|exists:municipalities,id',

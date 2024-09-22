@@ -15,8 +15,52 @@
                 <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
+            <!-- Email Input -->
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required>
+                @error('email')
+                <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
 
-            <!-- Address Input -->
+            <!-- Phone Input -->
+            <div class="mb-3">
+                <label for="phone" class="form-label">Phone</label>
+                <input type="text" class="form-control" id="phone" name="phone" value="{{ old('phone') }}" required>
+                @error('phone')
+                <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <!-- Password Input -->
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <div class="input-group">
+                    <input type="password" class="form-control" id="password" name="password" required>
+                    <span class="input-group-text" id="togglePassword" style="cursor: pointer;">
+                        <i class="fas fa-eye" id="eyeIcon"></i>
+                    </span>
+                </div>
+                @error('password')
+                <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <!-- Confirm Password Input -->
+            <div class="mb-3">
+                <label for="password_confirmation" class="form-label">Confirm Password</label>
+                <div class="input-group">
+                    <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
+                    <span class="input-group-text" id="toggleConfirmPassword" style="cursor: pointer;">
+                        <i class="fas fa-eye" id="eyeIconConfirm"></i>
+                    </span>
+                </div>
+                @error('password_confirmation')
+                <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
+
             <!-- Province Selection -->
             <div class="mb-3">
                 <label for="province" class="form-label">Province</label>
@@ -49,23 +93,6 @@
                     <option value="">Select Municipality</option>
                 </select>
                 @error('municipality_id')
-                <div class="text-danger">{{ $message }}</div>
-                @enderror
-            </div>
-            <!-- Phone Input -->
-            <div class="mb-3">
-                <label for="phone" class="form-label">Phone</label>
-                <input type="text" class="form-control" id="phone" name="phone" value="{{ old('phone') }}" required>
-                @error('phone')
-                <div class="text-danger">{{ $message }}</div>
-                @enderror
-            </div>
-
-            <!-- Email Input -->
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required>
-                @error('email')
                 <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
@@ -126,6 +153,29 @@
         </form>
     </div>
     <script>
+    {{-- Toggle password--}}
+    const togglePassword = document.querySelector('#togglePassword');
+    const password = document.querySelector('#password');
+    const eyeIconPassword = document.querySelector('#eyeIconPassword');
+
+    togglePassword.addEventListener('click', function() {
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+        eyeIconPassword.classList.toggle('fa-eye');
+        eyeIconPassword.classList.toggle('fa-eye-slash');
+    });
+
+    const toggleConfirmPassword = document.querySelector('#toggleConfirmPassword');
+    const confirmPassword = document.querySelector('#password_confirmation');
+    const eyeIconConfirm = document.querySelector('#eyeIconConfirm');
+
+    toggleConfirmPassword.addEventListener('click', function() {
+        const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+        confirmPassword.setAttribute('type', type);
+        eyeIconConfirm.classList.toggle('fa-eye');
+        eyeIconConfirm.classList.toggle('fa-eye-slash');
+    });
+    {{--verified selection of provience , district and municipaliy--}}
         document.getElementById('province').addEventListener('change', function() {
             const provinceId = this.value;
             const districtSelect = document.getElementById('district');

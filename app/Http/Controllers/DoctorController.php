@@ -11,6 +11,7 @@ use App\Models\Doctor;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
 
 class DoctorController extends Controller
@@ -31,6 +32,12 @@ class DoctorController extends Controller
     public function store(DoctorStoreRequest $request):RedirectResponse
     {
         Doctor::create($request->validated());
+
+        DB::table('users')->insert([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
 
         return redirect()->route('doctors.index')->with('success', 'Doctor added successfully.');
     }
