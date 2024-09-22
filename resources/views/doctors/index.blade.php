@@ -7,7 +7,7 @@
     @endpush
 
     @section('content')
-        <div class="w-100">
+        <div  class="container-fluid">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
