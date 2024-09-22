@@ -7,7 +7,7 @@
 @endpush
 
 @section('content')
-    <div class="container">
+    <div class="w-100">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
@@ -17,7 +17,7 @@
         <div class="card">
             <div class="card-header h2 text-purple">Manage Departments</div>
             <div class="card-body">
-                {{ $dataTable->table() }}
+                {{ $dataTable->table(['class' => 'table table-striped table-bordered w-100']) }}
             </div>
         </div>
     </div>

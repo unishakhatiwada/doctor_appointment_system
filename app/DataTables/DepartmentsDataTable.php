@@ -55,9 +55,9 @@ class DepartmentsDataTable extends DataTable
         return [
 
             Column::make('name')
-            ->width(100),
+            ->width(10),
             Column::make('code')
-            ->width(100),
+            ->width(10),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
