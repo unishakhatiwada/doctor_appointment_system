@@ -19,17 +19,17 @@ class Doctor extends Model
         'department_id',
     ];
 
-    public function department():BelongsTo
+    public function department(): BelongsTo
     {
         return $this->belongsTo(Department::class, 'department_id');
     }
 
-    public function experiences():HasMany
+    public function experiences(): HasMany
     {
         return $this->hasMany(Experience::class);
     }
 
-    public function educations():HasMany
+    public function educations(): HasMany
     {
         return $this->hasMany(Education::class);
     }
