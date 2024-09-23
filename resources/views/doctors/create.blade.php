@@ -1,16 +1,19 @@
 @extends('admin.layouts.app')
 
 @section('content')
+
     <div class="container">
-        <h1>Add New Doctor</h1>
+        <h1>{{ isset($doctor) ? 'Edit Doctor' : 'Add New Doctor' }}</h1>
 
-        <form action="{{ route('doctors.store') }}" method="POST">
+        <form action="{{ isset($doctor) ? route('doctors.update', $doctor->id) : route('doctors.store') }}" method="POST">
             @csrf
-
+            @if(isset($doctor))
+                @method('PUT')
+            @endif
             <!-- Doctor's Name Input -->
             <div class="mb-3">
                 <label for="name" class="form-label">Doctor's Name</label>
-                <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" required>
+                <input type="text" class="form-control" id="name" name="name" value="{{ old('name', $doctor->name ?? '') }}"  required>
                 @error('name')
                 <div class="text-danger">{{ $message }}</div>
                 @enderror
@@ -18,7 +21,7 @@
             <!-- Email Input -->
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required>
+                <input type="email" class="form-control" id="email" name="email" value="{{ old('email', $doctor->email ?? '') }}"  required>
                 @error('email')
                 <div class="text-danger">{{ $message }}</div>
                 @enderror
@@ -27,20 +30,21 @@
             <!-- Phone Input -->
             <div class="mb-3">
                 <label for="phone" class="form-label">Phone</label>
-                <input type="text" class="form-control" id="phone" name="phone" value="{{ old('phone') }}" required>
+                <input type="text" class="form-control" id="phone" name="phone" value="{{ old('phone', $doctor->phone ?? '') }}"  required>
                 @error('phone')
                 <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
 
+            @if(!isset($doctor)) <!-- Only show these fields when creating a new doctor -->
             <!-- Password Input -->
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
                 <div class="input-group">
                     <input type="password" class="form-control" id="password" name="password" required>
                     <span class="input-group-text" id="togglePassword" style="cursor: pointer;">
-                        <i class="fas fa-eye" id="eyeIcon"></i>
-                    </span>
+                            <i class="fas fa-eye" id="eyeIcon"></i>
+                        </span>
                 </div>
                 @error('password')
                 <div class="text-danger">{{ $message }}</div>
@@ -53,13 +57,14 @@
                 <div class="input-group">
                     <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
                     <span class="input-group-text" id="toggleConfirmPassword" style="cursor: pointer;">
-                        <i class="fas fa-eye" id="eyeIconConfirm"></i>
-                    </span>
+                            <i class="fas fa-eye" id="eyeIconConfirm"></i>
+                        </span>
                 </div>
                 @error('password_confirmation')
                 <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
+            @endif
 
             <!-- Province Selection -->
             <div class="mb-3">
@@ -67,7 +72,10 @@
                 <select name="province_id" id="province" class="form-control">
                     <option value="">Select Province</option>
                     @foreach($provinces as $province)
-                        <option value="{{ $province->id }}">{{ $province->nepali_name }}</option>
+                        <option value="{{ $province->id }}"
+                            {{ old('province_id', $doctor->province_id ?? '') == $province->id ? 'selected' : '' }}>
+                            {{ $province->nepali_name }}
+                        </option>
                     @endforeach
                 </select>
                 @error('province_id')
@@ -78,8 +86,16 @@
             <!-- District Selection -->
             <div class="mb-3">
                 <label for="district" class="form-label">District</label>
-                <select name="district_id" id="district" class="form-control" disabled>
+                <select name="district_id" id="district" class="form-control" {{ isset($doctor) ? '' : 'disabled' }}>
                     <option value="">Select District</option>
+                    @if(isset($districts))
+                        @foreach($districts as $district)
+                            <option value="{{ $district->id }}"
+                                {{ old('district_id', $doctor->district_id ?? '') == $district->id ? 'selected' : '' }}>
+                                {{ $district->district_nepali_name }}
+                            </option>
+                        @endforeach
+                    @endif
                 </select>
                 @error('district_id')
                 <div class="text-danger">{{ $message }}</div>
@@ -89,13 +105,22 @@
             <!-- Municipality Selection -->
             <div class="mb-3">
                 <label for="municipality" class="form-label">Municipality</label>
-                <select name="municipality_id" id="municipality" class="form-control" disabled>
+                <select name="municipality_id" id="municipality" class="form-control" {{ isset($doctor) ? '' : 'disabled' }}>
                     <option value="">Select Municipality</option>
+                    @if(isset($municipalities))
+                        @foreach($municipalities as $municipality)
+                            <option value="{{ $municipality->id }}"
+                                {{ old('municipality_id', $doctor->municipality_id ?? '') == $municipality->id ? 'selected' : '' }}>
+                                {{ $municipality->muni_name }}
+                            </option>
+                        @endforeach
+                    @endif
                 </select>
                 @error('municipality_id')
                 <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
+
 
             <!-- Department Selection -->
             <div class="mb-3">
@@ -103,7 +128,8 @@
                 <select name="department_id" id="department" class="form-control">
                     <option value="">Select Department</option>
                     @foreach($departments as $department)
-                        <option value="{{ $department->id }}" {{ old('department_id') == $department->id ? 'selected' : '' }}>
+                        <option value="{{ $department->id }}"
+                            {{ old('department_id', $doctor->department_id ?? '') == $department->id ? 'selected' : '' }}>
                             {{ $department->name }}
                         </option>
                     @endforeach
@@ -149,7 +175,7 @@
                 @enderror
             </div>
 
-            <button type="submit" class="btn btn-primary">Add Doctor</button>
+            <button type="submit" class="btn btn-primary">{{ isset($doctor) ? 'Update Doctor' : 'Add Doctor' }}</button>
         </form>
     </div>
     <script>

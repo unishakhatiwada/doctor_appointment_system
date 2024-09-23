@@ -31,12 +31,26 @@ class DoctorController extends Controller
 
     public function store(DoctorStoreRequest $request):RedirectResponse
     {
-        Doctor::create($request->validated());
+
+        Doctor::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'province_id' => $request->province_id,
+            'district_id' => $request->district_id,
+            'municipality_id' => $request->municipality_id,
+            'department_id' => $request->department_id,
+            'status' => $request->status,
+            'date_of_birth_bs' => $request->dob_bs,
+            'date_of_birth_ad' => $request->dob_ad,
+        ]);
+
 
         DB::table('users')->insert([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'remember_token'=>$request->_token,
         ]);
 
         return redirect()->route('doctors.index')->with('success', 'Doctor added successfully.');
@@ -52,16 +66,36 @@ class DoctorController extends Controller
 
     public function edit(Doctor $doctor):View
     {
-        $departments = Department::all();
 
-        return view('doctors.edit', compact('doctor', 'departments'));
+        $departments = Department::all();
+        $provinces = DB::table('provinces')->get();
+        $districts = DB::table('districts')->where('province_id', $doctor->province_id)->get();
+        $municipalities = DB::table('municipalities')->where('district_id', $doctor->district_id)->get();
+        return view('doctors.create', compact('doctor', 'departments', 'provinces', 'districts', 'municipalities'));
+
     }
 
-    public function update(DoctorUpdateRequest $request, Doctor $doctor):RedirectResponse
+    public function update(DoctorUpdateRequest $request, Doctor $doctor): RedirectResponse
     {
-        $doctor->update($request->validated());
+        $doctor->update([
+        'name' => $request->name,
+        'email' => $request->email,
+        'phone' => $request->phone,
+        'province_id' => $request->province_id,
+        'district_id' => $request->district_id,
+        'municipality_id' => $request->municipality_id,
+        'department_id' => $request->department_id,
+        'status' => $request->status,
+        'date_of_birth_bs' => $request->dob_bs,
+        'date_of_birth_ad' => $request->dob_ad,
+    ]);
 
-        return redirect()->route('doctors.index', $doctor->id)->with('success', 'Doctor updated successfully.');
+    DB::table('users')->where('email', $doctor->email)->update([
+        'name' => $request->name,
+        'remember_token' => $request->_token,
+    ]);
+
+    return redirect()->route('doctors.index')->with('success', 'Doctor updated successfully.');
     }
 
     public function assign(Doctor $doctor)

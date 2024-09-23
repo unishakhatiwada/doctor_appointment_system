@@ -11,6 +11,13 @@ class Doctor extends Model
     protected $fillable = [
         'name',
         'address',
+        'password',
+        'confirm_password',
+        'date_of_birth_ad',
+        'date_of_birth_bs',
+        'province_id',
+        'district_id',
+        'municipality_id',
         'phone',
         'email',
         'status',

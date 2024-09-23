@@ -3,11 +3,11 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class DoctorStoreRequest extends FormRequest
 {
     protected $stopOnFirstFailure = true;
+
     public function authorize(): bool
     {
         return true;
@@ -15,7 +15,6 @@ class DoctorStoreRequest extends FormRequest
 
     public function rules(): array
     {
-
         return [
             'name' => 'required|string',
             'phone' => [
@@ -26,23 +25,24 @@ class DoctorStoreRequest extends FormRequest
                 'unique:doctors,phone',
             ],
             'email' => 'required|string|email|unique:doctors,email',
-            'password' => 'required|string|min:8|confirmed',
+            'password' => 'required|string|min:6|confirmed',
             'province_id' => 'required|exists:provinces,id',
             'district_id' => 'required|exists:districts,id',
             'municipality_id' => 'required|exists:municipalities,id',
             'status' => 'required|in:active,inactive',
-            'date_of_birth_ad' => 'nullable|date',
-            'date_of_birth_bs' => 'nullable|string',
+            'department_id' => 'required|exists:departments,id',
+            'dob_ad' => 'nullable|date',
+            'dob_bs' => 'nullable|string',
         ];
     }
+
     public function messages(): array
     {
         return [
             'email.unique' => 'The email has already been taken. Please choose a different one.',
             'phone.unique' => 'The phone number has already been taken. Please choose a different one.',
-            'phone.regex' => 'The phone number must be a valid Nepali phone number format.',
-
+            'phone.regex' => 'The phone number must be a valid Nepali or international phone number format.',
+            'department_id.exists' => 'The selected department is invalid.',
         ];
     }
-
 }

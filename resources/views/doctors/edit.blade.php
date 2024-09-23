@@ -35,13 +35,64 @@
                 @endif
             </div>
 
-            <!-- Address Input -->
-            <div class="form-group">
-                <label for="address">Address</label>
-                <input type="text" name="address" class="form-control" value="{{ old('address', $doctor->address) }}" required>
-                @if($errors->has('address'))
-                    <span class="text-danger">{{ $errors->first('address') }}</span>
-                @endif
+            <!-- Province Selection -->
+            <div class="mb-3">
+                <label for="province" class="form-label">Province</label>
+                <select name="province_id" id="province" class="form-control">
+                    <option value="">Select Province</option>
+                    @foreach($provinces as $province)
+                        <option value="{{ $province->id }}">{{ $province->nepali_name }}</option>
+                    @endforeach
+                </select>
+                @error('province_id')
+                <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <!-- District Selection -->
+            <div class="mb-3">
+                <label for="district" class="form-label">District</label>
+                <select name="district_id" id="district" class="form-control" disabled>
+                    <option value="">Select District</option>
+                </select>
+                @error('district_id')
+                <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <!-- Municipality Selection -->
+            <div class="mb-3">
+                <label for="municipality" class="form-label">Municipality</label>
+                <select name="municipality_id" id="municipality" class="form-control" disabled>
+                    <option value="">Select Municipality</option>
+                </select>
+                @error('municipality_id')
+                <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <!-- BS Date Input -->
+            <div class="mb-3">
+                <label for="dob_bs" class="form-label">Date of Birth (BS)</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="dob_bs" name="dob_bs" placeholder="YYYY/MM/DD" value="{{ old('dob_bs') }}" required>
+                    <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                </div>
+                @error('dob_bs')
+                <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <!-- AD Date Input -->
+            <div class="mb-3">
+                <label for="dob_ad" class="form-label">Date of Birth (AD)</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="dob_ad" name="dob_ad" placeholder="YYYY-MM-DD" value="{{ old('dob_ad') }}" required>
+                    <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                </div>
+                @error('dob_ad')
+                <div class="text-danger">{{ $message }}</div>
+                @enderror
             </div>
 
             <!-- Status Dropdown -->
