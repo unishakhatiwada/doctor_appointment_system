@@ -2,63 +2,53 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\ExperienceStoreUpdateRequest;
+use App\Models\Doctor;
+use App\Models\Experience;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class ExperienceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $experiences = Experience::with('doctor')->get(); // Eager load doctors
+
+        return view('experiences.index', compact('experiences'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $doctors = Doctor::all(); // Get all doctors for the dropdown
+
+        return view('experiences.create', compact('doctors'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(ExperienceStoreUpdateRequest $request): RedirectResponse
     {
-        //
+        Experience::create($request->validated());
+
+        return redirect()->route('experiences.index')->with('success', 'Experience record added successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function edit(Experience $experience): View
     {
-        //
+        $doctors = Doctor::all(); // Get all doctors for the dropdown
+
+        return view('experiences.edit', compact('experience', 'doctors'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function update(ExperienceStoreUpdateRequest $request, Experience $experience): RedirectResponse
     {
-        //
+        $experience->update($request->validated());
+
+        return redirect()->route('experiences.index')->with('success', 'Experience record updated successfully.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function destroy(Experience $experience): RedirectResponse
     {
-        //
-    }
+        $experience->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return redirect()->route('experiences.index')->with('success', 'Experience record deleted successfully.');
     }
 }

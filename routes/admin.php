@@ -4,6 +4,8 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\LoginController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\EducationController;
+use App\Http\Controllers\ExperienceController;
 use Illuminate\Support\Facades\Route;
 
 // Admin routes
@@ -17,6 +19,9 @@ Route::middleware(['admin_auth:admin'])->prefix('admin')->group(function () {
 
     Route::resource('doctors', DoctorController::class)->names('doctors');
     Route::get('admin/doctors/{doctor}/assign', [DoctorController::class, 'assign'])->name('doctors.assign');
+
+    Route::resource('educations', EducationController::class)->names('educations');
+    Route::resource('experiences', ExperienceController::class);
 
     Route::resource('departments', DepartmentController::class)->names('departments');
     Route::get('/departments/{department}/add-doctors', [DepartmentController::class, 'addDoctorForm'])->name('departments.addDoctorForm');
