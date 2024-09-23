@@ -41,8 +41,7 @@ class DepartmentsDataTable extends DataTable
             ->orderBy(1)
             ->selectStyleSingle()
             ->buttons([
-                Button::make('add'),
-                Button::make('export'),
+                Button::make('add')->text('Create New Department'),
             ]);
     }
 

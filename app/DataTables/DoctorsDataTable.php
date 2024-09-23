@@ -39,14 +39,13 @@ class DoctorsDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-            ->setTableId('doctors-table')
+            ->setTableId('departments-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->orderBy(1)
             ->selectStyleSingle()
             ->buttons([
-                Button::make('add'),
-                Button::make('export'),
+                Button::make('add')->text('Create New Doctor'),
             ]);
     }
 
