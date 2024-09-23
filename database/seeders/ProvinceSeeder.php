@@ -44,7 +44,7 @@ class ProvinceSeeder extends Seeder
                 'province_code' => 7,
                 'nepali_name' => 'सुदुरपश्चिम प्रदेश',
                 'english_name' => 'Sudurpaschim',
-            ]
+            ],
         ];
         DB::table('provinces')->insert($rows);
     }

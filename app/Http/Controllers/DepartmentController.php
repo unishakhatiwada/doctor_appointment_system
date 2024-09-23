@@ -7,8 +7,8 @@ use App\Http\Requests\DepartmentStoreRequest;
 use App\Http\Requests\DepartmentUpdateRequest;
 use App\Models\Department;
 use App\Models\Doctor;
-use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class DepartmentController extends Controller
@@ -21,6 +21,7 @@ class DepartmentController extends Controller
     public function create(): View
     {
         $doctors = Doctor::all();
+
         return view('departments.create', compact('doctors'));
     }
 
@@ -36,21 +37,20 @@ class DepartmentController extends Controller
     {
         $query = $department->doctors();
 
-
         if ($request->filled('search')) {
-            $query->where('name', 'like', '%' . $request->input('search') . '%');
+            $query->where('name', 'like', '%'.$request->input('search').'%');
         }
         $doctors = $query->paginate(10);
 
-        return view('departments.show', compact('department' , 'doctors'));
+        return view('departments.show', compact('department', 'doctors'));
     }
 
-    public function edit(Department $department):View
+    public function edit(Department $department): View
     {
         return view('departments.edit', compact('department'));
     }
 
-    public function update(DepartmentUpdateRequest $request, Department $department):RedirectResponse
+    public function update(DepartmentUpdateRequest $request, Department $department): RedirectResponse
     {
         $department->update($request->only('name', 'code', 'description'));
 
@@ -91,6 +91,4 @@ class DepartmentController extends Controller
         // Redirect back to the department's show page with a success message
         return redirect()->route('departments.show', $department->id)->with('success', 'Doctors added successfully.');
     }
-
-
 }

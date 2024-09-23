@@ -23,7 +23,7 @@ class DepartmentUpdateRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'code'=> 'required',
+            'code' => 'required',
             'description' => 'required',
             'doctor_id' => 'nullable|array|exists:doctors,id',
         ];

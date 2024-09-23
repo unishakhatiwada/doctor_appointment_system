@@ -8,25 +8,21 @@ use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
-use Yajra\DataTables\Html\Editor\Editor;
-use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
 class DepartmentsDataTable extends DataTable
 {
-
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', function($data){
+            ->addColumn('action', function ($data) {
                 $url = '/admin/departments/';
                 $buttons['view'] = true;
                 $buttons['edit'] = true;
                 $buttons['delete'] = true;
 
-                return view('components.action-button', compact('data', 'url' ,  'buttons' ))->render();
+                return view('components.action-button', compact('data', 'url', 'buttons'))->render();
             })
-
 
             ->setRowId('id');
     }
@@ -55,19 +51,19 @@ class DepartmentsDataTable extends DataTable
         return [
 
             Column::make('name')
-            ->width(10),
+                ->width(10),
             Column::make('code')
-            ->width(10),
+                ->width(10),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
                 ->width(10)
-            ->addClass('text-center'),
+                ->addClass('text-center'),
         ];
     }
 
     protected function filename(): string
     {
-        return 'Departments_' . date('YmdHis');
+        return 'Departments_'.date('YmdHis');
     }
 }

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Doctor extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'name',
         'address',
@@ -23,6 +24,7 @@ class Doctor extends Model
         'status',
         'department_id',
     ];
+
     public function department()
     {
         return $this->belongsTo(Department::class, 'department_id');

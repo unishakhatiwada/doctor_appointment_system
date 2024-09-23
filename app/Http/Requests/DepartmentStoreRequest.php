@@ -15,10 +15,10 @@ class DepartmentStoreRequest extends FormRequest
 
     public function rules(): array
     {
-            return [
-                'name' => 'required',
-                'code'=> 'required|unique:departments,code',
-                'description' => 'nullable|string',
-            ];
+        return [
+            'name' => 'required',
+            'code' => 'required|unique:departments,code',
+            'description' => 'nullable|string',
+        ];
     }
 }

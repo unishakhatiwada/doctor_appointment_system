@@ -15,7 +15,6 @@ Route::middleware(['admin_auth:admin'])->prefix('admin')->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('logout', [DashboardController::class, 'logout'])->name('admin.logout');
 
-
     Route::resource('doctors', DoctorController::class)->names('doctors');
     Route::get('admin/doctors/{doctor}/assign', [DoctorController::class, 'assign'])->name('doctors.assign');
 

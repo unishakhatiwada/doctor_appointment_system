@@ -2,10 +2,9 @@
 
 namespace App\Models;
 
-use Carbon\Factory;
-use Database\Factories\DepartmentFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+
 class Department extends Model
 {
     use HasFactory;
@@ -14,11 +13,11 @@ class Department extends Model
         'code',
         'name',
         'description',
-        'doctor_id'
+        'doctor_id',
     ];
+
     public function doctors()
     {
         return $this->hasMany(Doctor::class, 'department_id');
     }
-
 }

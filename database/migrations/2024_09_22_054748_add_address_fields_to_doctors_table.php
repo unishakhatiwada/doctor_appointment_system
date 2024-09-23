@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-     public function up(): void
+    public function up(): void
     {
         Schema::table('doctors', function (Blueprint $table) {
             $table->foreignId('province_id')
@@ -26,7 +26,6 @@ return new class extends Migration
                 ->onDelete('cascade');
         });
     }
-
 
     public function down(): void
     {
