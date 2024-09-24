@@ -30,28 +30,32 @@ class DoctorController extends Controller
     public function store(DoctorStoreRequest $request): RedirectResponse
     {
 
+        $validated = $request->validated();
+
         Doctor::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'province_id' => $request->province_id,
-            'district_id' => $request->district_id,
-            'municipality_id' => $request->municipality_id,
-            'department_id' => $request->department_id,
-            'status' => $request->status,
-            'date_of_birth_bs' => $request->dob_bs,
-            'date_of_birth_ad' => $request->dob_ad,
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'phone' => $validated['phone'],
+            'province_id' => $validated['province_id'],
+            'district_id' => $validated['district_id'],
+            'municipality_id' => $validated['municipality_id'],
+            'department_id' => $validated['department_id'],
+            'status' => $validated['status'],
+            'date_of_birth_bs' => $validated['dob_bs'],
+            'date_of_birth_ad' => $validated['dob_ad'],
         ]);
 
+        // Save the user login info into the 'users' table
         DB::table('users')->insert([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
             'remember_token' => $request->_token,
         ]);
 
         return redirect()->route('doctors.index')->with('success', 'Doctor added successfully.');
     }
+
 
     public function show(Doctor $doctor): View
     {
@@ -75,23 +79,30 @@ class DoctorController extends Controller
 
     public function update(DoctorUpdateRequest $request, Doctor $doctor): RedirectResponse
     {
+        $validated = $request->validated();
+
+        // Update only relevant fields
         $doctor->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'province_id' => $request->province_id,
-            'district_id' => $request->district_id,
-            'municipality_id' => $request->municipality_id,
-            'department_id' => $request->department_id,
-            'status' => $request->status,
-            'date_of_birth_bs' => $request->dob_bs,
-            'date_of_birth_ad' => $request->dob_ad,
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'phone' => $validated['phone'],
+            'province_id' => $validated['province_id'],
+            'district_id' => $validated['district_id'],
+            'municipality_id' => $validated['municipality_id'],
+            'department_id' => $validated['department_id'],
+            'status' => $validated['status'],
+            'date_of_birth_bs' => $validated['dob_bs'],
+            'date_of_birth_ad' => $validated['dob_ad'],
         ]);
 
-        DB::table('users')->where('email', $doctor->email)->update([
-            'name' => $request->name,
-            'remember_token' => $request->_token,
-        ]);
+        // Update user login info only if the password is provided
+        if ($validated['password']) {
+            DB::table('users')->where('email', $doctor->email)->update([
+                'name' => $validated['name'],
+                'password' => Hash::make($validated['password']),
+                'remember_token' => $request->_token,
+            ]);
+        }
 
         return redirect()->route('doctors.index')->with('success', 'Doctor updated successfully.');
     }
