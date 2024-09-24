@@ -24,7 +24,7 @@ class DoctorController extends Controller
         $departments = Department::all();
         $provinces = DB::table('provinces')->get();
 
-        return view('doctors.create', compact('departments', 'provinces'));
+        return view('doctors.create_edit', compact('departments', 'provinces'));
     }
 
     public function store(DoctorStoreRequest $request): RedirectResponse
@@ -73,7 +73,7 @@ class DoctorController extends Controller
         $districts = DB::table('districts')->where('province_id', $doctor->province_id)->get();
         $municipalities = DB::table('municipalities')->where('district_id', $doctor->district_id)->get();
 
-        return view('doctors.create', compact('doctor', 'departments', 'provinces', 'districts', 'municipalities'));
+        return view('doctors.create_edit', compact('doctor', 'departments', 'provinces', 'districts', 'municipalities'));
 
     }
 
