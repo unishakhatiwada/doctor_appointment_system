@@ -178,58 +178,6 @@
             <button type="submit" class="btn btn-primary">{{ isset($doctor) ? 'Update Doctor' : 'Add Doctor' }}</button>
         </form>
     </div>
-    <script>
-    {{-- Toggle password--}}
-    const togglePassword = document.querySelector('#togglePassword');
-    const password = document.querySelector('#password');
-    const eyeIconPassword = document.querySelector('#eyeIconPassword');
-
-    togglePassword.addEventListener('click', function() {
-        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-        password.setAttribute('type', type);
-        eyeIconPassword.classList.toggle('fa-eye');
-        eyeIconPassword.classList.toggle('fa-eye-slash');
-    });
-
-    const toggleConfirmPassword = document.querySelector('#toggleConfirmPassword');
-    const confirmPassword = document.querySelector('#password_confirmation');
-    const eyeIconConfirm = document.querySelector('#eyeIconConfirm');
-
-    toggleConfirmPassword.addEventListener('click', function() {
-        const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
-        confirmPassword.setAttribute('type', type);
-        eyeIconConfirm.classList.toggle('fa-eye');
-        eyeIconConfirm.classList.toggle('fa-eye-slash');
-    });
-    {{--verified selection of provience , district and municipaliy--}}
-        document.getElementById('province').addEventListener('change', function() {
-            const provinceId = this.value;
-            const districtSelect = document.getElementById('district');
-            districtSelect.disabled = false;
-
-            fetch(`/districts/${provinceId}`)
-                .then(response => response.json())
-                .then(data => {
-                    districtSelect.innerHTML = '<option value="">Select District</option>';
-                    data.forEach(district => {
-                        districtSelect.innerHTML += `<option value="${district.id}">${district.district_nepali_name}</option>`;
-                    });
-                });
-        });
-
-        document.getElementById('district').addEventListener('change', function() {
-            const districtId = this.value;
-            const municipalitySelect = document.getElementById('municipality');
-            municipalitySelect.disabled = false;
-
-            fetch(`/municipalities/${districtId}`)
-                .then(response => response.json())
-                .then(data => {
-                    municipalitySelect.innerHTML = '<option value="">Select Municipality</option>';
-                    data.forEach(municipality => {
-                        municipalitySelect.innerHTML += `<option value="${municipality.id}">${municipality.muni_name}</option>`;
-                    });
-                });
-        });
-    </script>
+    <script src="{{ asset('Admin/build/js/TogglePassword.js') }}"></script>
+    <script src="{{ asset('Admin/build/js/AddressSelection.js') }}"></script>
 @endsection
