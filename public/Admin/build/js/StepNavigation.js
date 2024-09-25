@@ -6,20 +6,32 @@ document.addEventListener('DOMContentLoaded', function() {
   function showStep(step) {
     var steps = document.getElementsByClassName('step');
     steps[step].style.display = 'block'; // Show the current step
+
     // Hide the "Previous" button on the first step
     if (step === 0) {
       document.getElementById('prevBtn').style.display = 'none';
     } else {
       document.getElementById('prevBtn').style.display = 'inline';
     }
+
     // Change the "Next" button to "Submit" on the last step
     if (step === (steps.length - 1)) {
       document.getElementById('nextBtn').innerHTML = 'Submit';
     } else {
       document.getElementById('nextBtn').innerHTML = 'Next';
     }
-  }
 
+    // Update the progress bar
+    var progressBar = document.getElementById('progressBar');
+    var totalSteps = steps.length;
+    var progressPercentage = ((step + 1) / totalSteps) * 100;
+
+    // Set the width of the progress bar
+    progressBar.style.width = progressPercentage + '%';
+
+    // Update the progress bar text
+    progressBar.innerHTML = `Step ${step + 1} of ${totalSteps}`;
+  }
   // Function to handle Next/Previous navigation
   function nextPrev(n) {
     var steps = document.getElementsByClassName('step');

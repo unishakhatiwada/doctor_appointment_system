@@ -39,33 +39,35 @@ document.addEventListener('DOMContentLoaded', function () {
                     </div>
 
                     <div class="form-group">
-                        <label for="start_date">Start Date <i class="fas fa-calendar-alt"></i></label>
+                        <label for="experience_start_date">Start Date <i class="fas fa-calendar-alt"></i></label>
                         <input type="date" class="form-control" name="experience[${experienceIndex}][start_date]" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="end_date">End Date <i class="fas fa-calendar-alt"></i></label>
+                        <label for="experience_end_date">End Date <i class="fas fa-calendar-alt"></i></label>
                         <input type="date" class="form-control" name="experience[${experienceIndex}][end_date]">
                     </div>
-
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="additional_detail">Additional Details</label>
+                <label for="experience_additional_detail">Additional Details</label>
                 <textarea class="form-control" name="experience[${experienceIndex}][additional_detail]" rows="2"></textarea>
             </div>
-             <div class="form-group">
-                        <label for="certificate">Certificate (PDF)</label>
-                        <input type="file" class="form-control-file" name="experience[${experienceIndex}][certificate]" accept="application/pdf">
-               </div>
-            <button type="button" class="remove-experience btn btn-danger">Remove</button>
+
+            <div class="form-group">
+                <label for="experience_certificate">Certificate (PDF)</label>
+                <input type="file" class="form-control-file" name="experience[${experienceIndex}][certificate]" accept="application/pdf">
+            </div>
+
+            <!-- Remove button for the repeater -->
+            <button type="button" class="remove-experience btn btn-danger">Remove Experience</button>
             <hr />`;
 
     // Append new section
     repeater.appendChild(newSection);
 
-    // Add remove functionality to the new section
+    // Add remove functionality to the newly added section
     newSection.querySelector('.remove-experience').addEventListener('click', function() {
       this.parentElement.remove();
     });

@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var educationIndex = 1;
 
   // Function to add new education entry
-  document.getElementById('addEducation').addEventListener('click', function() {
+  document.getElementById('addEducation').addEventListener('click', function () {
     var repeater = document.getElementById('educationRepeater');
     var newSection = document.createElement('div');
     newSection.classList.add('repeater-section');
@@ -26,7 +26,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     </div>
 
                     <div class="form-group">
-                        <label for="additional_detail">Additional Details</label>
+                        <label for="education_certificate">Certificate (PDF)</label>
+                        <input type="file" class="form-control-file" name="education[${educationIndex}][certificate]" accept="application/pdf">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="education_additional_detail">Additional Details</label>
                         <input type="text" class="form-control" name="education[${educationIndex}][additional_detail]" required>
                     </div>
                 </div>
@@ -38,35 +43,41 @@ document.addEventListener('DOMContentLoaded', function () {
                         <input type="text" class="form-control" name="education[${educationIndex}][college_address]" required>
                     </div>
 
-
                     <div class="form-group">
                         <label for="faculty">Faculty</label>
                         <input type="text" class="form-control" name="education[${educationIndex}][faculty]" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="certificate">Certificate (PDF)</label>
-                        <input type="file" class="form-control-file" name="education[${educationIndex}][certificate]" accept="application/pdf">
+                        <label for="education_start_date">Start Date <i class="fas fa-calendar-alt"></i></label>
+                        <input type="date" class="form-control" name="education[${educationIndex}][start_date]" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="education_end_date">End Date <i class="fas fa-calendar-alt"></i></label>
+                        <input type="date" class="form-control" name="education[${educationIndex}][end_date]" required>
                     </div>
                 </div>
             </div>
-            <button type="button" class="remove-education btn btn-danger">Remove</button>
+
+            <!-- Remove button for the repeater -->
+            <button type="button" class="remove-education btn btn-danger">Remove Education</button>
             <hr />`;
 
     // Append new section
     repeater.appendChild(newSection);
 
-    // Add remove functionality to the new section
-    newSection.querySelector('.remove-education').addEventListener('click', function() {
+    // Add event listener for the remove button
+    newSection.querySelector('.remove-education').addEventListener('click', function () {
       this.parentElement.remove();
     });
 
     educationIndex++;
   });
 
-  // Add remove functionality to the initial education section
-  document.querySelectorAll('.remove-education').forEach(function(button) {
-    button.addEventListener('click', function() {
+  // Add event listeners for the initial remove buttons
+  document.querySelectorAll('.remove-education').forEach(function (button) {
+    button.addEventListener('click', function () {
       this.parentElement.remove();
     });
   });

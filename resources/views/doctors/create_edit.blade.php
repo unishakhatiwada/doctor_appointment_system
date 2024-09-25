@@ -34,8 +34,8 @@
 
                             <div class="card-body">
                                 <div class="progress mb-4" style="height: 30px;">
-                                    <div class="progress-bar" role="progressbar" style="width: 18rem;" id="progressBar">
-                                    Step 1 of 4
+                                    <div class="progress-bar" role="progressbar" style="width: 0%;" id="progressBar">
+                                        Step 1 of 4
                                     </div>
                                 </div>
 
@@ -304,11 +304,16 @@
                                                         <label for="college_name">College Name</label>
                                                         <input type="text" class="form-control" name="education[0][college_name]" required>
                                                     </div>
+                                                    <div class="form-group">
+                                                        <label for="education_certificate">Certificate (PDF)</label>
+                                                        <input type="file" class="form-control-file" name="education[0][certificate]" accept="application/pdf">
+                                                    </div>
 
                                                     <div class="form-group">
-                                                        <label for="additional_detail">Additional Details</label>
+                                                        <label for="education_additional_detail">Additional Details</label>
                                                         <input type="text" class="form-control" name="education[0][additional_detail]" required>
                                                     </div>
+
                                                 </div>
 
                                                 <!-- Column 2 -->
@@ -322,15 +327,23 @@
                                                         <label for="faculty">Faculty</label>
                                                         <input type="text" class="form-control" name="education[0][faculty]" required>
                                                     </div>
+                                                    <div class="form-group">
+                                                        <label for="education_start_date">Start Date <i class="fas fa-calendar-alt"></i></label>
+                                                        <input type="date" class="form-control" name="education[0][start_date]" required>
+                                                    </div>
 
                                                     <div class="form-group">
-                                                        <label for="certificate">Certificate (PDF)</label>
-                                                        <input type="file" class="form-control-file" name="education[0][certificate]" accept="application/pdf">
+                                                        <label for="education_end_date">End Date <i class="fas fa-calendar-alt"></i></label>
+                                                        <input type="date" class="form-control" name="education[0][end_date]" required>
                                                     </div>
+
                                                 </div>
                                             </div>
                                             <!-- Remove button for the repeater -->
-                                            <button type="button" class="remove-education btn btn-danger">Remove Education</button>
+                                            <div class="d-flex justify-content-end">
+                                                <button type="button" class="remove-education btn btn-danger">Remove Education</button>
+                                            </div>
+
                                             <hr />
                                         </div>
                                     </div>
@@ -376,29 +389,33 @@
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label for="start_date">Start Date <i class="fas fa-calendar-alt"></i></label>
+                                                        <label for="experience_start_date">Start Date <i class="fas fa-calendar-alt"></i></label>
                                                         <input type="date" class="form-control" name="experience[0][start_date]" required>
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label for="end_date">End Date <i class="fas fa-calendar-alt"></i></label>
+                                                        <label for="experience_end_date">End Date <i class="fas fa-calendar-alt"></i></label>
                                                         <input type="date" class="form-control" name="experience[0][end_date]">
                                                     </div>
+
 
                                                 </div>
                                             </div>
 
                                             <div class="form-group">
-                                                <label for="additional_detail">Additional Details</label>
+                                                <label for="experience_additional_detail">Additional Details</label>
                                                 <textarea class="form-control" name="experience[0][additional_detail]" rows="2"></textarea>
                                             </div>
 
                                             <div class="form-group">
-                                                <label for="certificate">Certificate (PDF)</label>
+                                                <label for="experience_certificate">Certificate (PDF)</label>
                                                 <input type="file" class="form-control-file" name="experience[0][certificate]" accept="application/pdf">
                                             </div>
                                             <!-- Remove button for the repeater -->
-                                            <button type="button" class="remove-experience btn btn-danger">Remove</button>
+                                            <div class="d-flex justify-content-end">
+                                                <button type="button" class="remove-experience btn btn-danger">Remove Experience</button>
+                                            </div>
+
                                             <hr />
                                         </div>
                                     </div>
