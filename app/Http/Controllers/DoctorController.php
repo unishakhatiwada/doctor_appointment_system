@@ -56,7 +56,6 @@ class DoctorController extends Controller
         return redirect()->route('doctors.index')->with('success', 'Doctor added successfully.');
     }
 
-
     public function show(Doctor $doctor): View
     {
 
