@@ -73,19 +73,32 @@ document.addEventListener('DOMContentLoaded', function() {
     var inputs = step.querySelectorAll('input, select, textarea');
 
     inputs.forEach(function(input) {
-      if (!input.checkValidity()) {
-        input.classList.add('is-invalid');  // Add Bootstrap's invalid class
-        // Show custom error message
+      // Check if it's a select element
+      if (input.tagName === 'SELECT') {
+        // If the selected value is empty, it means the user didn't select a valid option
+        if (input.value === '') {
+          input.classList.add('is-invalid'); // Add Bootstrap's invalid class
+          var errorMessage = input.nextElementSibling;
+          if (errorMessage && errorMessage.classList.contains('invalid-feedback')) {
+            errorMessage.textContent = `Please select a ${input.previousElementSibling.textContent.trim()} field`;
+          }
+          valid = false;
+        } else {
+          input.classList.remove('is-invalid'); // Remove invalid class if valid
+        }
+      } else if (!input.checkValidity()) { // For input and textarea elements
+        input.classList.add('is-invalid'); // Add Bootstrap's invalid class
         var errorMessage = input.nextElementSibling;
         if (errorMessage && errorMessage.classList.contains('invalid-feedback')) {
           errorMessage.textContent = `Please fill the ${input.previousElementSibling.textContent.trim()} field`;
         }
         valid = false;
       } else {
-        input.classList.remove('is-invalid');  // Remove invalid class if valid
+        input.classList.remove('is-invalid'); // Remove invalid class if valid
       }
     });
 
     return valid; // Return true if all fields are valid, otherwise false
   }
 });
+

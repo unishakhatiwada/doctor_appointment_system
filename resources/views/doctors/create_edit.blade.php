@@ -46,7 +46,7 @@
 
                                 <!-- Step 1: Doctor Login Information -->
                                 <div class="step" id="step1">
-                                    <h4><i class="fas fa-user text-purple"></i> Step 1: Doctor Login Information</h4>
+                                    <h4 class="text-center text-bold text-teal"><i class="fas fa-user text-pink"></i> Step 1: Doctor Login Information</h4>
 
                                     <div class="row">
                                         <!-- Left Column -->
@@ -110,42 +110,45 @@
 
                                 <!-- Step 2: Doctor Personal Information -->
                                 <div class="step" id="step2" style="display:none;">
-                                    <h4><i class="fas fa-info-circle text-purple"></i> Step 2: Doctor Personal Information</h4>
+                                    <h4 class="text-center text-bold text-teal"><i class="fas fa-info-circle text-pink"></i> Step 2: Doctor Personal Information</h4>
 
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="gender">Gender <i class="fas fa-venus-mars"></i></label>
+                                                <label for="gender">Gender <i class="fas fa-venus-mars"></i> {!! requiredField(true) !!}</label>
                                                 <select class="form-control" name="gender" required>
                                                     <option value="male" {{ old('gender', isset($doctor) && $doctor->gender == 'male' ? 'selected' : '') }}>Male</option>
                                                     <option value="female" {{ old('gender', isset($doctor) && $doctor->gender == 'female' ? 'selected' : '') }}>Female</option>
                                                     <option value="other" {{ old('gender', isset($doctor) && $doctor->gender == 'other' ? 'selected' : '') }}>Other</option>
                                                 </select>
+                                                <div class="invalid-feedback">Please select the Gender</div>
                                                 @error('gender')
                                                 <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
 
                                             <div class="form-group">
-                                                <label for="marital_status">Marital Status <i class="fas fa-ring"></i></label>
+                                                <label for="marital_status">Marital Status <i class="fas fa-ring"></i> {!! requiredField(true) !!}</label>
                                                 <select class="form-control" name="marital_status" required>
                                                     <option value="single" {{ old('marital_status', isset($doctor) && $doctor->marital_status == 'single' ? 'selected' : '') }}>Single</option>
                                                     <option value="married" {{ old('marital_status', isset($doctor) && $doctor->marital_status == 'married' ? 'selected' : '') }}>Married</option>
                                                     <option value="divorced" {{ old('marital_status', isset($doctor) && $doctor->marital_status == 'divorced' ? 'selected' : '') }}>Divorced</option>
                                                     <option value="widowed" {{ old('marital_status', isset($doctor) && $doctor->marital_status == 'widowed' ? 'selected' : '') }}>Widowed</option>
                                                 </select>
+                                                <div class="invalid-feedback">Please select the Marital Status</div>
                                                 @error('marital_status')
                                                 <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
                                             {{-- Phone number--}}
                                             <div class="form-group">
-                                                <label for="phone">Phone <i class="fas fa-phone-alt"></i></label>
+                                                <label for="phone">Phone <i class="fas fa-phone-alt"></i>{!! requiredField(true) !!}</label>
                                                 <input type="tel" class="form-control" id="phone" name="phone"
                                                        value="{{ old('phone', isset($doctor) ? $doctor->phone : '') }}" required
                                                        pattern="^\d{10}$"
                                                        maxlength="10"
                                                        title="Please enter a valid 10-digit phone number">
+                                                <div class="invalid-feedback">Please fill the phone field</div>
                                                 @error('phone')
                                                 <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -154,11 +157,11 @@
 
                                             <!-- Permanent  Address -->
                                             <div class="form-group">
-                                                <label for="permanent_address" class="text-pink">Permanent Address <i class="fas fa-home"></i></label>
+                                                <label for="permanent_address" class="text-pink">Permanent Address <i class="fas fa-home"></i>{!! requiredField(true) !!}</label>
 
                                                 <!-- Province Selection -->
                                                 <div class="mb-3">
-                                                    <label for="permanent_province" class="form-label">Province</label>
+                                                    <label for="permanent_province" class="form-label">Province {!! requiredField(true) !!}</label>
                                                     <select name="permanent_province_id" id="permanent_province" class="form-control">
                                                         <option value="">Select Province</option>
                                                         @foreach($provinces as $province)
@@ -167,6 +170,7 @@
                                                             </option>
                                                         @endforeach
                                                     </select>
+                                                    <div class="invalid-feedback">Please select a Province</div>
                                                     @error('permanent_province_id')
                                                     <div class="text-danger">{{ $message }}</div>
                                                     @enderror
@@ -174,7 +178,7 @@
 
                                                 <!-- District Selection -->
                                                 <div class="mb-3">
-                                                    <label for="permanent_district" class="form-label">District</label>
+                                                    <label for="permanent_district" class="form-label">District {!! requiredField(true) !!}</label>
                                                     <select name="permanent_district_id" id="permanent_district" class="form-control" {{ isset($doctor) ? '' : 'disabled' }}>
                                                         <option value="">Select District</option>
                                                         @if(isset($districts))
@@ -185,6 +189,7 @@
                                                             @endforeach
                                                         @endif
                                                     </select>
+                                                    <div class="invalid-feedback">Please select a District</div>
                                                     @error('permanent_district_id')
                                                     <div class="text-danger">{{ $message }}</div>
                                                     @enderror
@@ -192,7 +197,7 @@
 
                                                 <!-- Municipality Selection -->
                                                 <div class="mb-3">
-                                                    <label for="permanent_municipality" class="form-label">Municipality</label>
+                                                    <label for="permanent_municipality" class="form-label">Municipality {!! requiredField(true) !!}</label>
                                                     <select name="permanent_municipality_id" id="permanent_municipality" class="form-control" {{ isset($doctor) ? '' : 'disabled' }}>
                                                         <option value="">Select Municipality</option>
                                                         @if(isset($municipalities))
@@ -203,6 +208,7 @@
                                                             @endforeach
                                                         @endif
                                                     </select>
+                                                    <div class="invalid-feedback">Please select a Municipality.</div>
                                                     @error('permanent_municipality_id')
                                                     <div class="text-danger">{{ $message }}</div>
                                                     @enderror
@@ -211,11 +217,11 @@
                                         </div>
 
                                         <div class="col-md-6">
-                                            <label for="temporary_address" class="text-pink">Temporary Address <i class="fas fa-home"></i></label>
+                                            <label for="temporary_address" class="text-pink">Temporary Address <i class="fas fa-home"></i> {!! requiredField(true) !!}</label>
 
                                             <!-- Province Selection -->
                                             <div class="mb-3">
-                                                <label for="temporary_province" class="form-label">Province</label>
+                                                <label for="temporary_province" class="form-label">Province {!! requiredField(true) !!}</label>
                                                 <select name="temporary_province_id" id="temporary_province" class="form-control">
                                                     <option value="">Select Province</option>
                                                     @foreach($provinces as $province)
@@ -224,6 +230,7 @@
                                                         </option>
                                                     @endforeach
                                                 </select>
+                                                <div class="invalid-feedback">Please select a Province.</div>
                                                 @error('temporary_province_id')
                                                 <div class="text-danger">{{ $message }}</div>
                                                 @enderror
@@ -231,7 +238,7 @@
 
                                             <!-- District Selection -->
                                             <div class="mb-3">
-                                                <label for="temporary_district" class="form-label">District</label>
+                                                <label for="temporary_district" class="form-label">District {!! requiredField(true) !!}</label>
                                                 <select name="temporary_district_id" id="temporary_district" class="form-control" {{ isset($doctor) ? '' : 'disabled' }}>
                                                     <option value="">Select District</option>
                                                     @if(isset($districts))
@@ -242,6 +249,7 @@
                                                         @endforeach
                                                     @endif
                                                 </select>
+                                                <div class="invalid-feedback">Please select a District.</div>
                                                 @error('temporary_district_id')
                                                 <div class="text-danger">{{ $message }}</div>
                                                 @enderror
@@ -249,7 +257,7 @@
 
                                             <!-- Municipality Selection -->
                                             <div class="mb-3">
-                                                <label for="temporary_municipality" class="form-label">Municipality</label>
+                                                <label for="temporary_municipality" class="form-label">Municipality {!! requiredField(true) !!}</label>
                                                 <select name="temporary_municipality_id" id="temporary_municipality" class="form-control" {{ isset($doctor) ? '' : 'disabled' }}>
                                                     <option value="">Select Municipality</option>
                                                     @if(isset($municipalities))
@@ -260,6 +268,7 @@
                                                         @endforeach
                                                     @endif
                                                 </select>
+                                                <div class="invalid-feedback">Please select a Municipality.</div>
                                                 @error('temporary_municipality_id')
                                                 <div class="text-danger">{{ $message }}</div>
                                                 @enderror
@@ -267,27 +276,35 @@
 
                                             <!-- Date of Birth (BS) with Calendar Icon -->
                                             <div class="form-group">
-                                                <label for="dob_bs">Date of Birth (BS)</label>
+                                                <label for="dob_bs">Date of Birth (BS) {!! requiredField(true) !!}</label>
                                                 <div class="input-group">
-                                                    <input type="text" id="dob_bs" class="form-control nepali-date-picker" placeholder="YYYY/MM/DD">
+                                                    <input type="text" id="dob_bs" name="dob_bs" class="form-control nepali-date-picker" placeholder="YYYY/MM/DD" value="{{ old('dob_bs', isset($doctor) ? $doctor->dob_bs : '') }}" required>
                                                     <div class="input-group-append">
-                                                        <span class="input-group-text">
-                                                            <i class="fas fa-calendar-alt"></i> <!-- Font Awesome calendar icon -->
-                                                        </span>
+                                                         <span class="input-group-text">
+                                                             <i class="fas fa-calendar-alt"></i>
+                                                         </span>
                                                     </div>
+                                                    <div class="invalid-feedback">Please select a valid Date of Birth in BS.</div>
+                                                    @error('dob_bs')
+                                                    <div class="text-danger">{{ $message }}</div>
+                                                    @enderror
                                                 </div>
                                             </div>
 
                                             <!-- Date of Birth (AD) with Calendar Icon -->
                                             <div class="form-group">
-                                                <label for="dob_ad">Date of Birth (AD)</label>
+                                                <label for="dob_ad">Date of Birth (AD) {!! requiredField(true) !!}</label>
                                                 <div class="input-group">
-                                                    <input type="text" id="dob_ad" class="form-control" placeholder="YYYY-MM-DD">
+                                                    <input type="text" id="dob_ad" name="dob_ad" class="form-control" placeholder="YYYY-MM-DD" value="{{ old('dob_ad', isset($doctor) ? $doctor->dob_ad : '') }}" required>
                                                     <div class="input-group-append">
                                                         <span class="input-group-text">
-                                                          <i class="fas fa-calendar-alt"></i> <!-- Font Awesome calendar icon -->
+                                                            <i class="fas fa-calendar-alt"></i>
                                                         </span>
                                                     </div>
+                                                    <div class="invalid-feedback">Please select a valid Date of Birth in AD.</div>
+                                                    @error('dob_ad')
+                                                    <div class="text-danger">{{ $message }}</div>
+                                                    @enderror
                                                 </div>
                                             </div>
 
@@ -298,14 +315,14 @@
 
                                 <!-- Step 3: Education Information (Repeater, Two-Column Layout) -->
                                 <div class="step" id="step3" style="display:none;">
-                                    <h4><i class="fas fa-graduation-cap text-purple"></i> Step 3: Education Information</h4>
+                                    <h4 class="text-center text-bold text-teal"><i class="fas fa-graduation-cap text-pink"></i> Step 3: Education Information</h4>
                                     <div id="educationRepeater">
                                         <div class="repeater-section">
                                             <div class="row">
                                                 <!-- Column 1 -->
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="degree">Degree <i class="fas fa-university"></i></label>
+                                                        <label for="degree">Degree <i class="fas fa-university"></i> {!! requiredField(true) !!}</label>
                                                         <select class="form-control" name="education[0][degree]" required>
                                                             <option value="+2">+2</option>
                                                             <option value="bachelor">Bachelor</option>
@@ -315,8 +332,9 @@
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label for="college_name">College Name</label>
+                                                        <label for="college_name">College Name  {!! requiredField(true) !!}</label>
                                                         <input type="text" class="form-control" name="education[0][college_name]" required>
+                                                        <div class="invalid-feedback">Please fill the College Name</div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="education_certificate">Certificate (PDF)</label>
@@ -325,7 +343,7 @@
 
                                                     <div class="form-group">
                                                         <label for="education_additional_detail">Additional Details</label>
-                                                        <input type="text" class="form-control" name="education[0][additional_detail]" required>
+                                                        <textarea class="form-control" name="education[0][additional_detail]" rows="2"></textarea>
                                                     </div>
 
                                                 </div>
@@ -333,32 +351,30 @@
                                                 <!-- Column 2 -->
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="college_address">College Address</label>
+                                                        <label for="college_address">College Address  {!! requiredField(true) !!}</label>
                                                         <input type="text" class="form-control" name="education[0][college_address]" required>
+                                                        <div class="invalid-feedback">Please fill the College Address</div>
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label for="faculty">Faculty</label>
+                                                        <label for="faculty">Faculty  {!! requiredField(true) !!}</label>
                                                         <input type="text" class="form-control" name="education[0][faculty]" required>
+                                                        <div class="invalid-feedback">Please fill the Faculty Name</div>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="education_start_date">Start Date <i class="fas fa-calendar-alt"></i></label>
+                                                        <label for="education_start_date">Start Date <i class="fas fa-calendar-alt"></i> {!! requiredField(true) !!}</label>
                                                         <input type="date" class="form-control" name="education[0][start_date]" required>
+                                                        <div class="invalid-feedback">Please fill the valid date</div>
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label for="education_end_date">End Date <i class="fas fa-calendar-alt"></i></label>
+                                                        <label for="education_end_date">End Date <i class="fas fa-calendar-alt"></i> {!! requiredField(true) !!}</label>
                                                         <input type="date" class="form-control" name="education[0][end_date]" required>
+                                                        <div class="invalid-feedback">Please fill the valid date</div>
                                                     </div>
 
                                                 </div>
                                             </div>
-                                            <!-- Remove button for the repeater -->
-                                            <div class="d-flex justify-content-end">
-                                                <button type="button" class="remove-education btn btn-danger">Remove Education</button>
-                                            </div>
-
-                                            <hr />
                                         </div>
                                     </div>
                                     <!-- Add More Education -->
@@ -367,7 +383,7 @@
 
                                 <!-- Step 4: Experience Information (Repeater, Two-Column Layout) -->
                                 <div class="step" id="step4" style="display:none;">
-                                    <h4><i class="fas fa-briefcase text-purple"></i> Step 4: Experience Information</h4>
+                                    <h4 class="text-center text-bold text-teal"><i class="fas fa-briefcase text-pink"></i> Step 4: Experience Information</h4>
 
                                     <div id="experienceRepeater">
                                         <div class="repeater-section">
@@ -375,41 +391,47 @@
                                                 <!-- Column 1 -->
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="job_title">Job Title <i class="fas fa-id-badge"></i></label>
+                                                        <label for="job_title">Job Title <i class="fas fa-id-badge"></i> {!! requiredField(true) !!}</label>
                                                         <input type="text" class="form-control" name="experience[0][job_title]" required>
+                                                        <div class="invalid-feedback">Please fill Job Title field</div>
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label for="type_of_employment">Type of Employment <i class="fas fa-briefcase"></i></label>
+                                                        <label for="type_of_employment">Type of Employment <i class="fas fa-briefcase"></i> {!! requiredField(true) !!}</label>
                                                         <select class="form-control" name="experience[0][type_of_employment]" required>
                                                             <option value="full_time">Full-Time</option>
                                                             <option value="part_time">Part-Time</option>
                                                             <option value="contract">Contract</option>
                                                             <option value="internship">Internship</option>
                                                         </select>
+                                                        <div class="invalid-feedback">Please select Type of Employment</div>
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label for="health_care_name">Healthcare Name</label>
+                                                        <label for="health_care_name">Healthcare Name  {!! requiredField(true) !!}</label>
                                                         <input type="text" class="form-control" name="experience[0][health_care_name]" required>
+                                                        <div class="invalid-feedback">Please fill Healthcare Name field</div>
                                                     </div>
                                                 </div>
 
                                                 <!-- Column 2 -->
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="health_care_address">Healthcare Address</label>
+                                                        <label for="health_care_address">Healthcare Address  {!! requiredField(true) !!}</label>
                                                         <input type="text" class="form-control" name="experience[0][health_care_address]" required>
+                                                        <div class="invalid-feedback">Please fill Healthcare Address field</div>
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label for="experience_start_date">Start Date <i class="fas fa-calendar-alt"></i></label>
+                                                        <label for="experience_start_date">Start Date  {!! requiredField(true) !!} <i class="fas fa-calendar-alt"></i></label>
                                                         <input type="date" class="form-control" name="experience[0][start_date]" required>
+                                                        <div class="invalid-feedback">Please fill Start Date field</div>
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label for="experience_end_date">End Date <i class="fas fa-calendar-alt"></i></label>
+                                                        <label for="experience_end_date">End Date  {!! requiredField(true) !!} <i class="fas fa-calendar-alt"></i></label>
                                                         <input type="date" class="form-control" name="experience[0][end_date]">
+                                                        <div class="invalid-feedback">Please fill End Date field</div>
                                                     </div>
 
 
@@ -425,12 +447,6 @@
                                                 <label for="experience_certificate">Certificate (PDF)</label>
                                                 <input type="file" class="form-control-file" name="experience[0][certificate]" accept="application/pdf">
                                             </div>
-                                            <!-- Remove button for the repeater -->
-                                            <div class="d-flex justify-content-end">
-                                                <button type="button" class="remove-experience btn btn-danger">Remove Experience</button>
-                                            </div>
-
-                                            <hr />
                                         </div>
                                     </div>
 

@@ -61,7 +61,9 @@ document.addEventListener('DOMContentLoaded', function () {
             </div>
 
             <!-- Remove button for the repeater -->
-            <button type="button" class="remove-experience btn btn-danger">Remove Experience</button>
+            <div class="d-flex justify-content-end">
+                 <button type="button" class="remove-experience btn btn-danger">Remove Experience</button>
+            </div>
             <hr />`;
 
     // Append new section
@@ -69,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Add remove functionality to the newly added section
     newSection.querySelector('.remove-experience').addEventListener('click', function() {
-      this.parentElement.remove();
+      this.closest('.repeater-section').remove();  // Correctly remove the entire repeater section
     });
 
     experienceIndex++;
@@ -78,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // Add remove functionality to the initial experience section
   document.querySelectorAll('.remove-experience').forEach(function(button) {
     button.addEventListener('click', function() {
-      this.parentElement.remove();
+      this.closest('.repeater-section').remove();  // Ensure the entire section is removed
     });
   });
 });
