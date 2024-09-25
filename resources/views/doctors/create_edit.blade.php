@@ -377,6 +377,7 @@
                                             </div>
                                         </div>
                                     </div>
+
                                     <!-- Add More Education -->
                                     <button type="button" id="addEducation" class="btn btn-success">Add More Education</button>
                                 </div>
@@ -451,7 +452,7 @@
                                     </div>
 
                                     <!-- Add More Experience -->
-                                    <button type="button" id="addExperience" class="btn btn-secondary">Add More Experience</button>
+                                    <button type="button" id="addExperience" class="btn btn-success">Add More Experience</button>
                                 </div>
 
 

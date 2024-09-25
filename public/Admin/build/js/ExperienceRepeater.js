@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', function () {
     var newSection = document.createElement('div');
     newSection.classList.add('repeater-section');
     newSection.innerHTML = `
+            <hr />
+              <h3 class="text-center text-bold text-teal">Additional Experience Information</h3>
             <div class="row">
                 <!-- Column 1 -->
                 <div class="col-md-6">
