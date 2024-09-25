@@ -32,18 +32,28 @@ document.addEventListener('DOMContentLoaded', function() {
     // Update the progress bar text
     progressBar.innerHTML = `Step ${step + 1} of ${totalSteps}`;
   }
+
   // Function to handle Next/Previous navigation
   function nextPrev(n) {
     var steps = document.getElementsByClassName('step');
+
+    // Validate the current step before moving forward
+    if (n === 1 && !validateStep(steps[currentStep])) {
+      return false; // Stop if validation fails
+    }
+
     // Hide the current step
     steps[currentStep].style.display = 'none';
+
     // Increase or decrease the current step by 1
     currentStep += n;
+
     // If the user clicks "Submit", submit the form
     if (currentStep >= steps.length) {
       document.getElementById('doctorForm').submit();
       return false;
     }
+
     // Otherwise, display the correct step
     showStep(currentStep);
   }
@@ -56,4 +66,26 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('prevBtn').addEventListener('click', function() {
     nextPrev(-1);
   });
+
+  // Function to validate the current step
+  function validateStep(step) {
+    var valid = true;
+    var inputs = step.querySelectorAll('input, select, textarea');
+
+    inputs.forEach(function(input) {
+      if (!input.checkValidity()) {
+        input.classList.add('is-invalid');  // Add Bootstrap's invalid class
+        // Show custom error message
+        var errorMessage = input.nextElementSibling;
+        if (errorMessage && errorMessage.classList.contains('invalid-feedback')) {
+          errorMessage.textContent = `Please fill the ${input.previousElementSibling.textContent.trim()} field`;
+        }
+        valid = false;
+      } else {
+        input.classList.remove('is-invalid');  // Remove invalid class if valid
+      }
+    });
+
+    return valid; // Return true if all fields are valid, otherwise false
+  }
 });

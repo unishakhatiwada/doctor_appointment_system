@@ -1,4 +1,9 @@
 @extends('admin.layouts.app')
+@php
+    function requiredField($isRequired = false) {
+        return $isRequired ? '<span class="text-danger">*</span>' : '';
+    }
+@endphp
 
 @section('content')
     <div class="content-header">
@@ -47,18 +52,19 @@
                                         <!-- Left Column -->
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="name">Doctor's Name <i class="fas fa-user"></i></label>
+                                                <label for="name">Doctor's Name <i class="fas fa-user"></i> {!! requiredField(true) !!}</label>
                                                 <input type="text" class="form-control" id="name" name="name"
                                                        value="{{ old('name', isset($doctor) ? $doctor->name : '') }}" required>
+                                                <div class="invalid-feedback">Please fill the Doctor's Name field</div>
                                                 @error('name')
                                                 <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
-
-                                            <div class="form-group">
-                                                <label for="email">Email <i class="fas fa-envelope"></i></label>
+                                        <div class="form-group">
+                                                <label for="email">Email <i class="fas fa-envelope"></i>{!! requiredField(true) !!}</label>
                                                 <input type="email" class="form-control" id="email" name="email"
                                                        value="{{ old('email', isset($doctor) ? $doctor->email : '') }}" required>
+                                            <div class="invalid-feedback">Please fill the Email Address field</div>
                                                 @error('email')
                                                 <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -71,12 +77,13 @@
                                             <!-- Only show password fields if creating a new doctor -->
                                             @if(!isset($doctor))
                                                 <div class="form-group">
-                                                    <label for="password">Password <i class="fas fa-lock"></i></label>
+                                                    <label for="password">Password <i class="fas fa-lock"></i>{!! requiredField(true) !!}</label>
                                                     <div class="input-group">
                                                         <input type="password" class="form-control" id="password" name="password" required>
                                                         <div class="input-group-append">
                                                             <span class="input-group-text"><i class="fas fa-eye toggle-password"></i></span>
                                                         </div>
+                                                        <div class="invalid-feedback">Please fill the password field</div>
                                                     </div>
                                                     @error('password')
                                                     <span class="text-danger">{{ $message }}</span>
@@ -84,12 +91,13 @@
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label for="password_confirmation">Confirm Password <i class="fas fa-lock"></i></label>
+                                                    <label for="password_confirmation">Confirm Password <i class="fas fa-lock"></i>{!! requiredField(true) !!}</label>
                                                     <div class="input-group">
                                                         <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
                                                         <div class="input-group-append">
                                                             <span class="input-group-text"><i class="fas fa-eye toggle-password"></i></span>
                                                         </div>
+                                                        <div class="invalid-feedback">Please fill the confirm password field</div>
                                                     </div>
                                                     @error('password_confirmation')
                                                     <span class="text-danger">{{ $message }}</span>
