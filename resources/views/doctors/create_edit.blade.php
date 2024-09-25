@@ -5,7 +5,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">{{ isset($doctor) ? 'Edit Doctor' : 'Create New Doctor' }}</h1>
+                    <h1 class="m-0 text-blue">{{ isset($doctor) ? 'Edit Doctor' : 'Create New Doctor' }}</h1>
                 </div>
             </div>
         </div>
@@ -18,7 +18,7 @@
                     <!-- Multi-Step Form -->
                     <div class="card card-primary card-outline">
                         <div class="card-header">
-                            <h3 class="card-title">{{ isset($doctor) ? 'Edit Doctor' : 'Create New Doctor' }}</h3>
+                            <h3 class="card-title text-purple">{{ isset($doctor) ? 'Edit Doctor' : 'Create New Doctor' }}</h3>
                         </div>
 
                         <form id="multiStepForm"
@@ -34,7 +34,7 @@
 
                             <div class="card-body">
                                 <div class="progress mb-4" style="height: 30px;">
-                                    <div class="progress-bar" role="progressbar" style="width: 0%;" id="progressBar">
+                                    <div class="progress-bar bg-olive" role="progressbar" style="width: 10%;" id="progressBar">
                                         Step 1 of 4
                                     </div>
                                 </div>
@@ -64,14 +64,6 @@
                                                 @enderror
                                             </div>
 
-                                            <div class="form-group">
-                                                <label for="email">Phone<i class="fas fa-phone-alt"></i></label>
-                                                <input type="phone" class="form-control" id="phone" name="phone"
-                                                       value="{{ old('phone', isset($doctor) ? $doctor->phone : '') }}" required>
-                                                @error('phone')
-                                                <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div>
                                         </div>
 
                                         <!-- Right Column -->
@@ -138,6 +130,20 @@
                                                 <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
+                                            {{-- Phone number--}}
+                                            <div class="form-group">
+                                                <label for="phone">Phone <i class="fas fa-phone-alt"></i></label>
+                                                <input type="tel" class="form-control" id="phone" name="phone"
+                                                       value="{{ old('phone', isset($doctor) ? $doctor->phone : '') }}" required
+                                                       pattern="^\d{10}$"
+                                                       maxlength="10"
+                                                       title="Please enter a valid 10-digit phone number">
+                                                @error('phone')
+                                                <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+
+
                                             <!-- Permanent  Address -->
                                             <div class="form-group">
                                                 <label for="permanent_address" class="text-pink">Permanent Address <i class="fas fa-home"></i></label>
