@@ -214,9 +214,55 @@
                                                     @enderror
                                                 </div>
                                             </div>
+
                                         </div>
 
                                         <div class="col-md-6">
+
+                                            <!-- Date of Birth (BS) with Calendar Icon -->
+                                            <div class="form-group">
+                                                <label for="dob_bs">Date of Birth (BS) {!! requiredField(true) !!}</label>
+                                                <div class="input-group">
+                                                    <input type="text" id="dob_bs" name="dob_bs" class="form-control nepali-date-picker" placeholder="YYYY/MM/DD" value="{{ old('dob_bs', isset($doctor) ? $doctor->dob_bs : '') }}" required>
+                                                    <div class="input-group-append">
+                                                         <span class="input-group-text">
+                                                             <i class="fas fa-calendar-alt"></i>
+                                                         </span>
+                                                    </div>
+                                                    <div class="invalid-feedback">Please select a valid Date of Birth in BS.</div>
+                                                    @error('dob_bs')
+                                                    <div class="text-danger">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
+                                            </div>
+
+                                            <!-- Department Selection -->
+                                            <div class="mb-3">
+                                                <label for="department" class="form-label">Department</label>
+                                                <select name="department_id" id="department" class="form-control">
+                                                    <option value="">Select Department</option>
+                                                    @foreach($departments as $department)
+                                                        <option value="{{ $department->id }}"
+                                                            {{ old('department_id', $doctor->department_id ?? '') == $department->id ? 'selected' : '' }}>
+                                                            {{ $department->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                @error('department_id')
+                                                <div class="text-danger">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                            <!-- Status Selection -->
+                                            <div class="mb-3">
+                                                <label for="status" class="form-label">Status</label>
+                                                <select name="status" id="status" class="form-control" required>
+                                                    <option value="active" {{ old('status') == 'active' ? 'selected' : '' }}>Active</option>
+                                                    <option value="inactive" {{ old('status') == 'inactive' ? 'selected' : '' }}>Inactive</option>
+                                                </select>
+                                                @error('status')
+                                                <div class="text-danger">{{ $message }}</div>
+                                                @enderror
+                                            </div>
                                             <label for="temporary_address" class="text-pink">Temporary Address <i class="fas fa-home"></i> {!! requiredField(true) !!}</label>
 
                                             <!-- Province Selection -->
@@ -273,41 +319,6 @@
                                                 <div class="text-danger">{{ $message }}</div>
                                                 @enderror
                                             </div>
-
-                                            <!-- Date of Birth (BS) with Calendar Icon -->
-                                            <div class="form-group">
-                                                <label for="dob_bs">Date of Birth (BS) {!! requiredField(true) !!}</label>
-                                                <div class="input-group">
-                                                    <input type="text" id="dob_bs" name="dob_bs" class="form-control nepali-date-picker" placeholder="YYYY/MM/DD" value="{{ old('dob_bs', isset($doctor) ? $doctor->dob_bs : '') }}" required>
-                                                    <div class="input-group-append">
-                                                         <span class="input-group-text">
-                                                             <i class="fas fa-calendar-alt"></i>
-                                                         </span>
-                                                    </div>
-                                                    <div class="invalid-feedback">Please select a valid Date of Birth in BS.</div>
-                                                    @error('dob_bs')
-                                                    <div class="text-danger">{{ $message }}</div>
-                                                    @enderror
-                                                </div>
-                                            </div>
-
-                                            <!-- Date of Birth (AD) with Calendar Icon -->
-                                            <div class="form-group">
-                                                <label for="dob_ad">Date of Birth (AD) {!! requiredField(true) !!}</label>
-                                                <div class="input-group">
-                                                    <input type="text" id="dob_ad" name="dob_ad" class="form-control" placeholder="YYYY-MM-DD" value="{{ old('dob_ad', isset($doctor) ? $doctor->dob_ad : '') }}" required>
-                                                    <div class="input-group-append">
-                                                        <span class="input-group-text">
-                                                            <i class="fas fa-calendar-alt"></i>
-                                                        </span>
-                                                    </div>
-                                                    <div class="invalid-feedback">Please select a valid Date of Birth in AD.</div>
-                                                    @error('dob_ad')
-                                                    <div class="text-danger">{{ $message }}</div>
-                                                    @enderror
-                                                </div>
-                                            </div>
-
 
                                         </div>
                                     </div>
