@@ -39,6 +39,8 @@ class DatabaseSeeder extends Seeder
             MuniTypeSeeder::class,
             MunicipalitySeeder::class,
             DoctorSeeder::class,
+            EducationSeeder::class,
+            ExperienceSeeder::class,
         ]);
     }
 }

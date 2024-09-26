@@ -16,9 +16,9 @@ return new class extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->string('degree');
-            $table->string('university');
-            $table->string('institute');
-            $table->string('field_of_study');
+            $table->string('institute_name');
+            $table->string('institute_address');
+            $table->string('faculty');
             $table->date('joining_date');
             $table->string('graduation_date');
             $table->string('grade');
