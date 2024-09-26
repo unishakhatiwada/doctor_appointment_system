@@ -25,7 +25,6 @@
                         <div class="card-header">
                             <h3 class="card-title text-purple">{{ isset($doctor) ? 'Edit Doctor' : 'Create New Doctor' }}</h3>
                         </div>
-
                         <form id="multiStepForm"
                               action="{{ isset($doctor) ? route('doctors.update', $doctor->id) : route('doctors.store') }}"
                               method="POST"
@@ -36,6 +35,9 @@
                             @if(isset($doctor))
                                 @method('PUT')
                             @endif
+
+                            <!-- Hidden Input to Track Current Step -->
+                            <input type="hidden" id="currentStepInput" name="step" value="doctor_info">
 
                             <div class="card-body">
                                 <div class="progress mb-4" style="height: 30px;">
@@ -457,7 +459,7 @@
                                 <div class="card-footer">
                                     <button type="button" class="btn btn-secondary" id="prevBtn" style="display:none;">Previous</button>
                                     <button type="button" class="btn btn-primary" id="nextBtn">Next</button>
-                                    <button type="submit" class="btn btn-success" id="submitBtn" style="display:none;">Submit</button>
+                                    <button type="submit" class="btn btn-primary" id="submitBtn" style="display:none;">Submit</button>
                                 </div>
                             </div>
                         </form>
@@ -474,6 +476,17 @@
         <script src="{{asset('Admin/build/js/AddressSelection.js')}}"></script>
 {{--        date conversion--}}
         <script src="{{asset('Admin/build/js/DateConversion.js')}}"></script>
+<script>
+    // Define routes for each step
+    var stepRoutes = [
+        { step: 'step1', route: '{{ isset($doctor) ? route('doctors.update', $doctor->id) : route('doctors.store') }}' },
+        { step: 'step2', route: '{{ isset($doctor) ? route('doctors.update', $doctor->id) : route('doctors.store') }}' },
+        { step: 'step3', route: '{{ isset($doctor) ? route('educations.update', $doctor->id) : route('educations.store') }}' },
+        { step: 'step4', route: '{{ isset($doctor) ? route('experiences.update', $doctor->id) : route('experiences.store') }}' }
+    ];
+</script>
+
+        <script src="{{ asset('Admin/build/js/FormSubmission.js') }}"></script>
 {{--        Multi-Step Form Logic--}}
         <script src="{{asset('Admin/build/js/StepNavigation.js')}}"></script>
 {{--        Education Repeator--}}

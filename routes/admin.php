@@ -21,7 +21,7 @@ Route::middleware(['admin_auth:admin'])->prefix('admin')->group(function () {
     Route::get('admin/doctors/{doctor}/assign', [DoctorController::class, 'assign'])->name('doctors.assign');
 
     Route::resource('educations', EducationController::class)->names('educations');
-    Route::resource('experiences', ExperienceController::class);
+    Route::resource('experiences', ExperienceController::class)->names('experiences');
 
     Route::resource('departments', DepartmentController::class)->names('departments');
     Route::get('/departments/{department}/add-doctors', [DepartmentController::class, 'addDoctorForm'])->name('departments.addDoctorForm');

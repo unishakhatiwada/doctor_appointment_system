@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   var currentStep = 0; // Keep track of the current step
   showStep(currentStep); // Display the initial step
 
@@ -16,9 +16,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Change the "Next" button to "Submit" on the last step
     if (step === (steps.length - 1)) {
-      document.getElementById('nextBtn').innerHTML = 'Submit';
+      document.getElementById('nextBtn').style.display = 'none';
+      document.getElementById('submitBtn').style.display = 'inline';
     } else {
-      document.getElementById('nextBtn').innerHTML = 'Next';
+      document.getElementById('nextBtn').style.display = 'inline';
+      document.getElementById('submitBtn').style.display = 'none';
     }
 
     // Update the progress bar
@@ -48,9 +50,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Increase or decrease the current step by 1
     currentStep += n;
 
-    // If the user clicks "Submit", submit the form
+    // If the user clicks "Submit", submit the form via separate logic
     if (currentStep >= steps.length) {
-      document.getElementById('doctorForm').submit();
+      // Call the form submission logic
+      submitStepData(currentStep - 1); // Ensure the last step data is submitted
       return false;
     }
 
@@ -59,11 +62,11 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // Event listeners for Next and Previous buttons
-  document.getElementById('nextBtn').addEventListener('click', function() {
+  document.getElementById('nextBtn').addEventListener('click', function () {
     nextPrev(1);
   });
 
-  document.getElementById('prevBtn').addEventListener('click', function() {
+  document.getElementById('prevBtn').addEventListener('click', function () {
     nextPrev(-1);
   });
 
@@ -72,8 +75,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var valid = true;
     var inputs = step.querySelectorAll('input, select, textarea');
 
-    inputs.forEach(function(input) {
-      // Check if it's a select element
+    inputs.forEach(function (input) {
       if (input.tagName === 'SELECT') {
         if (input.value === '') {
           input.classList.add('is-invalid'); // Add Bootstrap's invalid class
@@ -85,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
           input.classList.remove('is-invalid'); // Remove invalid class if valid
         }
-      } else if (!input.checkValidity()) { // For input and textarea elements
+      } else if (!input.checkValidity()) {
         input.classList.add('is-invalid'); // Add Bootstrap's invalid class
         var errorMessage = input.nextElementSibling;
         if (errorMessage && errorMessage.classList.contains('invalid-feedback')) {
@@ -96,17 +98,6 @@ document.addEventListener('DOMContentLoaded', function() {
         input.classList.remove('is-invalid'); // Remove invalid class if valid
       }
     });
-
-    // Password validation if the step contains password fields
-    if (step.querySelector('#password') && step.querySelector('#password_confirmation')) {
-      const password = step.querySelector('#password');
-      const passwordConfirmation = step.querySelector('#password_confirmation');
-
-      // Use the validatePassword function from passwordValidation.js
-      if (!validatePassword(password, passwordConfirmation)) {
-        valid = false;
-      }
-    }
 
     return valid; // Return true if all fields are valid, otherwise false
   }
