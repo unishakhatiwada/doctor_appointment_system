@@ -9,17 +9,32 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('doctors', function (Blueprint $table) {
-            $table->foreignId('province_id')
+            $table->foreignId('permanent_province_id')
                 ->nullable()
                 ->constrained('provinces')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->foreignId('district_id')
+            $table->foreignId('permanent_district_id')
                 ->nullable()
                 ->constrained('districts')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->foreignId('municipality_id')
+            $table->foreignId('permanent_municipality_id')
+                ->nullable()
+                ->constrained('municipalities')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->foreignId('temporary_province_id')
+                ->nullable()
+                ->constrained('provinces')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->foreignId('temporary_district_id')
+                ->nullable()
+                ->constrained('districts')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->foreignId('temporary_municipality_id')
                 ->nullable()
                 ->constrained('municipalities')
                 ->onUpdate('cascade')
@@ -30,14 +45,23 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('doctors', function (Blueprint $table) {
-            $table->dropForeign(['province_id']);
-            $table->dropColumn('province_id');
+            $table->dropForeign(['permanent_province_id']);
+            $table->dropColumn('permanent_province_id');
 
-            $table->dropForeign(['district_id']);
-            $table->dropColumn('district_id');
+            $table->dropForeign(['permanent_district_id']);
+            $table->dropColumn('permanent_district_id');
 
-            $table->dropForeign(['municipality_id']);
-            $table->dropColumn('municipality_id');
+            $table->dropForeign(['permanent_municipality_id']);
+            $table->dropColumn('permanent_municipality_id');
+
+            $table->dropForeign(['temporary_province_id']);
+            $table->dropColumn('temporary_province_id');
+
+            $table->dropForeign(['temporary_district_id']);
+            $table->dropColumn('temporary_district_id');
+
+            $table->dropForeign(['temporary_municipality_id']);
+            $table->dropColumn('temporary_municipality_id');
         });
     }
 };

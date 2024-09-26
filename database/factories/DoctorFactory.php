@@ -27,10 +27,10 @@ class DoctorFactory extends Factory
         $districts = DB::table('districts')->get();
         $municipalities = DB::table('municipalities')->get();
 
-        // Create an empty array to hold the structured location data
+        // Prepare location data for both permanent and temporary addresses
         $locationData = [];
 
-        // Loop through provinces and group districts and municipalities accordingly
+// Loop through provinces and group districts and municipalities accordingly
         foreach ($provinces as $province) {
             $locationData[$province->id] = [
                 'districts' => [],
@@ -47,15 +47,17 @@ class DoctorFactory extends Factory
             }
         }
 
-        // Randomly select a province
-        $provinceId = $this->faker->randomElement(array_keys($locationData));
+// Randomly select a province, district, and municipality for permanent address
+        $permanentProvinceId = $this->faker->randomElement(array_keys($locationData));
+        $permanentDistrictId = $this->faker->randomElement(array_keys($locationData[$permanentProvinceId]['districts']));
+        $permanentMunicipalityId = $this->faker->randomElement($locationData[$permanentProvinceId]['districts'][$permanentDistrictId]['municipalities']);
 
-        // Randomly select a district within the selected province
-        $districtId = $this->faker->randomElement(array_keys($locationData[$provinceId]['districts']));
+// Randomly select a province, district, and municipality for temporary address
+        $temporaryProvinceId = $this->faker->randomElement(array_keys($locationData));
+        $temporaryDistrictId = $this->faker->randomElement(array_keys($locationData[$temporaryProvinceId]['districts']));
+        $temporaryMunicipalityId = $this->faker->randomElement($locationData[$temporaryProvinceId]['districts'][$temporaryDistrictId]['municipalities']);
 
-        // Randomly select a municipality within the selected district
-        $municipalityId = $this->faker->randomElement($locationData[$provinceId]['districts'][$districtId]['municipalities']);
-
+// Return the generated data
         return [
             'name' => $this->faker->name,
             'address' => $this->faker->address,
@@ -67,9 +69,17 @@ class DoctorFactory extends Factory
             'marital_status' => $this->faker->randomElement(['married', 'single', 'divorced', 'widow']),
             'status' => 'active',
             'department_id' => Department::factory(),
-            'province_id' => $provinceId,
-            'district_id' => $districtId,
-            'municipality_id' => $municipalityId,
+
+            // Permanent address
+            'permanent_province_id' => $permanentProvinceId,
+            'permanent_district_id' => $permanentDistrictId,
+            'permanent_municipality_id' => $permanentMunicipalityId,
+
+            // Temporary address
+            'temporary_province_id' => $temporaryProvinceId,
+            'temporary_district_id' => $temporaryDistrictId,
+            'temporary_municipality_id' => $temporaryMunicipalityId,
         ];
+
     }
 }
