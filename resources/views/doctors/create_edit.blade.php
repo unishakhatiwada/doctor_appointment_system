@@ -76,32 +76,30 @@
                                         <div class="col-md-6">
                                             <!-- Only show password fields if creating a new doctor -->
                                             @if(!isset($doctor))
-                                                <div class="form-group">
-                                                    <label for="password">Password <i class="fas fa-lock"></i>{!! requiredField(true) !!}</label>
-                                                    <div class="input-group">
-                                                        <input type="password" class="form-control" id="password" name="password" required>
-                                                        <div class="input-group-append">
-                                                            <span class="input-group-text"><i class="fas fa-eye toggle-password"></i></span>
+                                                <div class="col-md-6">
+                                                    <!-- Password Field -->
+                                                    <div class="form-group">
+                                                        <label for="password">Password <i class="fas fa-lock"></i>{!! requiredField(true) !!}</label>
+                                                        <div class="input-group">
+                                                            <input type="password" class="form-control" id="password" name="password" required>
+                                                            <div class="input-group-append">
+                                                                <span class="input-group-text"><i class="fas fa-eye toggle-password"></i></span>
+                                                            </div>
+                                                            <div class="invalid-feedback">Please fill the password field.</div> <!-- This will show at the bottom -->
                                                         </div>
-                                                        <div class="invalid-feedback">Please fill the password field</div>
                                                     </div>
-                                                    @error('password')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
 
-                                                <div class="form-group">
-                                                    <label for="password_confirmation">Confirm Password <i class="fas fa-lock"></i>{!! requiredField(true) !!}</label>
-                                                    <div class="input-group">
-                                                        <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
-                                                        <div class="input-group-append">
-                                                            <span class="input-group-text"><i class="fas fa-eye toggle-password"></i></span>
+                                                    <!-- Confirm Password Field -->
+                                                    <div class="form-group">
+                                                        <label for="password_confirmation">Confirm Password <i class="fas fa-lock"></i>{!! requiredField(true) !!}</label>
+                                                        <div class="input-group">
+                                                            <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
+                                                            <div class="input-group-append">
+                                                                <span class="input-group-text"><i class="fas fa-eye toggle-password"></i></span>
+                                                            </div>
+                                                            <div class="invalid-feedback">Please confirm your password.</div> <!-- This will show at the bottom -->
                                                         </div>
-                                                        <div class="invalid-feedback">Please fill the confirm password field</div>
                                                     </div>
-                                                    @error('password_confirmation')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                    @enderror
                                                 </div>
                                             @endif
                                         </div>
@@ -471,7 +469,7 @@
 
     @push('scripts')
 {{--        Toggle password visibility--}}
-        <script src="{{ asset('Admin/build/js/TogglePassword.js') }}"></script>
+        <script src="{{ asset('Admin/build/js/PasswordValidation.js') }}"></script>
 {{--        address verification--}}
         <script src="{{asset('Admin/build/js/AddressSelection.js')}}"></script>
 {{--        date conversion--}}

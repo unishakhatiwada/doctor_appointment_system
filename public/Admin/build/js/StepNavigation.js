@@ -75,7 +75,6 @@ document.addEventListener('DOMContentLoaded', function() {
     inputs.forEach(function(input) {
       // Check if it's a select element
       if (input.tagName === 'SELECT') {
-        // If the selected value is empty, it means the user didn't select a valid option
         if (input.value === '') {
           input.classList.add('is-invalid'); // Add Bootstrap's invalid class
           var errorMessage = input.nextElementSibling;
@@ -98,7 +97,17 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
 
+    // Password validation if the step contains password fields
+    if (step.querySelector('#password') && step.querySelector('#password_confirmation')) {
+      const password = step.querySelector('#password');
+      const passwordConfirmation = step.querySelector('#password_confirmation');
+
+      // Use the validatePassword function from passwordValidation.js
+      if (!validatePassword(password, passwordConfirmation)) {
+        valid = false;
+      }
+    }
+
     return valid; // Return true if all fields are valid, otherwise false
   }
 });
-
