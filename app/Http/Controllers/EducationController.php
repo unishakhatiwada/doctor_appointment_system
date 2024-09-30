@@ -6,7 +6,6 @@ use App\Http\Requests\EducationStoreUpdateRequest;
 use App\Models\Doctor;
 use App\Models\Education;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class EducationController extends Controller
 {
@@ -24,12 +23,15 @@ class EducationController extends Controller
         return view('educations.create', compact('doctors'));
     }
 
-    public function store(Request $request)
+    public function store(EducationStoreUpdateRequest $request)
     {
 
-        Education::create($request->validated());
+        $validated = $request->validated();
+        foreach ($validated['education'] as $education) {
+            Education::create($education + ['doctor_id' => $request->doctor_id]);
+        }
 
-        return redirect()->route('educations.index')->with('success', 'Education record added successfully.');
+        return response()->json(['message' => 'Education Info Saved Successfully']);
     }
 
     public function edit(Education $education)

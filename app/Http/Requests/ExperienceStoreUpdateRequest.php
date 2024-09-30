@@ -17,15 +17,13 @@ class ExperienceStoreUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'doctor_id' => 'required|exists:doctors,id',
-            'job_title' => 'required|string',
-            'type_of_employment' => 'required|string',
-            'health_care_name' => 'required|string',
-            'health_care_location' => 'required|string',
-            'start_date' => 'required|date',
-            'end_date' => 'nullable|date|after_or_equal:start_date',
-            'certificate' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
-            'additional_detail' => 'nullable|string',
+            'experience.*.job_title' => 'required|string|max:255',
+            'experience.*.type_of_employment' => 'required|in:full_time,part_time,contract,internship',
+            'experience.*.health_care_name' => 'required|string|max:255',
+            'experience.*.health_care_location' => 'required|string|max:255',
+            'experience.*.start_date' => 'required|date|before_or_equal:today',
+            'experience.*.end_date' => 'nullable|date|after_or_equal:experience.*.start_date',
+            'experience.*.additional_detail' => 'nullable|string|max:500',
         ];
     }
 

@@ -14,16 +14,14 @@ class EducationStoreUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'doctor_id' => 'required|exists:doctors,id',
-            'degree' => 'required|string',
-            'university' => 'required|string',
-            'institute' => 'required|string',
-            'field_of_study' => 'required|string',
-            'join_date' => 'required|date',
-            'graduation_date' => 'required|date|after_or_equal:join_date',
-            'grade' => 'nullable|string',
-            'certificate' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
-            'additional_details' => 'nullable|string',
+            'education.*.doctor_id' => 'required|exists:doctors,id',
+            'education.*.degree' => 'required|string|in:+2,bachelor,master,phd',
+            'education.*.institute_name' => 'required|string|max:255',
+            'education.*.institute_address' => 'required|string|max:255',
+            'education.*.faculty' => 'required|string|max:255',
+            'education.*.joining_date' => 'required|date|before_or_equal:today',
+            'education.*.graduation_date' => 'required|date|after_or_equal:education.*.start_date',
+            'education.*.additional_detail' => 'nullable|string|max:500',
         ];
     }
 

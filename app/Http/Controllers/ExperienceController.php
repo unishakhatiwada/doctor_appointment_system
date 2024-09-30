@@ -24,11 +24,15 @@ class ExperienceController extends Controller
         return view('experiences.create', compact('doctors'));
     }
 
-    public function store(ExperienceStoreUpdateRequest $request): RedirectResponse
+    public function store(ExperienceStoreUpdateRequest $request): \Illuminate\Http\JsonResponse
     {
-        Experience::create($request->validated());
+        dd($request->all());
+        $validated = $request->validated();
+        foreach ($validated['experience'] as $experience) {
+            Experience::create($experience + ['doctor_id' => $request->doctor_id]);
+        }
 
-        return redirect()->route('experiences.index')->with('success', 'Experience record added successfully.');
+        return response()->json(['message' => 'Experience Info Saved Successfully']);
     }
 
     public function edit(Experience $experience): View
