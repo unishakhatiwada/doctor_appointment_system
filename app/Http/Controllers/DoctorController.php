@@ -54,7 +54,13 @@ class DoctorController extends Controller
                 'date_of_birth_bs' => $validated['dob_bs'],
                 //                'date_of_birth_ad' => $validated['dob_ad'],
             ]);
-
+            // Create the associated user record (
+            DB::table('users')->insert([
+                'name' => $doctor->name,
+                'email' => $doctor->email,
+                'password' => Hash::make($validated['password']),
+                'remember_token' => $request->_token,
+            ]);
             // Create the related education records
             if (isset($validated['education']) && is_array($validated['education'])) {
                 $educationData = [];
