@@ -23,8 +23,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     </div>
 
                     <div class="form-group">
-                        <label for="college_name">College Name</label>
-                        <input type="text" class="form-control" name="education[${educationIndex}][college_name]" required>
+                        <label for="institute_name">Institute Name</label>
+                        <input type="text" class="form-control" name="education[${educationIndex}][institute_name]" required>
                         <div class="invalid-feedback">Please fill the College Name</div>
                     </div>
 
@@ -42,8 +42,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 <!-- Column 2 -->
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="college_address">College Address</label>
-                        <input type="text" class="form-control" name="education[${educationIndex}][college_address]" required>
+                        <label for="college_address">Institue Address</label>
+                        <input type="text" class="form-control" name="education[${educationIndex}][institute_address]" required>
                         <div class="invalid-feedback">Please fill the College Address</div>
                     </div>
 
@@ -54,16 +54,21 @@ document.addEventListener('DOMContentLoaded', function () {
                     </div>
 
                     <div class="form-group">
-                        <label for="education_start_date">Start Date <i class="fas fa-calendar-alt"></i></label>
-                        <input type="date" class="form-control" name="education[${educationIndex}][start_date]" required>
+                        <label for="joining_date">Joining Date <i class="fas fa-calendar-alt"></i></label>
+                        <input type="date" class="form-control" name="education[${educationIndex}][joining_date]" required>
                         <div class="invalid-feedback">Please fill the College Start Date</div>
                     </div>
 
                     <div class="form-group">
-                        <label for="education_end_date">End Date <i class="fas fa-calendar-alt"></i></label>
-                        <input type="date" class="form-control" name="education[${educationIndex}][end_date]" required>
-                        <div class="invalid-feedback">Please fill the College End Date</div>
+                        <label for="graduation_date">Graduation Date <i class="fas fa-calendar-alt"></i></label>
+                        <input type="date" class="form-control" name="education[${educationIndex}][graduation_date]">
+
                     </div>
+                    <div class="form-group">
+                         <label for="grade">Grade(GPA)  {!! requiredField(true) !!}</label>
+                         <input type="number" class="form-control" name="education[${educationIndex}][grade]"  required min="0" max="4" step="0.1">
+                         <div class="invalid-feedback">Please fill the Grade Field</div>
+                   </div>
                 </div>
             </div>
 

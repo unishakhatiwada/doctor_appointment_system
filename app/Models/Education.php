@@ -11,8 +11,8 @@ class Education extends Model
     use HasFactory;
 
     protected $fillable = [
-        'doctor_id', 'degree', 'university', 'institute', 'field_of_study',
-        'join_date', 'graduation_date', 'grade', 'certificate', 'additional_details',
+        'doctor_id', 'degree', 'institute_name', 'faculty', 'institute_address',
+        'joining_date', 'graduation_date', 'grade', 'certificate', 'additional_details',
     ];
 
     public function doctor(): BelongsTo

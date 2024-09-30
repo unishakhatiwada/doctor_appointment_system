@@ -30,7 +30,7 @@ class DoctorFactory extends Factory
         // Prepare location data for both permanent and temporary addresses
         $locationData = [];
 
-// Loop through provinces and group districts and municipalities accordingly
+        // Loop through provinces and group districts and municipalities accordingly
         foreach ($provinces as $province) {
             $locationData[$province->id] = [
                 'districts' => [],
@@ -47,17 +47,17 @@ class DoctorFactory extends Factory
             }
         }
 
-// Randomly select a province, district, and municipality for permanent address
+        // Randomly select a province, district, and municipality for permanent address
         $permanentProvinceId = $this->faker->randomElement(array_keys($locationData));
         $permanentDistrictId = $this->faker->randomElement(array_keys($locationData[$permanentProvinceId]['districts']));
         $permanentMunicipalityId = $this->faker->randomElement($locationData[$permanentProvinceId]['districts'][$permanentDistrictId]['municipalities']);
 
-// Randomly select a province, district, and municipality for temporary address
+        // Randomly select a province, district, and municipality for temporary address
         $temporaryProvinceId = $this->faker->randomElement(array_keys($locationData));
         $temporaryDistrictId = $this->faker->randomElement(array_keys($locationData[$temporaryProvinceId]['districts']));
         $temporaryMunicipalityId = $this->faker->randomElement($locationData[$temporaryProvinceId]['districts'][$temporaryDistrictId]['municipalities']);
 
-// Return the generated data
+        // Return the generated data
         return [
             'name' => $this->faker->name,
             'address' => $this->faker->address,

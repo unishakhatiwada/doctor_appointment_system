@@ -23,7 +23,7 @@ class EducationFactory extends Factory
             'faculty' => $this->faker->word,
             'joining_date' => $this->faker->date(),
             'graduation_date' => $this->faker->date(),
-            'grade'=>$this->faker->randomElement(['1','2','3','4']),
+            'grade' => $this->faker->randomElement(['1', '2', '3', '4']),
             'additional_detail' => $this->faker->sentence,
             'certificate' => null,
         ];

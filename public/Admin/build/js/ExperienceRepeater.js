@@ -36,8 +36,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 <!-- Column 2 -->
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="health_care_address">Healthcare Address</label>
-                        <input type="text" class="form-control" name="experience[${experienceIndex}][health_care_address]" required>
+                        <label for="health_care_location">Healthcare Location</label>
+                        <input type="text" class="form-control" name="experience[${experienceIndex}][health_care_location]" required>
                     </div>
 
                     <div class="form-group">

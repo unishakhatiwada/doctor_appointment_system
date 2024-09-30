@@ -6,6 +6,7 @@
 @endphp
 
 @section('content')
+    {{$errors}}
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -343,8 +344,8 @@
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label for="college_name">College Name  {!! requiredField(true) !!}</label>
-                                                        <input type="text" class="form-control" name="education[0][college_name]" required>
+                                                        <label for="institute_name">Institute Name  {!! requiredField(true) !!}</label>
+                                                        <input type="text" class="form-control" name="education[0][institute_name]" required>
                                                         <div class="invalid-feedback">Please fill the College Name</div>
                                                     </div>
                                                     <div class="form-group">
@@ -362,8 +363,8 @@
                                                 <!-- Column 2 -->
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="college_address">College Address  {!! requiredField(true) !!}</label>
-                                                        <input type="text" class="form-control" name="education[0][college_address]" required>
+                                                        <label for="institute_address">Institute Address  {!! requiredField(true) !!}</label>
+                                                        <input type="text" class="form-control" name="education[0][institute_address]" required>
                                                         <div class="invalid-feedback">Please fill the College Address</div>
                                                     </div>
 
@@ -373,17 +374,20 @@
                                                         <div class="invalid-feedback">Please fill the Faculty Name</div>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="education_start_date">Start Date <i class="fas fa-calendar-alt"></i> {!! requiredField(true) !!}</label>
-                                                        <input type="date" class="form-control" name="education[0][start_date]" required>
+                                                        <label for="joining_date">Joining Date <i class="fas fa-calendar-alt"></i> {!! requiredField(true) !!}</label>
+                                                        <input type="date" class="form-control" name="education[0][joining_date]" required>
                                                         <div class="invalid-feedback">Please fill the valid date</div>
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label for="education_end_date">End Date <i class="fas fa-calendar-alt"></i> {!! requiredField(true) !!}</label>
-                                                        <input type="date" class="form-control" name="education[0][end_date]" required>
-                                                        <div class="invalid-feedback">Please fill the valid date</div>
+                                                        <label for="graduation_date">Graduation Date <i class="fas fa-calendar-alt"></i></label>
+                                                        <input type="date" class="form-control" name="education[0][graduation_date]">
                                                     </div>
-
+                                                    <div class="form-group">
+                                                        <label for="grade">Grade(GPA)  {!! requiredField(true) !!}</label>
+                                                        <input type="number" class="form-control" name="education[0][grade]" required min="0" max="4" step="0.1">
+                                                        <div class="invalid-feedback">Please fill the Grade Field</div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -429,8 +433,8 @@
                                                 <!-- Column 2 -->
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="health_care_address">Healthcare Address  {!! requiredField(true) !!}</label>
-                                                        <input type="text" class="form-control" name="experience[0][health_care_address]" required>
+                                                        <label for="health_care_location">Healthcare Location  {!! requiredField(true) !!}</label>
+                                                        <input type="text" class="form-control" name="experience[0][health_care_location]" required>
                                                         <div class="invalid-feedback">Please fill Healthcare Address field</div>
                                                     </div>
 
@@ -441,9 +445,8 @@
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label for="experience_end_date">End Date  {!! requiredField(true) !!} <i class="fas fa-calendar-alt"></i></label>
+                                                        <label for="experience_end_date">End Date <i class="fas fa-calendar-alt"></i></label>
                                                         <input type="date" class="form-control" name="experience[0][end_date]">
-                                                        <div class="invalid-feedback">Please fill End Date field</div>
                                                     </div>
 
 
@@ -486,18 +489,9 @@
 {{--        address verification--}}
         <script src="{{asset('Admin/build/js/AddressSelection.js')}}"></script>
 {{--        date conversion--}}
-        <script src="{{asset('Admin/build/js/DateConversion.js')}}"></script>
-<script>
-    // Define routes for each step
-    var stepRoutes = [
-        { step: 'step1', route: '{{ isset($doctor) ? route('doctors.update', $doctor->id) : route('doctors.store') }}' },
-        { step: 'step2', route: '{{ isset($doctor) ? route('doctors.update', $doctor->id) : route('doctors.store') }}' },
-        { step: 'step3', route: '{{ isset($doctor) ? route('educations.update', $doctor->id) : route('educations.store') }}' },
-        { step: 'step4', route: '{{ isset($doctor) ? route('experiences.update', $doctor->id) : route('experiences.store') }}' }
-    ];
-</script>
+{{--        <script src="{{asset('Admin/build/js/DateConversion.js')}}"></script>--}}
 
-        <script src="{{ asset('Admin/build/js/FormSubmission.js') }}"></script>
+{{--        <script src="{{ asset('Admin/build/js/FormSubmission.js') }}"></script>--}}
 {{--        Multi-Step Form Logic--}}
         <script src="{{asset('Admin/build/js/StepNavigation.js')}}"></script>
 {{--        Education Repeator--}}
