@@ -15,8 +15,7 @@ class Doctor extends Model
         'name', 'email', 'phone', 'gender', 'marital_status',
         'permanent_province_id', 'permanent_district_id', 'permanent_municipality_id',
         'temporary_province_id', 'temporary_district_id', 'temporary_municipality_id',
-        'department_id', 'status', 'date_of_birth_bs',
-        //        'date_of_birth_ad'
+        'department_id', 'status', 'date_of_birth_bs', 'date_of_birth_ad'
     ];
 
     public function department(): BelongsTo

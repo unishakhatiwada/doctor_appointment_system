@@ -220,21 +220,25 @@
 
                                             <!-- Date of Birth (BS) with Calendar Icon -->
                                             <div class="form-group">
-                                                <label for="dob_bs">Date of Birth (BS) {!! requiredField(true) !!}</label>
+                                                <label for="date_of_birth_bs">Date of Birth (BS) {!! requiredField(true) !!}</label>
                                                 <div class="input-group">
-                                                    <input type="text" id="dob_bs" name="dob_bs" class="form-control nepali-date-picker" placeholder="YYYY/MM/DD"
-                                                           value="{{ old('dob_bs') ?? (isset($doctor) ? $doctor->dob_bs : '') }}" required>
+                                                    <input type="text" id="date_of_birth_bs" name="date_of_birth_bs" class="form-control nepali-date-picker" placeholder="YYYY/MM/DD"
+                                                           value="{{ old('date_of_birth_bs', isset($doctor) ? $doctor->date_of_birth_bs : '') }}" required>
                                                     <div class="input-group-append">
-                                                           <span class="input-group-text">
+                                                        <span class="input-group-text">
                                                              <i class="fas fa-calendar-alt"></i>
-                                                           </span>
+                                                        </span>
                                                     </div>
                                                     <div class="invalid-feedback">Please select a valid Date of Birth in BS.</div>
-                                                    @error('dob_bs')
+                                                    @error('date_of_birth_bs')
                                                     <div class="text-danger">{{ $message }}</div>
                                                     @enderror
                                                 </div>
+
+                                                <!-- Hidden field to store AD date -->
+                                                <input type="hidden" id="date_of_birth_ad" name="date_of_birth_ad" value="{{ old('date_of_birth_ad', isset($doctor) ? $doctor->date_of_birth_ad : '') }}">
                                             </div>
+
 
                                             <!-- Department Selection -->
                                             <div class="mb-3">
@@ -641,8 +645,7 @@
 {{--        address verification--}}
         <script src="{{asset('Admin/build/js/AddressSelection.js')}}"></script>
 {{--        date conversion--}}
-{{--        <script src="{{asset('Admin/build/js/DateConversion.js')}}"></script>--}}
-
+        <script src="{{asset('Admin/build/js/DateConversion.js')}}"></script>
 {{--        Multi-Step Form Logic--}}
         <script src="{{asset('Admin/build/js/StepNavigation.js')}}"></script>
 {{--        Education Repeator--}}

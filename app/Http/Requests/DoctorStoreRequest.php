@@ -15,7 +15,6 @@ class DoctorStoreRequest extends FormRequest
 
     public function rules(): array
     {
-
         return [
             'name' => 'required|string|max:255',
             'phone' => [
@@ -36,14 +35,15 @@ class DoctorStoreRequest extends FormRequest
             'marital_status' => 'required|in:single,married,divorced,widowed',
             'status' => 'required|in:active,inactive',
             'department_id' => 'required|exists:departments,id',
-            'dob_bs' => 'nullable|string',
+            'date_of_birth_bs' => 'required|string',
+            'date_of_birth_ad' => 'required|date',
 
             // Nested validation for education
             'education.*.degree' => 'required|in:+2,bachelor,master,phd',
             'education.*.institute_name' => 'required|string',
             'education.*.institute_address' => 'required|string',
             'education.*.faculty' => 'required|string',
-            'education.*.additional_detail' => 'required|string',
+            'education.*.additional_detail' => 'string',
             'education.*.grade' => 'required|integer|min:0|max:4',
             'education.*.joining_date' => 'required|date',
             'education.*.graduation_date' => 'required|date|after_or_equal:education.*.joining_date',
@@ -53,7 +53,7 @@ class DoctorStoreRequest extends FormRequest
             'experience.*.type_of_employment' => 'required|string',
             'experience.*.health_care_name' => 'required|string',
             'experience.*.health_care_location' => 'required|string',
-            'experience.*.additional_detail' => 'required|string',
+            'experience.*.additional_detail' => 'string',
             'experience.*.start_date' => 'required|date',
             'experience.*.end_date' => 'nullable|date|after_or_equal:experience.*.start_date',
         ];

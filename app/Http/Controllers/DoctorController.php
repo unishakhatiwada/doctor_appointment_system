@@ -34,7 +34,6 @@ class DoctorController extends Controller
 
         // Start transaction
         DB::beginTransaction();
-
         try {
             // Create the doctor record
             $doctor = Doctor::create([
@@ -51,8 +50,8 @@ class DoctorController extends Controller
                 'temporary_municipality_id' => $validated['temporary_municipality_id'],
                 'department_id' => $validated['department_id'],
                 'status' => $validated['status'],
-                'date_of_birth_bs' => $validated['dob_bs'],
-                //                'date_of_birth_ad' => $validated['dob_ad'],
+                'date_of_birth_ad' => $validated['date_of_birth_ad'],
+                'date_of_birth_bs' => $validated['date_of_birth_bs'],
             ]);
             // Create the associated user record (
             DB::table('users')->insert([
@@ -180,8 +179,8 @@ class DoctorController extends Controller
                 'temporary_municipality_id' => $validated['temporary_municipality_id'],
                 'department_id' => $validated['department_id'],
                 'status' => $validated['status'],
-                'date_of_birth_bs' => $validated['dob_bs'],
-                // 'date_of_birth_ad' => $validated['dob_ad'],
+                'date_of_birth_bs' => $validated['date_of_birth_bs'],
+                'date_of_birth_ad' => $validated['date_of_birth_ad'],
             ]);
 
             // Update the associated user record (if you have a users table)

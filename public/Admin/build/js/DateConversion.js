@@ -1,46 +1,30 @@
 window.onload = function() {
-  var bsInput = document.getElementById("dob_bs");
-  var adInput = document.getElementById("dob_ad");
-  var bsError = document.getElementById("bsError");
-  //var submitBtn = document.getElementById("submitBtn");
 
-  // Initialize Nepali Datepicker on the BS input
-  bsInput.nepaliDatePicker();
+  // Get the current Nepali date in BS and format it as 'YYYY-MM-DD'
+  var currentBsDate = NepaliFunctions.GetCurrentBsDate();
+  currentBsDate = NepaliFunctions.ConvertDateFormat(currentBsDate, 'YYYY-MM-DD');
 
-  // Event listener for BS input field to convert to AD
-  bsInput.addEventListener('change', function () {
-    var bsDate = bsInput.value;
-
-    // Basic validation: Check if BS date is filled
-    if (!bsDate) {
-      bsError.style.display = 'inline';
-      adInput.value = ''; // Clear AD field
-      return;
-    } else {
-      bsError.style.display = 'none'; // Hide error if date is valid
-    }
-
-    // Convert BS date to AD using NepaliFunctions
-    var adDateObj = NepaliFunctions.BS2AD(bsDate);
-
-    if (adDateObj) {
-      // Format the AD date and display it in the AD input field
-      var adDate = `${adDateObj.year}-${('0' + adDateObj.month).slice(-2)}-${('0' + adDateObj.day).slice(-2)}`;
-      adInput.value = adDate;
-    } else {
-      adInput.value = ''; // Clear AD field if conversion fails
-      bsError.style.display = 'inline';
+  // Initialize the Nepali Date Picker for the BS field
+  $('#date_of_birth_bs').nepaliDatePicker({
+    ndpYear: true,
+    ndpMonth: true,
+    ndpYearCount: 20,
+    dateFormat: "YYYY-MM-DD",
+    disableAfter: currentBsDate,
+    onChange: function() {
+      // Convert BS to AD when the date changes
+      var bsDate = $('#date_of_birth_bs').val();
+      if (bsDate) {
+        var adDate = NepaliFunctions.BS2AD(bsDate);
+        $('#date_of_birth_ad').val(adDate);
+      }
     }
   });
 
-  // Submit button to validate the form
-  // submitBtn.addEventListener('click', function (e) {
-  //   e.preventDefault(); // Prevent actual form submission for now
-  //   var bsDate = bsInput.value;
-  //   if (!bsDate) {
-  //     bsError.style.display = 'inline';
-  //   } else {
-  //     alert("Form submitted successfully with DOB in BS and AD.");
-  //   }
-  // });
+  // If there's an existing BS date (when editing), populate the AD field on load
+  var existingBsDate = $('#date_of_birth_bs').val();
+  if (existingBsDate) {
+    var adDate = NepaliFunctions.BS2AD(existingBsDate);
+    $('#date_of_birth_ad').val(adDate);  // Set the converted AD date in the hidden field
+  }
 };
