@@ -622,7 +622,8 @@
 
 
                                 <div class="card-footer">
-                                    <button type="button" class="btn btn-secondary" id="prevBtn" style="display:none;">Previous</button>
+                                    <a href="{{ route('doctors.index') }}" class="btn btn-secondary">Back to List</a>
+                                    <button type="button" class="btn btn-primary" id="prevBtn" style="display:none;">Previous</button>
                                     <button type="button" class="btn btn-primary" id="nextBtn">Next</button>
                                     <button type="submit" class="btn btn-primary" id="submitBtn" style="display:none;">Submit</button>
                                 </div>

@@ -112,10 +112,24 @@ class DoctorController extends Controller
 
     public function show(Doctor $doctor): View
     {
+        // Fetch permanent and temporary addresses using DB::table
+        $permanentProvince = DB::table('provinces')->where('id', $doctor->permanent_province_id)->first();
+        $permanentDistrict = DB::table('districts')->where('id', $doctor->permanent_district_id)->first();
+        $permanentMunicipality = DB::table('municipalities')->where('id', $doctor->permanent_municipality_id)->first();
 
-        $doctor->load('department');
+        $temporaryProvince = DB::table('provinces')->where('id', $doctor->temporary_province_id)->first();
+        $temporaryDistrict = DB::table('districts')->where('id', $doctor->temporary_district_id)->first();
+        $temporaryMunicipality = DB::table('municipalities')->where('id', $doctor->temporary_municipality_id)->first();
 
-        return view('doctors.show', compact('doctor'));
+        // Load related department, educations, and experiences
+        $doctor->load(['department', 'educations', 'experiences']);
+
+        // Pass address details to the view
+        return view('doctors.show', compact(
+            'doctor',
+            'permanentProvince', 'permanentDistrict', 'permanentMunicipality',
+            'temporaryProvince', 'temporaryDistrict', 'temporaryMunicipality'
+        ));
     }
 
     public function edit(Doctor $doctor): View
