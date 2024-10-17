@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     </div>
                     <div class="form-group">
-                         <label for="grade">Grade(GPA)  {!! requiredField(true) !!}</label>
+                         <label for="grade">Grade(GPA)</label>
                          <input type="number" class="form-control" name="education[${educationIndex}][grade]"  required min="0" max="4" step="0.1">
                          <div class="invalid-feedback">Please fill the Grade Field</div>
                    </div>
