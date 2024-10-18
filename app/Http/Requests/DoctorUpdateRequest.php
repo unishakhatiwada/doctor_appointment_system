@@ -52,6 +52,8 @@ class DoctorUpdateRequest extends FormRequest
             'education.*.joining_date_ad' => 'required|date', // AD Date is required
             'education.*.graduation_date_bs' => 'nullable|string', // Optional BS date
             'education.*.graduation_date_ad' => 'nullable|date|after_or_equal:education.*.joining_date_ad', // AD Graduation date must be after joining date
+            'education.*.certificate.*' => 'nullable|file|mimes:pdf|max:2048', // Multiple files allowed, max size 2MB
+
 
             // Nested validation for experience
             'experience.*.job_title' => 'required|string',
@@ -63,6 +65,8 @@ class DoctorUpdateRequest extends FormRequest
             'experience.*.start_date_ad' => 'required|date', // AD Start Date (required)
             'experience.*.end_date_bs' => 'nullable|string', // BS End Date (optional)
             'experience.*.end_date_ad' => 'nullable|date|after_or_equal:experience.*.start_date_ad', // AD End date must be after the start date
+            'experience.*.certificate.*' => 'nullable|file|mimes:pdf|max:2048', // Multiple files allowed, max size 2MB
+
 
         ];
 

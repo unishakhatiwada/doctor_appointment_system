@@ -13,7 +13,7 @@ class Experience extends Model
     protected $fillable = [
         'doctor_id', 'job_title', 'type_of_employment', 'health_care_name',
         'health_care_location', 'start_date_bs', 'start_date_ad', 'end_date_bs',
-        'end_date_ad', 'additional_detail'
+        'end_date_ad', 'additional_detail','certificate'
     ];
 
     public function doctor(): BelongsTo

@@ -13,7 +13,7 @@ class Education extends Model
     protected $fillable = [
         'doctor_id', 'degree', 'institute_name', 'institute_address', 'grade',
         'faculty', 'joining_date_bs', 'joining_date_ad', 'graduation_date_bs',
-        'graduation_date_ad', 'additional_detail'
+        'graduation_date_ad', 'additional_detail','certificate',
     ];
 
     public function doctor(): BelongsTo
