@@ -106,7 +106,6 @@ class DoctorController extends Controller
             // Commit transaction after saving doctor, educations, and experiences
             DB::commit();
         } catch (\Exception $e) {
-           // \Log::error('Failed to create doctor: '.$e->getMessage());
             // Rollback the transaction if any error occurs
             DB::rollback();
             return redirect()->back()->with('error', 'Failed to create doctor. Please try again.');
@@ -164,14 +163,14 @@ class DoctorController extends Controller
 
     public function update(DoctorUpdateRequest $request, Doctor $doctor): RedirectResponse
     {
-
+        // Validate the request
         $validated = $request->validated();
 
-        // Start transaction
+        // Start a transaction
         DB::beginTransaction();
 
         try {
-            // Update the doctor record
+            // Update doctor information
             $doctor->update([
                 'name' => $validated['name'],
                 'email' => $validated['email'],
@@ -190,7 +189,7 @@ class DoctorController extends Controller
                 'date_of_birth_ad' => $validated['date_of_birth_ad'],
             ]);
 
-            // Update the associated user record (if you have a users table)
+            // Update the associated user record
             DB::table('users')
                 ->where('email', $doctor->email)
                 ->update([
@@ -198,54 +197,67 @@ class DoctorController extends Controller
                     'email' => $doctor->email,
                 ]);
 
-            // Update the related education records
+            // Handle the education records
             if (isset($validated['education']) && is_array($validated['education'])) {
-                $doctor->educations()->delete(); // Delete old education records
+                // Sync or update education records instead of deleting
                 $educationData = [];
-                foreach ($validated['education'] as $education) {
+                foreach ($validated['education'] as $index => $education) {
                     $educationData[] = [
                         'degree' => $education['degree'],
                         'institute_name' => $education['institute_name'],
                         'institute_address' => $education['institute_address'],
-                        'grade' => $education['grade'],
                         'faculty' => $education['faculty'],
-                        'joining_date' => $education['joining_date'],
-                        'graduation_date' => $education['graduation_date'],
+                        'grade' => $education['grade'],
+                        'joining_date_bs' => $education['joining_date_bs'],
+                        'joining_date_ad' => $education['joining_date_ad'],
+                        'graduation_date_bs' => $education['graduation_date_bs'],
+                        'graduation_date_ad' => $education['graduation_date_ad'],
                         'additional_detail' => $education['additional_detail'],
                     ];
                 }
+
+                // Sync the educations (delete old records not in the array)
+                $doctor->educations()->delete();
                 $doctor->educations()->createMany($educationData);
             }
 
-            // Update the related experience records
+            // Handle the experience records
             if (isset($validated['experience']) && is_array($validated['experience'])) {
-                $doctor->experiences()->delete(); // Delete old experience records
                 $experienceData = [];
-                foreach ($validated['experience'] as $experience) {
+                foreach ($validated['experience'] as $index => $experience) {
                     $experienceData[] = [
                         'job_title' => $experience['job_title'],
                         'type_of_employment' => $experience['type_of_employment'],
                         'health_care_name' => $experience['health_care_name'],
                         'health_care_location' => $experience['health_care_location'],
-                        'start_date' => $experience['start_date'],
-                        'end_date' => $experience['end_date'],
+                        'start_date_bs' => $experience['start_date_bs'],
+                        'start_date_ad' => $experience['start_date_ad'],
+                        'end_date_bs' => $experience['end_date_bs'],
+                        'end_date_ad' => $experience['end_date_ad'],
                         'additional_detail' => $experience['additional_detail'],
                     ];
                 }
+
+                // Sync the experiences (delete old records not in the array)
+                $doctor->experiences()->delete();
                 $doctor->experiences()->createMany($experienceData);
             }
 
             // Commit transaction after updating doctor, educations, and experiences
             DB::commit();
+
         } catch (\Exception $e) {
-            // Rollback the transaction if any error occurs
+            // Rollback transaction in case of error
             DB::rollback();
 
+            // Log the error if needed and return with failure
             return redirect()->back()->with('error', 'Failed to update doctor. Please try again.');
         }
 
+        // Successful update redirect
         return redirect()->route('doctors.index')->with('success', 'Doctor updated successfully.');
     }
+
 
 
     public function destroy(Doctor $doctor): RedirectResponse

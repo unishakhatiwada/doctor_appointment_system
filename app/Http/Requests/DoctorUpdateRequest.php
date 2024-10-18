@@ -48,8 +48,10 @@ class DoctorUpdateRequest extends FormRequest
             'education.*.faculty' => 'required|string',
             'education.*.additional_detail' => 'string',
             'education.*.grade' => 'required|integer|min:0|max:4',
-            'education.*.joining_date' => 'required|date',
-            'education.*.graduation_date' => 'required|date|after_or_equal:education.*.joining_date',
+            'education.*.joining_date_bs' => 'nullable|string', // BS Date is optional but should be string format
+            'education.*.joining_date_ad' => 'required|date', // AD Date is required
+            'education.*.graduation_date_bs' => 'nullable|string', // Optional BS date
+            'education.*.graduation_date_ad' => 'nullable|date|after_or_equal:education.*.joining_date_ad', // AD Graduation date must be after joining date
 
             // Nested validation for experience
             'experience.*.job_title' => 'required|string',
@@ -57,8 +59,10 @@ class DoctorUpdateRequest extends FormRequest
             'experience.*.health_care_name' => 'required|string',
             'experience.*.health_care_location' => 'required|string',
             'experience.*.additional_detail' => 'string',
-            'experience.*.start_date' => 'required|date',
-            'experience.*.end_date' => 'nullable|date|after_or_equal:experience.*.start_date',
+            'experience.*.start_date_bs' => 'nullable|string', // BS Start Date (optional)
+            'experience.*.start_date_ad' => 'required|date', // AD Start Date (required)
+            'experience.*.end_date_bs' => 'nullable|string', // BS End Date (optional)
+            'experience.*.end_date_ad' => 'nullable|date|after_or_equal:experience.*.start_date_ad', // AD End date must be after the start date
 
         ];
 
