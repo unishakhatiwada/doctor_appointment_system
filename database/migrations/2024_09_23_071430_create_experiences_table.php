@@ -19,8 +19,10 @@ return new class extends Migration
             $table->string('type_of_employment');
             $table->string('health_care_name');
             $table->string('health_care_location');
-            $table->date('start_date');
-            $table->date('end_date');
+            $table->date('start_date_ad');
+            $table->string('start_date_bs');
+            $table->date('end_date_ad');
+            $table->string('end_date_bs');
             $table->string('certificate')->nullable();
             $table->string('additional_detail')->nullable();
             $table->timestamps();

@@ -53,13 +53,15 @@ class DoctorController extends Controller
                 'date_of_birth_ad' => $validated['date_of_birth_ad'],
                 'date_of_birth_bs' => $validated['date_of_birth_bs'],
             ]);
-            // Create the associated user record (
+
+            // Create the associated user record
             DB::table('users')->insert([
                 'name' => $doctor->name,
                 'email' => $doctor->email,
                 'password' => Hash::make($validated['password']),
                 'remember_token' => $request->_token,
             ]);
+
             // Create the related education records
             if (isset($validated['education']) && is_array($validated['education'])) {
                 $educationData = [];
@@ -70,8 +72,10 @@ class DoctorController extends Controller
                         'institute_address' => $education['institute_address'],
                         'grade' => $education['grade'],
                         'faculty' => $education['faculty'],
-                        'joining_date' => $education['joining_date'],
-                        'graduation_date' => $education['graduation_date'],
+                        'joining_date_bs' => $education['joining_date_bs'],
+                        'joining_date_ad' => $education['joining_date_ad'],
+                        'graduation_date_bs' => $education['graduation_date_bs'],
+                        'graduation_date_ad' => $education['graduation_date_ad'],
                         'additional_detail' => $education['additional_detail'],
                         // 'certificate' => $education['education_certificate'],
                     ];
@@ -88,8 +92,10 @@ class DoctorController extends Controller
                         'type_of_employment' => $experience['type_of_employment'],
                         'health_care_name' => $experience['health_care_name'],
                         'health_care_location' => $experience['health_care_location'],
-                        'start_date' => $experience['start_date'],
-                        'end_date' => $experience['end_date'],
+                        'start_date_bs' => $experience['start_date_bs'],
+                        'start_date_ad' => $experience['start_date_ad'],
+                        'end_date_bs' => $experience['end_date_bs'],
+                        'end_date_ad' => $experience['end_date_ad'],
                         'additional_detail' => $experience['additional_detail'],
                         // 'certificate' => $experience['experience_certificate'],
                     ];
@@ -100,14 +106,15 @@ class DoctorController extends Controller
             // Commit transaction after saving doctor, educations, and experiences
             DB::commit();
         } catch (\Exception $e) {
+           // \Log::error('Failed to create doctor: '.$e->getMessage());
             // Rollback the transaction if any error occurs
             DB::rollback();
-
             return redirect()->back()->with('error', 'Failed to create doctor. Please try again.');
         }
 
         return redirect()->route('doctors.index')->with('success', 'Doctor created successfully.');
     }
+
 
     public function show(Doctor $doctor): View
     {

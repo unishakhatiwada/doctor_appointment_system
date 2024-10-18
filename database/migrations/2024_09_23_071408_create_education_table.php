@@ -19,8 +19,10 @@ return new class extends Migration
             $table->string('institute_name');
             $table->string('institute_address');
             $table->string('faculty');
-            $table->date('joining_date');
-            $table->string('graduation_date');
+            $table->date('joining_date_ad');
+            $table->string('joining_date_bs');
+            $table->date('graduation_date_ad');
+            $table->string('graduation_date_bs');
             $table->string('grade');
             $table->string('certificate')->nullable();
             $table->string('additional_detail')->nullable();

@@ -339,142 +339,11 @@
                                     <div id="educationRepeater">
                                         @if(isset($doctor) && $doctor->educations)
                                             @foreach($doctor->educations as $index => $education)
-                                                <div class="repeater-section">
-                                                    <div class="row">
-                                                        <!-- Column 1 -->
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label for="degree">Degree <i class="fas fa-university"></i> {!! requiredField(true) !!}</label>
-                                                                <select class="form-control" name="education[{{ $index }}][degree]" required>
-                                                                    <option value="+2" {{ $education->degree == '+2' ? 'selected' : '' }}>+2</option>
-                                                                    <option value="bachelor" {{ $education->degree == 'bachelor' ? 'selected' : '' }}>Bachelor</option>
-                                                                    <option value="master" {{ $education->degree == 'master' ? 'selected' : '' }}>Master</option>
-                                                                    <option value="phd" {{ $education->degree == 'phd' ? 'selected' : '' }}>PhD</option>
-                                                                </select>
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                                <label for="institute_name">Institute Name {!! requiredField(true) !!}</label>
-                                                                <input type="text" class="form-control" name="education[{{ $index }}][institute_name]" value="{{ old('education.'.$index.'.institute_name', $education->institute_name) }}" required>
-                                                                <div class="invalid-feedback">Please fill the Institute Name</div>
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                                <label for="education_certificate">Certificate (PDF)</label>
-                                                                <input type="file" class="form-control-file" name="education[{{ $index }}][certificate]" accept="application/pdf">
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                                <label for="education_additional_detail">Additional Details</label>
-                                                                <textarea class="form-control" name="education[{{ $index }}][additional_detail]" rows="2">{{ old('education.'.$index.'.additional_detail', $education->additional_detail) }}</textarea>
-                                                            </div>
-                                                        </div>
-
-                                                        <!-- Column 2 -->
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label for="institute_address">Institute Address {!! requiredField(true) !!}</label>
-                                                                <input type="text" class="form-control" name="education[{{ $index }}][institute_address]" value="{{ old('education.'.$index.'.institute_address', $education->institute_address) }}" required>
-                                                                <div class="invalid-feedback">Please fill the Institute Address</div>
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                                <label for="faculty">Faculty {!! requiredField(true) !!}</label>
-                                                                <input type="text" class="form-control" name="education[{{ $index }}][faculty]" value="{{ old('education.'.$index.'.faculty', $education->faculty) }}" required>
-                                                                <div class="invalid-feedback">Please fill the Faculty Name</div>
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                                <label for="joining_date">Joining Date <i class="fas fa-calendar-alt"></i> {!! requiredField(true) !!}</label>
-                                                                <input type="date" class="form-control" name="education[{{ $index }}][joining_date]" value="{{ old('education.'.$index.'.joining_date', $education->joining_date) }}" required>
-                                                                <div class="invalid-feedback">Please fill the valid Joining Date</div>
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                                <label for="graduation_date">Graduation Date <i class="fas fa-calendar-alt"></i></label>
-                                                                <input type="date" class="form-control" name="education[{{ $index }}][graduation_date]" value="{{ old('education.'.$index.'.graduation_date', $education->graduation_date) }}">
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                                <label for="grade">Grade (GPA) {!! requiredField(true) !!}</label>
-                                                                <input type="number" class="form-control" name="education[{{ $index }}][grade]" value="{{ old('education.'.$index.'.grade', $education->grade) }}" required min="0" max="4" step="0.1">
-                                                                <div class="invalid-feedback">Please fill the Grade Field</div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- Remove button for the repeater -->
-                                                    <div class="d-flex justify-content-end">
-                                                        <button type="button" class="remove-education btn btn-danger">Remove Education</button>
-                                                    </div>
-                                                    <hr />
-                                                </div>
+                                                @include('components.education-section', ['education' => $education, 'index' => $index])
                                             @endforeach
                                         @else
-                                            <!-- Default section when creating a new doctor -->
-                                            <div class="repeater-section">
-                                                <div class="row">
-                                                    <!-- Column 1 -->
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="degree">Degree <i class="fas fa-university"></i> {!! requiredField(true) !!}</label>
-                                                            <select class="form-control" name="education[0][degree]" required>
-                                                                <option value="+2">+2</option>
-                                                                <option value="bachelor">Bachelor</option>
-                                                                <option value="master">Master</option>
-                                                                <option value="phd">PhD</option>
-                                                            </select>
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <label for="institute_name">Institute Name {!! requiredField(true) !!}</label>
-                                                            <input type="text" class="form-control" name="education[0][institute_name]" required>
-                                                            <div class="invalid-feedback">Please fill the Institute Name</div>
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <label for="education_certificate">Certificate (PDF)</label>
-                                                            <input type="file" class="form-control-file" name="education[0][certificate]" accept="application/pdf">
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <label for="education_additional_detail">Additional Details</label>
-                                                            <textarea class="form-control" name="education[0][additional_detail]" rows="2"></textarea>
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- Column 2 -->
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="institute_address">Institute Address {!! requiredField(true) !!}</label>
-                                                            <input type="text" class="form-control" name="education[0][institute_address]" required>
-                                                            <div class="invalid-feedback">Please fill the Institute Address</div>
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <label for="faculty">Faculty {!! requiredField(true) !!}</label>
-                                                            <input type="text" class="form-control" name="education[0][faculty]" required>
-                                                            <div class="invalid-feedback">Please fill the Faculty Name</div>
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <label for="joining_date">Joining Date <i class="fas fa-calendar-alt"></i> {!! requiredField(true) !!}</label>
-                                                            <input type="date" class="form-control" name="education[0][joining_date]" required>
-                                                            <div class="invalid-feedback">Please fill the valid Joining Date</div>
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <label for="graduation_date">Graduation Date <i class="fas fa-calendar-alt"></i></label>
-                                                            <input type="date" class="form-control" name="education[0][graduation_date]">
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <label for="grade">Grade (GPA) {!! requiredField(true) !!}</label>
-                                                            <input type="number" class="form-control" name="education[0][grade]" required min="0" max="4" step="0.1">
-                                                            <div class="invalid-feedback">Please fill the Grade Field</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <!-- Default empty section for adding new doctor -->
+                                            @include('components.education-section', ['education' => null, 'index' => 0])
                                         @endif
                                     </div>
 
@@ -482,148 +351,27 @@
                                     <button type="button" id="addEducation" class="btn btn-success">Add More Education</button>
                                 </div>
 
-                                <!-- Step 4: Experience Information (Repeater, Two-Column Layout) -->
+
+                                <!-- Step 4: Experience Information (Repeater) -->
                                 <div class="step" id="step4" style="display:none;">
                                     <h4 class="text-center text-bold text-teal"><i class="fas fa-briefcase text-pink"></i> Step 4: Experience Information</h4>
 
+                                    <!-- Experience Repeater Wrapper -->
                                     <div id="experienceRepeater">
+                                        <!-- Existing experiences (for editing mode) -->
                                         @if(isset($doctor) && $doctor->experiences)
                                             @foreach($doctor->experiences as $index => $experience)
-                                                <div class="repeater-section">
-                                                    <div class="row">
-                                                        <!-- Column 1 -->
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label for="job_title">Job Title <i class="fas fa-id-badge"></i> {!! requiredField(true) !!}</label>
-                                                                <input type="text" class="form-control" name="experience[{{ $index }}][job_title]" value="{{ old('experience.'.$index.'.job_title', $experience->job_title) }}" required>
-                                                                <div class="invalid-feedback">Please fill Job Title field</div>
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                                <label for="type_of_employment">Type of Employment <i class="fas fa-briefcase"></i> {!! requiredField(true) !!}</label>
-                                                                <select class="form-control" name="experience[{{ $index }}][type_of_employment]" required>
-                                                                    <option value="full_time" {{ $experience->type_of_employment == 'full_time' ? 'selected' : '' }}>Full-Time</option>
-                                                                    <option value="part_time" {{ $experience->type_of_employment == 'part_time' ? 'selected' : '' }}>Part-Time</option>
-                                                                    <option value="contract" {{ $experience->type_of_employment == 'contract' ? 'selected' : '' }}>Contract</option>
-                                                                    <option value="internship" {{ $experience->type_of_employment == 'internship' ? 'selected' : '' }}>Internship</option>
-                                                                </select>
-                                                                <div class="invalid-feedback">Please select Type of Employment</div>
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                                <label for="health_care_name">Healthcare Name {!! requiredField(true) !!}</label>
-                                                                <input type="text" class="form-control" name="experience[{{ $index }}][health_care_name]" value="{{ old('experience.'.$index.'.health_care_name', $experience->health_care_name) }}" required>
-                                                                <div class="invalid-feedback">Please fill Healthcare Name field</div>
-                                                            </div>
-                                                        </div>
-
-                                                        <!-- Column 2 -->
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label for="health_care_location">Healthcare Location {!! requiredField(true) !!}</label>
-                                                                <input type="text" class="form-control" name="experience[{{ $index }}][health_care_location]" value="{{ old('experience.'.$index.'.health_care_location', $experience->health_care_location) }}" required>
-                                                                <div class="invalid-feedback">Please fill Healthcare Location field</div>
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                                <label for="experience_start_date">Start Date {!! requiredField(true) !!} <i class="fas fa-calendar-alt"></i></label>
-                                                                <input type="date" class="form-control" name="experience[{{ $index }}][start_date]" value="{{ old('experience.'.$index.'.start_date', $experience->start_date) }}" required>
-                                                                <div class="invalid-feedback">Please fill Start Date field</div>
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                                <label for="experience_end_date">End Date <i class="fas fa-calendar-alt"></i></label>
-                                                                <input type="date" class="form-control" name="experience[{{ $index }}][end_date]" value="{{ old('experience.'.$index.'.end_date', $experience->end_date) }}">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <label for="experience_additional_detail">Additional Details</label>
-                                                        <textarea class="form-control" name="experience[{{ $index }}][additional_detail]" rows="2">{{ old('experience.'.$index.'.additional_detail', $experience->additional_detail) }}</textarea>
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <label for="experience_certificate">Certificate (PDF)</label>
-                                                        <input type="file" class="form-control-file" name="experience[{{ $index }}][certificate]" accept="application/pdf">
-                                                    </div>
-
-                                                    <!-- Remove button for the repeater -->
-                                                    <div class="d-flex justify-content-end">
-                                                        <button type="button" class="remove-experience btn btn-danger">Remove Experience</button>
-                                                    </div>
-                                                    <hr />
-                                                </div>
+                                                @include('components.experience-section', ['experience' => $experience, 'index' => $index])
                                             @endforeach
                                         @else
-                                            <!-- Default section when creating a new doctor -->
-                                            <div class="repeater-section">
-                                                <div class="row">
-                                                    <!-- Column 1 -->
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="job_title">Job Title <i class="fas fa-id-badge"></i> {!! requiredField(true) !!}</label>
-                                                            <input type="text" class="form-control" name="experience[0][job_title]" required>
-                                                            <div class="invalid-feedback">Please fill Job Title field</div>
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <label for="type_of_employment">Type of Employment <i class="fas fa-briefcase"></i> {!! requiredField(true) !!}</label>
-                                                            <select class="form-control" name="experience[0][type_of_employment]" required>
-                                                                <option value="full_time">Full-Time</option>
-                                                                <option value="part_time">Part-Time</option>
-                                                                <option value="contract">Contract</option>
-                                                                <option value="internship">Internship</option>
-                                                            </select>
-                                                            <div class="invalid-feedback">Please select Type of Employment</div>
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <label for="health_care_name">Healthcare Name {!! requiredField(true) !!}</label>
-                                                            <input type="text" class="form-control" name="experience[0][health_care_name]" required>
-                                                            <div class="invalid-feedback">Please fill Healthcare Name field</div>
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- Column 2 -->
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="health_care_location">Healthcare Location {!! requiredField(true) !!}</label>
-                                                            <input type="text" class="form-control" name="experience[0][health_care_location]" required>
-                                                            <div class="invalid-feedback">Please fill Healthcare Location field</div>
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <label for="experience_start_date">Start Date {!! requiredField(true) !!} <i class="fas fa-calendar-alt"></i></label>
-                                                            <input type="date" class="form-control" name="experience[0][start_date]" required>
-                                                            <div class="invalid-feedback">Please fill Start Date field</div>
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <label for="experience_end_date">End Date <i class="fas fa-calendar-alt"></i></label>
-                                                            <input type="date" class="form-control" name="experience[0][end_date]">
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label for="experience_additional_detail">Additional Details</label>
-                                                    <textarea class="form-control" name="experience[0][additional_detail]" rows="2"></textarea>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label for="experience_certificate">Certificate (PDF)</label>
-                                                    <input type="file" class="form-control-file" name="experience[0][certificate]" accept="application/pdf">
-                                                </div>
-                                            </div>
+                                            <!-- Initial empty form for creating a new doctor -->
+                                            @include('components.experience-section', ['experience' => null, 'index' => 0])
                                         @endif
                                     </div>
 
-                                    <!-- Add More Experience -->
+                                    <!-- Add More Experience Button -->
                                     <button type="button" id="addExperience" class="btn btn-success">Add More Experience</button>
                                 </div>
-
-
 
                                 <div class="card-footer">
                                     <a href="{{ route('doctors.index') }}" class="btn btn-secondary">Back to List</a>

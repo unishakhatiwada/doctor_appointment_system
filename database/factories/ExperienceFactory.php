@@ -21,8 +21,10 @@ class ExperienceFactory extends Factory
             'health_care_name' => $this->faker->company,
             'health_care_location' => $this->faker->address,
             'type_of_employment' => $this->faker->randomElement(['full_time', 'part_time', 'contract', 'internship']),
-            'start_date' => $this->faker->date(),
-            'end_date' => $this->faker->date(),
+            'start_date_ad' => $this->faker->date(),
+            'start_date_bs' => $this->faker->date(),
+            'end_date_ad' => $this->faker->date(),
+            'end_date_bs' => $this->faker->date(),
             'additional_detail' => $this->faker->sentence,
             'certificate' => null,
         ];
