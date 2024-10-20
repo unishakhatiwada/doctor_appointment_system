@@ -19,8 +19,23 @@
             </div>
 
             <div class="form-group">
-                <label for="education_certificate_{{ $index }}">Certificate (PDF)</label>
-                <input type="file" class="form-control-file" id="education_certificate_{{ $index }}" name="education[{{ $index }}][certificate]" accept="application/pdf">
+                <!-- Hidden input to pass the education id (for updating existing records) -->
+                <input type="hidden" name="education[{{ $index }}][id]" value="{{ $education->id ?? '' }}">
+
+                <label for="education_certificate_{{ $index }}">Education Certificate (PDF)</label>
+
+                <!-- Input field for uploading a new certificate -->
+                <input type="file" class="form-control-file" name="education[{{ $index }}][certificate]" accept="application/pdf">
+
+                <!-- Display existing certificate link and delete option if the certificate exists -->
+                @if(isset($education['certificate']) && $education['certificate'])
+                    <div class="mt-2">
+                        <a href="{{ asset($education['certificate']) }}" target="_blank">View Current Education Certificate</a>
+                        <label class="ml-3">
+                            <input type="checkbox" name="education[{{ $index }}][delete_certificate]" value="1"> Delete Current Certificate
+                        </label>
+                    </div>
+                @endif
             </div>
 
             <div class="form-group">

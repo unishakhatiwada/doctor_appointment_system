@@ -8,13 +8,21 @@ use App\Http\Requests\DoctorUpdateRequest;
 use App\Models\Department;
 use App\Models\Doctor;
 use App\Models\User;
+use App\Services\FileUploadService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class DoctorController extends Controller
 {
+    protected $fileUploadService;
+
+    public function __construct(FileUploadService $fileUploadService)
+    {
+        $this->fileUploadService = $fileUploadService;
+    }
     public function index(DoctorsDataTable $dataTable)
     {
         return $dataTable->render('doctors.index');
@@ -64,9 +72,9 @@ class DoctorController extends Controller
 
             // Create the related education records
             if (isset($validated['education']) && is_array($validated['education'])) {
-                $educationData = [];
                 foreach ($validated['education'] as $education) {
-                    $educationData[] = [
+                    // Create the education record first
+                    $educationRecord = $doctor->educations()->create([
                         'degree' => $education['degree'],
                         'institute_name' => $education['institute_name'],
                         'institute_address' => $education['institute_address'],
@@ -77,17 +85,21 @@ class DoctorController extends Controller
                         'graduation_date_bs' => $education['graduation_date_bs'],
                         'graduation_date_ad' => $education['graduation_date_ad'],
                         'additional_detail' => $education['additional_detail'],
-                        // 'certificate' => $education['education_certificate'],
-                    ];
+                    ]);
+
+                    // Handle single file upload for education certificate using the FileUploadService
+                    if (isset($education['certificate']) && $education['certificate']->isValid()) {
+                        $filePath = $this->fileUploadService->handlePdfUpload(['content' => $education['certificate']]);
+                        $educationRecord->update(['certificate' => $filePath]); // Update after the file is uploaded
+                    }
                 }
-                $doctor->educations()->createMany($educationData);
             }
 
             // Create the related experience records
             if (isset($validated['experience']) && is_array($validated['experience'])) {
-                $experienceData = [];
                 foreach ($validated['experience'] as $experience) {
-                    $experienceData[] = [
+                    // Create the experience record first
+                    $experienceRecord = $doctor->experiences()->create([
                         'job_title' => $experience['job_title'],
                         'type_of_employment' => $experience['type_of_employment'],
                         'health_care_name' => $experience['health_care_name'],
@@ -97,10 +109,14 @@ class DoctorController extends Controller
                         'end_date_bs' => $experience['end_date_bs'],
                         'end_date_ad' => $experience['end_date_ad'],
                         'additional_detail' => $experience['additional_detail'],
-                        // 'certificate' => $experience['experience_certificate'],
-                    ];
+                    ]);
+
+                    // Handle single file upload for experience certificate using the FileUploadService
+                    if (isset($experience['certificate']) && $experience['certificate']->isValid()) {
+                        $filePath = $this->fileUploadService->handlePdfUpload(['content' => $experience['certificate']]);
+                        $experienceRecord->update(['certificate' => $filePath]); // Update after the file is uploaded
+                    }
                 }
-                $doctor->experiences()->createMany($experienceData);
             }
 
             // Commit transaction after saving doctor, educations, and experiences
@@ -113,6 +129,7 @@ class DoctorController extends Controller
 
         return redirect()->route('doctors.index')->with('success', 'Doctor created successfully.');
     }
+
 
 
     public function show(Doctor $doctor): View
@@ -140,6 +157,8 @@ class DoctorController extends Controller
     public function edit(Doctor $doctor): View
     {
 
+        // Fetch the doctor record
+        $doctor = Doctor::with(['educations', 'experiences'])->findOrFail($doctor->id);
         // Fetch all departments and provinces for dropdowns
         $departments = Department::all();
         $provinces = DB::table('provinces')->get();
@@ -163,14 +182,12 @@ class DoctorController extends Controller
 
     public function update(DoctorUpdateRequest $request, Doctor $doctor): RedirectResponse
     {
-        // Validate the request
         $validated = $request->validated();
-
-        // Start a transaction
+//       dd($validated['education']);
         DB::beginTransaction();
 
         try {
-            // Update doctor information
+            // Update doctor record
             $doctor->update([
                 'name' => $validated['name'],
                 'email' => $validated['email'],
@@ -189,73 +206,83 @@ class DoctorController extends Controller
                 'date_of_birth_ad' => $validated['date_of_birth_ad'],
             ]);
 
-            // Update the associated user record
-            DB::table('users')
-                ->where('email', $doctor->email)
-                ->update([
-                    'name' => $doctor->name,
-                    'email' => $doctor->email,
-                ]);
-
-            // Handle the education records
+            // Handle related education records
             if (isset($validated['education']) && is_array($validated['education'])) {
-                // Sync or update education records instead of deleting
-                $educationData = [];
-                foreach ($validated['education'] as $index => $education) {
-                    $educationData[] = [
-                        'degree' => $education['degree'],
-                        'institute_name' => $education['institute_name'],
-                        'institute_address' => $education['institute_address'],
-                        'faculty' => $education['faculty'],
-                        'grade' => $education['grade'],
-                        'joining_date_bs' => $education['joining_date_bs'],
-                        'joining_date_ad' => $education['joining_date_ad'],
-                        'graduation_date_bs' => $education['graduation_date_bs'],
-                        'graduation_date_ad' => $education['graduation_date_ad'],
-                        'additional_detail' => $education['additional_detail'],
-                    ];
-                }
+                foreach ($validated['education'] as $education) {
+                    // Check if the 'id' exists and is valid
+                    $educationRecord = $doctor->educations()->updateOrCreate(
+                        ['id' => $education['id'] ?? null],  // Use the 'id' to find the record, if it exists
+                        [
+                            'degree' => $education['degree'],
+                            'institute_name' => $education['institute_name'],
+                            'institute_address' => $education['institute_address'],
+                            'grade' => $education['grade'],
+                            'faculty' => $education['faculty'],
+                            'joining_date_bs' => $education['joining_date_bs'],
+                            'joining_date_ad' => $education['joining_date_ad'],
+                            'graduation_date_bs' => $education['graduation_date_bs'],
+                            'graduation_date_ad' => $education['graduation_date_ad'],
+                            'additional_detail' => $education['additional_detail'],
+                        ]
+                    );
 
-                // Sync the educations (delete old records not in the array)
-                $doctor->educations()->delete();
-                $doctor->educations()->createMany($educationData);
+                    // Handle file deletion if delete checkbox is selected
+                    if (isset($education['delete_certificate']) && $education['delete_certificate'] == 1) {
+                        if ($educationRecord->certificate) {
+                            Storage::disk('public')->delete(str_replace('/storage/', '', $educationRecord->certificate));
+                            $educationRecord->update(['certificate' => null]);
+                        }
+                    }
+
+                    // Handle file upload for education certificate if a new file is provided
+                    if (isset($education['certificate']) && $education['certificate']->isValid()) {
+                        $filePath = $this->fileUploadService->handlePdfUpload(['content' => $education['certificate']], 'education_certificates');
+                        $educationRecord->update(['certificate' => $filePath]);
+                    }
+                }
             }
 
-            // Handle the experience records
+            // Handle related experience records
             if (isset($validated['experience']) && is_array($validated['experience'])) {
-                $experienceData = [];
-                foreach ($validated['experience'] as $index => $experience) {
-                    $experienceData[] = [
-                        'job_title' => $experience['job_title'],
-                        'type_of_employment' => $experience['type_of_employment'],
-                        'health_care_name' => $experience['health_care_name'],
-                        'health_care_location' => $experience['health_care_location'],
-                        'start_date_bs' => $experience['start_date_bs'],
-                        'start_date_ad' => $experience['start_date_ad'],
-                        'end_date_bs' => $experience['end_date_bs'],
-                        'end_date_ad' => $experience['end_date_ad'],
-                        'additional_detail' => $experience['additional_detail'],
-                    ];
+                foreach ($validated['experience'] as $experience) {
+                    // Check if the 'id' exists and is valid
+                    $experienceRecord = $doctor->experiences()->updateOrCreate(
+                        ['id' => $experience['id'] ?? null],
+                        [
+                            'job_title' => $experience['job_title'],
+                            'type_of_employment' => $experience['type_of_employment'],
+                            'health_care_name' => $experience['health_care_name'],
+                            'health_care_location' => $experience['health_care_location'],
+                            'start_date_bs' => $experience['start_date_bs'],
+                            'start_date_ad' => $experience['start_date_ad'],
+                            'end_date_bs' => $experience['end_date_bs'],
+                            'end_date_ad' => $experience['end_date_ad'],
+                            'additional_detail' => $experience['additional_detail'],
+                        ]
+                    );
+
+
+                    // Handle file deletion if delete checkbox is selected
+                    if (isset($experience['delete_certificate']) && $experience['delete_certificate'] == 1) {
+                        if ($experienceRecord->certificate) {
+                            Storage::disk('public')->delete(str_replace('/storage/', '', $experienceRecord->certificate));
+                            $experienceRecord->update(['certificate' => null]);
+                        }
+                    }
+
+                    // Handle file upload for experience certificate if a new file is provided
+                    if (isset($experience['certificate']) && $experience['certificate']->isValid()) {
+                        $filePath = $this->fileUploadService->handlePdfUpload(['content' => $experience['certificate']], 'experience_certificates');
+                        $experienceRecord->update(['certificate' => $filePath]);
+                    }
                 }
-
-                // Sync the experiences (delete old records not in the array)
-                $doctor->experiences()->delete();
-                $doctor->experiences()->createMany($experienceData);
             }
-
-            // Commit transaction after updating doctor, educations, and experiences
             DB::commit();
-
+            return redirect()->route('doctors.index')->with('success', 'Doctor updated successfully.');
         } catch (\Exception $e) {
-            // Rollback transaction in case of error
             DB::rollback();
-
-            // Log the error if needed and return with failure
             return redirect()->back()->with('error', 'Failed to update doctor. Please try again.');
         }
-
-        // Successful update redirect
-        return redirect()->route('doctors.index')->with('success', 'Doctor updated successfully.');
     }
 
 

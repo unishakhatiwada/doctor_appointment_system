@@ -57,8 +57,23 @@
     </div>
 
     <div class="form-group">
-        <label for="experience_certificate">Certificate (PDF)</label>
+        <!-- Hidden input to pass the experience id -->
+        <input type="hidden" name="experience[{{ $index }}][id]" value="{{ $experience->id ?? '' }}">
+
+        <label for="experience_certificate_{{ $index }}">Experience Certificate (PDF)</label>
+
+        <!-- Input field for uploading a new certificate -->
         <input type="file" class="form-control-file" name="experience[{{ $index }}][certificate]" accept="application/pdf">
+
+        <!-- Display existing certificate link and delete option if the certificate exists -->
+        @if(isset($experience['certificate']) && $experience['certificate'])
+            <div class="mt-2">
+                <a href="{{ asset($experience['certificate']) }}" target="_blank">View Current Experience Certificate</a>
+                <label class="ml-3">
+                    <input type="checkbox" name="experience[{{ $index }}][delete_certificate]" value="1"> Delete Current Certificate
+                </label>
+            </div>
+        @endif
     </div>
 
     <!-- Remove button for the repeater -->

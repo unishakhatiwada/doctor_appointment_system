@@ -16,6 +16,7 @@ class DoctorUpdateRequest extends FormRequest
 
     public function rules(): array
     {
+        //dd($this);
 
         $doctorId = $this->route('doctor')->id ?? $this->route('doctor');
         return [
@@ -42,6 +43,7 @@ class DoctorUpdateRequest extends FormRequest
 
 
             // Nested validation for education
+            'education.*.id' => 'nullable|integer|exists:education,id',
             'education.*.degree' => 'required|in:+2,bachelor,master,phd',
             'education.*.institute_name' => 'required|string',
             'education.*.institute_address' => 'required|string',
@@ -52,10 +54,12 @@ class DoctorUpdateRequest extends FormRequest
             'education.*.joining_date_ad' => 'required|date', // AD Date is required
             'education.*.graduation_date_bs' => 'nullable|string', // Optional BS date
             'education.*.graduation_date_ad' => 'nullable|date|after_or_equal:education.*.joining_date_ad', // AD Graduation date must be after joining date
-            'education.*.certificate.*' => 'nullable|file|mimes:pdf|max:2048', // Multiple files allowed, max size 2MB
+            'education.*.certificate' => 'nullable|file|mimes:pdf|max:2048', // Multiple files allowed, max size 2MB
+            'education.*.delete_certificate' => 'nullable|boolean',
 
 
             // Nested validation for experience
+            'experience.*.id' => 'nullable|integer|exists:experiences,id',
             'experience.*.job_title' => 'required|string',
             'experience.*.type_of_employment' => 'required|string',
             'experience.*.health_care_name' => 'required|string',
@@ -65,7 +69,8 @@ class DoctorUpdateRequest extends FormRequest
             'experience.*.start_date_ad' => 'required|date', // AD Start Date (required)
             'experience.*.end_date_bs' => 'nullable|string', // BS End Date (optional)
             'experience.*.end_date_ad' => 'nullable|date|after_or_equal:experience.*.start_date_ad', // AD End date must be after the start date
-            'experience.*.certificate.*' => 'nullable|file|mimes:pdf|max:2048', // Multiple files allowed, max size 2MB
+            'experience.*.certificate' => 'nullable|file|mimes:pdf|max:2048', // Multiple files allowed, max size 2MB
+            'experience.*.delete_certificate' => 'nullable|boolean',
 
 
         ];
