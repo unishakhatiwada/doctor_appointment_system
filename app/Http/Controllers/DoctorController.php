@@ -183,7 +183,6 @@ class DoctorController extends Controller
     public function update(DoctorUpdateRequest $request, Doctor $doctor): RedirectResponse
     {
         $validated = $request->validated();
-//       dd($validated['education']);
         DB::beginTransaction();
 
         try {
@@ -209,7 +208,16 @@ class DoctorController extends Controller
             // Handle related education records
             if (isset($validated['education']) && is_array($validated['education'])) {
                 foreach ($validated['education'] as $education) {
-                    // Check if the 'id' exists and is valid
+                    // Check if the record is marked as deleted
+                    if (isset($education['deleted']) && $education['deleted'] == 1) {
+                        // Delete the record if it exists in the database
+                        if (isset($education['id'])) {
+                            $doctor->educations()->where('id', $education['id'])->delete();
+                        }
+                        continue;  // Skip the rest of the processing for this record
+                    }
+
+                    // Check if the 'id' exists and is valid, update or create the education record
                     $educationRecord = $doctor->educations()->updateOrCreate(
                         ['id' => $education['id'] ?? null],  // Use the 'id' to find the record, if it exists
                         [
@@ -242,12 +250,22 @@ class DoctorController extends Controller
                 }
             }
 
+
             // Handle related experience records
             if (isset($validated['experience']) && is_array($validated['experience'])) {
                 foreach ($validated['experience'] as $experience) {
-                    // Check if the 'id' exists and is valid
+                    // Check if the record is marked as deleted
+                    if (isset($experience['deleted']) && $experience['deleted'] == 1) {
+                        // Delete the record if it exists in the database
+                        if (isset($experience['id'])) {
+                            $doctor->experiences()->where('id', $experience['id'])->delete();
+                        }
+                        continue;  // Skip the rest of the processing for this record
+                    }
+
+                    // Check if the 'id' exists and is valid, update or create the experience record
                     $experienceRecord = $doctor->experiences()->updateOrCreate(
-                        ['id' => $experience['id'] ?? null],
+                        ['id' => $experience['id'] ?? null],  // Use the 'id' to find the record, if it exists
                         [
                             'job_title' => $experience['job_title'],
                             'type_of_employment' => $experience['type_of_employment'],
@@ -260,7 +278,6 @@ class DoctorController extends Controller
                             'additional_detail' => $experience['additional_detail'],
                         ]
                     );
-
 
                     // Handle file deletion if delete checkbox is selected
                     if (isset($experience['delete_certificate']) && $experience['delete_certificate'] == 1) {
@@ -277,6 +294,7 @@ class DoctorController extends Controller
                     }
                 }
             }
+
             DB::commit();
             return redirect()->route('doctors.index')->with('success', 'Doctor updated successfully.');
         } catch (\Exception $e) {

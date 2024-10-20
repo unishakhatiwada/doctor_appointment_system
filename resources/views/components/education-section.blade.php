@@ -1,4 +1,7 @@
 <div class="repeater-section">
+    <input type="hidden" name="education[{{ $index }}][id]" value="{{ $education->id ?? '' }}">
+    <input type="hidden" class="delete-education" name="education[{{ $index }}][deleted]" value="0"> <!-- Hidden delete flag -->
+
     <div class="row">
         <!-- Column 1 -->
         <div class="col-md-6">
@@ -19,11 +22,7 @@
             </div>
 
             <div class="form-group">
-                <!-- Hidden input to pass the education id (for updating existing records) -->
-                <input type="hidden" name="education[{{ $index }}][id]" value="{{ $education->id ?? '' }}">
-
                 <label for="education_certificate_{{ $index }}">Education Certificate (PDF)</label>
-
                 <!-- Input field for uploading a new certificate -->
                 <input type="file" class="form-control-file" name="education[{{ $index }}][certificate]" accept="application/pdf">
 
@@ -83,7 +82,8 @@
 
     <!-- Remove button for the repeater -->
     <div class="d-flex justify-content-end">
-        <button type="button" class="remove-education btn btn-danger">Remove Education</button>
+        <button type="button" class="remove-education btn btn-danger" data-index="{{ $index }}">Remove Education</button>
+        <input type="hidden" name="education[{{ $index }}][deleted]" class="deleted-input" value="0">
     </div>
     <hr />
 </div>

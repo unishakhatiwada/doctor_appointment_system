@@ -102,10 +102,12 @@ document.addEventListener('DOMContentLoaded', function () {
   // Attach event listener to "Add More Experience" button
   document.getElementById('addExperience').addEventListener('click', addExperienceSection);
 
-  // Event delegation for removing experience sections (works for dynamic and static elements)
-  document.getElementById('experienceRepeater').addEventListener('click', function(event) {
+  // Event delegation for removing experience sections
+  experienceRepeater.addEventListener('click', function(event) {
     if (event.target && event.target.classList.contains('remove-experience')) {
-      event.target.closest('.repeater-section').remove();
+      const section = event.target.closest('.repeater-section');
+      section.style.display = 'none';  // Hide the section visually
+      section.querySelector('.deleted-input').value = 1;  // Mark the hidden input for deletion
     }
   });
 

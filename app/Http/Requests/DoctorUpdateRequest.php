@@ -16,7 +16,6 @@ class DoctorUpdateRequest extends FormRequest
 
     public function rules(): array
     {
-        //dd($this);
 
         $doctorId = $this->route('doctor')->id ?? $this->route('doctor');
         return [
@@ -56,6 +55,7 @@ class DoctorUpdateRequest extends FormRequest
             'education.*.graduation_date_ad' => 'nullable|date|after_or_equal:education.*.joining_date_ad', // AD Graduation date must be after joining date
             'education.*.certificate' => 'nullable|file|mimes:pdf|max:2048', // Multiple files allowed, max size 2MB
             'education.*.delete_certificate' => 'nullable|boolean',
+            'education.*.deleted'=>'nullable|boolean',
 
 
             // Nested validation for experience
@@ -71,8 +71,7 @@ class DoctorUpdateRequest extends FormRequest
             'experience.*.end_date_ad' => 'nullable|date|after_or_equal:experience.*.start_date_ad', // AD End date must be after the start date
             'experience.*.certificate' => 'nullable|file|mimes:pdf|max:2048', // Multiple files allowed, max size 2MB
             'experience.*.delete_certificate' => 'nullable|boolean',
-
-
+            'experience.*.deleted'=>'nullable|boolean',
         ];
 
     }

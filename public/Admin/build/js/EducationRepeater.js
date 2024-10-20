@@ -74,11 +74,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     </div>
                 </div>
 
-                <!-- Remove button for the repeater -->
-                <div class="d-flex justify-content-end">
-                    <button type="button" class="remove-education btn btn-danger">Remove Education</button>
-                </div>
-                <hr />
+               <!-- Remove button for the repeater -->
+<div class="d-flex justify-content-end">
+    <button type="button" class="remove-education btn btn-danger" data-index="${index}">Remove Education</button>
+    <input type="hidden" name="education[${index}][deleted]" class="deleted-input" value="0">
+</div>
+<hr />
+
             </div>
         `;
   }
@@ -102,10 +104,15 @@ document.addEventListener('DOMContentLoaded', function () {
   // Attach event listener to "Add More Education" button
   document.getElementById('addEducation').addEventListener('click', addEducationSection);
 
-  // Event delegation for removing education sections
-  document.getElementById('educationRepeater').addEventListener('click', function(event) {
+  // Event delegation for removing education sections and marking them as deleted
+  educationRepeater.addEventListener('click', function(event) {
     if (event.target && event.target.classList.contains('remove-education')) {
-      event.target.closest('.repeater-section').remove();
+      const section = event.target.closest('.repeater-section');
+      // Mark the section as deleted by setting the value to 1
+      section.querySelector('.deleted-input').value = '1';  // Update the hidden input value
+      section.style.display = 'none';  // Hide the section visually
+
+      console.log(section.querySelector('.deleted-input').value);  // Debug to ensure value is 1
     }
   });
 

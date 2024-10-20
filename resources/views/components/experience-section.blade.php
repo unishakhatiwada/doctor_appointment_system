@@ -1,4 +1,6 @@
 <div class="repeater-section">
+    <input type="hidden" name="experience[{{ $index }}][id]" value="{{ $experience->id ?? '' }}">
+    <input type="hidden" class="delete-experience" name="experience[{{ $index }}][deleted]" value="0"> <!-- Hidden delete flag -->
     <div class="row">
         <!-- Column 1 -->
         <div class="col-md-6">
@@ -78,7 +80,8 @@
 
     <!-- Remove button for the repeater -->
     <div class="d-flex justify-content-end">
-        <button type="button" class="remove-experience btn btn-danger">Remove Experience</button>
+        <button type="button" class="remove-experience btn btn-danger" data-index="{{ $index }}">Remove experience</button>
+        <input type="hidden" name="experience[{{ $index }}][deleted]" class="deleted-input" value="0">
     </div>
     <hr />
 </div>
