@@ -98,6 +98,16 @@ document.addEventListener('DOMContentLoaded', function () {
         input.classList.remove('is-invalid'); // Remove invalid class if valid
       }
     });
+    // Password validation if the step contains password fields
+    if (step.querySelector('#password') && step.querySelector('#password_confirmation')) {
+      const password = step.querySelector('#password');
+      const passwordConfirmation = step.querySelector('#password_confirmation');
+
+      // Use the validatePassword function from passwordValidation.js
+      if (!validatePassword(password, passwordConfirmation)) {
+        valid = false;
+      }
+    }
 
     return valid; // Return true if all fields are valid, otherwise false
   }
