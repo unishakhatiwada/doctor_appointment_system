@@ -39,7 +39,7 @@ class DoctorsDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-            ->setTableId('departments-table')
+            ->setTableId('doctors-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->orderBy(1)

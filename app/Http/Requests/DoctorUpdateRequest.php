@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class DoctorUpdateRequest extends FormRequest
 {
@@ -18,15 +17,16 @@ class DoctorUpdateRequest extends FormRequest
     {
 
         $doctorId = $this->route('doctor')->id ?? $this->route('doctor');
+
         return [
             'name' => 'required|string|max:255',
             'phone' => [
                 'required',
                 'string',
                 'regex:/^(?:(?:\+977|977|0)?9\d{8}|(?:\+977|977|0)?1\d{7}|9\d{9})$/', // Nepali or International number format
-                'unique:doctors,phone,' . $doctorId, // Exclude the current doctor from unique check
+                'unique:doctors,phone,'.$doctorId, // Exclude the current doctor from unique check
             ],
-            'email' => 'required|string|email|unique:doctors,email,' . $doctorId, // Exclude the current doctor from unique check
+            'email' => 'required|string|email|unique:doctors,email,'.$doctorId, // Exclude the current doctor from unique check
             'permanent_province_id' => 'required|exists:provinces,id',
             'permanent_district_id' => 'required|exists:districts,id',
             'permanent_municipality_id' => 'required|exists:municipalities,id',
@@ -39,7 +39,6 @@ class DoctorUpdateRequest extends FormRequest
             'department_id' => 'required|exists:departments,id',
             'date_of_birth_bs' => 'required|string',
             'date_of_birth_ad' => 'required|date',
-
 
             // Nested validation for education
             'education.*.id' => 'nullable|integer|exists:education,id',
@@ -55,8 +54,7 @@ class DoctorUpdateRequest extends FormRequest
             'education.*.graduation_date_ad' => 'nullable|date|after_or_equal:education.*.joining_date_ad', // AD Graduation date must be after joining date
             'education.*.certificate' => 'nullable|file|mimes:pdf|max:2048', // Multiple files allowed, max size 2MB
             'education.*.delete_certificate' => 'nullable|boolean',
-            'education.*.deleted'=>'nullable|boolean',
-
+            'education.*.deleted' => 'nullable|boolean',
 
             // Nested validation for experience
             'experience.*.id' => 'nullable|integer|exists:experiences,id',
@@ -71,7 +69,7 @@ class DoctorUpdateRequest extends FormRequest
             'experience.*.end_date_ad' => 'nullable|date|after_or_equal:experience.*.start_date_ad', // AD End date must be after the start date
             'experience.*.certificate' => 'nullable|file|mimes:pdf|max:2048', // Multiple files allowed, max size 2MB
             'experience.*.delete_certificate' => 'nullable|boolean',
-            'experience.*.deleted'=>'nullable|boolean',
+            'experience.*.deleted' => 'nullable|boolean',
         ];
 
     }

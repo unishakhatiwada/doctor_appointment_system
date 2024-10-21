@@ -23,6 +23,7 @@ class DoctorController extends Controller
     {
         $this->fileUploadService = $fileUploadService;
     }
+
     public function index(DoctorsDataTable $dataTable)
     {
         return $dataTable->render('doctors.index');
@@ -124,13 +125,12 @@ class DoctorController extends Controller
         } catch (\Exception $e) {
             // Rollback the transaction if any error occurs
             DB::rollback();
+
             return redirect()->back()->with('error', 'Failed to create doctor. Please try again.');
         }
 
         return redirect()->route('doctors.index')->with('success', 'Doctor created successfully.');
     }
-
-
 
     public function show(Doctor $doctor): View
     {
@@ -214,6 +214,7 @@ class DoctorController extends Controller
                         if (isset($education['id'])) {
                             $doctor->educations()->where('id', $education['id'])->delete();
                         }
+
                         continue;  // Skip the rest of the processing for this record
                     }
 
@@ -250,7 +251,6 @@ class DoctorController extends Controller
                 }
             }
 
-
             // Handle related experience records
             if (isset($validated['experience']) && is_array($validated['experience'])) {
                 foreach ($validated['experience'] as $experience) {
@@ -260,6 +260,7 @@ class DoctorController extends Controller
                         if (isset($experience['id'])) {
                             $doctor->experiences()->where('id', $experience['id'])->delete();
                         }
+
                         continue;  // Skip the rest of the processing for this record
                     }
 
@@ -296,14 +297,14 @@ class DoctorController extends Controller
             }
 
             DB::commit();
+
             return redirect()->route('doctors.index')->with('success', 'Doctor updated successfully.');
         } catch (\Exception $e) {
             DB::rollback();
+
             return redirect()->back()->with('error', 'Failed to update doctor. Please try again.');
         }
     }
-
-
 
     public function destroy(Doctor $doctor): RedirectResponse
     {

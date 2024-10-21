@@ -87,12 +87,11 @@ class DepartmentController extends Controller
         Doctor::whereIn('id', $request->doctor_ids)
             ->where(function ($query) use ($department) {
                 $query->whereNull('department_id') // Handle doctors with no department
-                ->orWhere('department_id', '!=', $department->id); // Handle doctors assigned to a different department
+                    ->orWhere('department_id', '!=', $department->id); // Handle doctors assigned to a different department
             })
             ->update(['department_id' => $department->id]);
 
         // Redirect back to the department's show page with a success message
         return redirect()->route('departments.show', $department->id)->with('success', 'Doctors added successfully.');
     }
-
 }
