@@ -20,9 +20,10 @@ class ScheduleController extends Controller
 
     public function create(): View
     {
-        $doctors = Doctor::all();
+        // Fetch doctors who do not have any schedules
+        $doctorsWithoutSchedule = Doctor::doesntHave('schedules')->get();
 
-        return view('schedules.create_edit', compact('doctors'));
+        return view('schedules.create_edit', compact('doctorsWithoutSchedule'));
     }
 
     public function store(ScheduleRequest $request): RedirectResponse

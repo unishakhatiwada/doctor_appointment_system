@@ -27,15 +27,13 @@
                         @method('PUT')
                     @endif
 
-                    <!-- Doctor selection (shown only once for all days) -->
+                    <!-- Doctor selection (shown doctor who do not have schedule yet)-->
                     <div class="form-group mb-3">
-                        <label for="doctor_id" class="form-label">Doctor{!! requiredField(true) !!}</label>
+                        <label for="doctor_id" class="form-label">Doctor {!! requiredField(true) !!}</label>
                         <select name="doctor_id" class="form-control" required>
                             <option value="">Select Doctor</option>
-                            @foreach($doctors as $doctor)
-                                <option value="{{ $doctor->id }}" {{ isset($schedule) && $schedule->doctor_id == $doctor->id ? 'selected' : '' }}>
-                                    {{ $doctor->name }}
-                                </option>
+                            @foreach($doctorsWithoutSchedule as $doctor)
+                                <option value="{{ $doctor->id }}">{{ $doctor->name }}</option>
                             @endforeach
                         </select>
                     </div>
