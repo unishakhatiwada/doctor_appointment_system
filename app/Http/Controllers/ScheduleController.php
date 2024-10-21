@@ -56,9 +56,10 @@ class ScheduleController extends Controller
 
     public function edit(Schedule $schedule): View
     {
-        $doctors = Doctor::all();
+        // Only pass the current doctor linked to the schedule
+        $doctor = $schedule->doctor;
 
-        return view('schedules.create_edit', compact('doctors', 'schedule'));
+        return view('schedules.create_edit', compact('doctor', 'schedule'));
     }
 
     public function update(ScheduleRequest $request, Schedule $schedule)

@@ -4,7 +4,6 @@
         return $isRequired ? '<span class="text-danger">*</span>' : '';
     }
 @endphp
-
 @section('content')
     @if ($errors->any())
         <div class="alert alert-danger">
@@ -27,15 +26,23 @@
                         @method('PUT')
                     @endif
 
-                    <!-- Doctor selection (shown doctor who do not have schedule yet)-->
+                    <!-- Doctor selection -->
                     <div class="form-group mb-3">
                         <label for="doctor_id" class="form-label">Doctor {!! requiredField(true) !!}</label>
-                        <select name="doctor_id" class="form-control" required>
-                            <option value="">Select Doctor</option>
-                            @foreach($doctorsWithoutSchedule as $doctor)
-                                <option value="{{ $doctor->id }}">{{ $doctor->name }}</option>
-                            @endforeach
-                        </select>
+
+                        @if(isset($schedule))
+                            <!-- Edit Mode: Show doctor name, disable the select and keep the hidden input for doctor_id -->
+                            <input type="text" class="form-control" value="{{ $schedule->doctor->name }}" disabled>
+                            <input type="hidden" name="doctor_id" value="{{ $schedule->doctor->id }}">
+                        @else
+                            <!-- Create Mode: Show doctor dropdown for selection -->
+                            <select name="doctor_id" class="form-control" required>
+                                <option value="">Select Doctor</option>
+                                @foreach($doctorsWithoutSchedule as $doctor)
+                                    <option value="{{ $doctor->id }}">{{ $doctor->name }}</option>
+                                @endforeach
+                            </select>
+                        @endif
                     </div>
 
                     <!-- Loop through each day of the week to set schedule -->
@@ -65,14 +72,19 @@
                             <!-- Is Active -->
                             <div class="form-group mb-3">
                                 <label for="is_active_{{ $day }}" class="form-label">Is Active{!! requiredField(true) !!}</label>
+
                                 <div class="form-check">
-                                    <input type="radio" name="schedule[{{ $day }}][is_active]" class="form-check-input" id="is_active_yes_{{ $day }}" value="1" {{ old('schedule.' . $day . '.is_active', isset($schedule[$day]) && $schedule[$day]['is_active'] ? 'checked' : '') }} required>
+                                    <input type="radio" name="schedule[{{ $day }}][is_active]" class="form-check-input" id="is_active_yes_{{ $day }}" value="1"
+                                        {{ old('schedule.' . $day . '.is_active', (isset($schedule[$day]) && $schedule[$day]['is_active'] == 1) ? 'checked' : '') == 1 ? 'checked' : '' }}>
                                     <label for="is_active_yes_{{ $day }}" class="form-check-label">Yes</label>
                                 </div>
+
                                 <div class="form-check">
-                                    <input type="radio" name="schedule[{{ $day }}][is_active]" class="form-check-input" id="is_active_no_{{ $day }}" value="0" {{ old('schedule.' . $day . '.is_active', isset($schedule[$day]) && !$schedule[$day]['is_active'] ? 'checked' : '') }} required>
+                                    <input type="radio" name="schedule[{{ $day }}][is_active]" class="form-check-input" id="is_active_no_{{ $day }}" value="0"
+                                        {{ old('schedule.' . $day . '.is_active', (isset($schedule[$day]) && $schedule[$day]['is_active'] == 0) ? 'checked' : '') == 0 ? 'checked' : '' }}>
                                     <label for="is_active_no_{{ $day }}" class="form-check-label">No</label>
                                 </div>
+
                             </div>
                         </div>
                     @endforeach
