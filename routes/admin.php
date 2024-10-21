@@ -6,6 +6,7 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\EducationController;
 use App\Http\Controllers\ExperienceController;
+use App\Http\Controllers\ScheduleController;
 use Illuminate\Support\Facades\Route;
 
 // Admin routes
@@ -26,5 +27,5 @@ Route::middleware(['admin_auth:admin'])->prefix('admin')->group(function () {
     Route::resource('departments', DepartmentController::class)->names('departments');
     Route::get('/departments/{department}/add-doctors', [DepartmentController::class, 'addDoctorForm'])->name('departments.addDoctorForm');
     Route::post('/departments/{department}/add-doctors', [DepartmentController::class, 'addDoctors'])->name('departments.addDoctors');
-
+    Route::resource('schedules', ScheduleController::class)->names('schedules');
 });

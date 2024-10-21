@@ -36,11 +36,20 @@
                         </p>
                     </a>
                 </li>
+
                 <li class="nav-item">
                     <a href="{{route('doctors.index')}}" class="nav-link "  >
                         <i class="nav-icon fas fa fa-user-md "></i>
                         <p>
                             Doctors
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{route('schedules.index')}}" class="nav-link "  >
+                        <i class="nav-icons fas fa-calendar-week "></i>
+                        <p>
+                            Doctor's Schedule
                         </p>
                     </a>
                 </li>

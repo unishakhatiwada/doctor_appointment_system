@@ -41,6 +41,7 @@ class DatabaseSeeder extends Seeder
             DoctorSeeder::class,
             EducationSeeder::class,
             ExperienceSeeder::class,
+            ScheduleSeeder::class,
         ]);
     }
 }
