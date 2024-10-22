@@ -34,7 +34,6 @@ class SchedulesDataTable extends DataTable
             })
             ->addColumn('action', function ($data) {
                 $url = '/admin/schedules/';
-                $buttons['view'] = true;
                 $buttons['edit'] = true;
                 $buttons['delete'] = true;
 
