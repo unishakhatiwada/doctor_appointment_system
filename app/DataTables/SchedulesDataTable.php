@@ -15,8 +15,18 @@ class SchedulesDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
+            ->filter(function ($query) {
+                if (request()->has('search.value')) {
+                    $searchValue = request('search.value');
+                    // Enable searching by doctor name
+                    $query->where(function ($query) use ($searchValue) {
+                        $query->where('doctors.name', 'like', "%{$searchValue}%")
+                            ->orWhere('schedules.day_of_week', 'like', "%{$searchValue}%");  // You can add more fields to search here
+                    });
+                }
+            })
             ->addColumn('doctor_name', function (Schedule $schedule) {
-                return $schedule->doctor->name; // Access doctor's name through the relationship
+                return $schedule->doctor->name; // Display doctor's name
             })
             ->addColumn('is_active', function (Schedule $schedule) {
                 // Convert 0/1 to Yes/No
@@ -30,14 +40,16 @@ class SchedulesDataTable extends DataTable
 
                 return view('components.action-button', compact('data', 'url', 'buttons'))->render();
             })
-            ->setRowId('id');
+            ->setRowId('id')
+            ->rawColumns(['is_active', 'action']);
     }
 
     public function query(): QueryBuilder
     {
-        return Schedule::query()
-            ->select('schedules.*', 'doctors.name as doctor_name')
-            ->join('doctors', 'schedules.doctor_id', '=', 'doctors.id');
+    // Add select for doctor_name and allow the search for doctor_name
+    return Schedule::query()
+        ->select('schedules.*', 'doctors.name as doctor_name')  // Select doctor's name
+        ->join('doctors', 'schedules.doctor_id', '=', 'doctors.id');  // Join with doctors table
     }
 
     public function html(): HtmlBuilder
@@ -45,8 +57,7 @@ class SchedulesDataTable extends DataTable
         return $this->builder()
             ->setTableId('schedules-table')
             ->columns($this->getColumns())
-            ->minifiedAjax(route('schedules.index')) // Ensure this is correct
-            ->orderBy(1)
+            ->minifiedAjax(route('schedules.index'))
             ->selectStyleSingle()
             ->buttons([
                 Button::make('add')->text('Create Doctor Schedule'),
@@ -58,7 +69,8 @@ class SchedulesDataTable extends DataTable
         return [
             Column::make('doctor_name')
                 ->title('Doctor Name')
-                ->width(10),
+                ->width(10)
+                ->searchable(true),
             Column::make('day_of_week')->width(10),
             Column::make('start_time')->width(10),
             Column::make('end_time')->width(10),
