@@ -18,6 +18,10 @@ class SchedulesDataTable extends DataTable
             ->addColumn('doctor_name', function (Schedule $schedule) {
                 return $schedule->doctor->name; // Access doctor's name through the relationship
             })
+            ->addColumn('is_active', function (Schedule $schedule) {
+                // Convert 0/1 to Yes/No
+                return $schedule->is_active ? 'Yes' : 'No';
+            })
             ->addColumn('action', function ($data) {
                 $url = '/admin/schedules/';
                 $buttons['view'] = true;
