@@ -17,4 +17,8 @@ class Schedule extends Model
     {
         return $this->belongsTo(Doctor::class, 'doctor_id');
     }
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class);
+    }
 }
