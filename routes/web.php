@@ -18,11 +18,11 @@ Route::get('/dashboard', function () {
 
 // Display department list publicly on the welcome page
 Route::get('/', [DepartmentController::class, 'publicIndex'])->name('departments.index');
+Route::get('/departments/{id}/doctors', [AppointmentController::class, 'getDoctors'])->name('departments.showDoctors');
 
 Route::middleware('auth')->group(function () {
     Route::get('/appointments', [AppointmentController::class, 'create'])->name('appointments.create');
     Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
-    Route::get('/departments/{id}/doctors', [AppointmentController::class, 'getDoctors'])->name('departments.showDoctors');
     Route::get('/doctor/schedule/available', [AppointmentController::class, 'getAvailableSlots'])->name('ajax.doctor.available_slots');
 
     // Profile routes

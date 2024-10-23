@@ -22,8 +22,12 @@ class AppointmentController extends Controller
     // Display available doctors in a department
     public function getDoctors($departmentId)
     {
+        // Fetch the department and doctors
+        $department = Department::findOrFail($departmentId);
         $doctors = Doctor::where('department_id', $departmentId)->get();
-        return response()->json($doctors);
+
+        // Return the view with the data
+        return view('appointments.doctors', compact('department', 'doctors'));
     }
 
     // Display available time slots for a doctor on a specific day

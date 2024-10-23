@@ -6,8 +6,20 @@
     <!-- Include the booking steps partial -->
     @include('partials._booking_steps')
 
+    <!-- Step 1 Heading with Circle -->
+    <div class="row justify-content-center mt-4"> <!-- Reduced margin-top from mt-5 to mt-4 -->
+        <div class="col-md-8 text-center">
+            <div class="d-flex justify-content-center align-items-center mb-3"> <!-- Reduced margin-bottom from mb-4 to mb-3 -->
+                <div class="circle bg-primary text-white d-flex justify-content-center align-items-center rounded-circle" style="width: 60px; height: 60px; font-size: 15px;">
+                    Step:1
+                </div>
+                <h2 class="ml-3 mb-0 text-primary">Select a Department</h2>
+            </div>
+        </div>
+    </div>
+
     <!-- Department Cards Section -->
-    <div class="row justify-content-center mt-5">
+    <div class="row justify-content-center mt-3"> <!-- Reduced margin-top from mt-5 to mt-3 -->
         @foreach($departments as $department)
             <div class="col-6 col-md-4 col-lg-3 mb-3">
                 <div class="card shadow-sm h-100 border-0 rounded">
