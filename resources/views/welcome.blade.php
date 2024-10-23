@@ -55,12 +55,15 @@
             <!-- Department Cards Section -->
             <div class="row justify-content-center mt-5">
                 @foreach($departments as $department)
-                    <div class="col-6 col-md-4 col-lg-3 mb-3"> <!-- Adjusted to fit four cards in a row on larger screens -->
+                    <div class="col-6 col-md-4 col-lg-3 mb-3">
                         <div class="card shadow-sm h-100 border-0 rounded">
-                            <img src="{{ $department->image }}" class="card-img-top" alt="{{ $department->name }}" style="height: 120px; object-fit: cover;"> <!-- Reduced image height -->
-                            <div class="card-body text-center p-2"> <!-- Reduced padding inside the card -->
-                                <h6 class="card-title mb-1">{{ $department->name }}</h6> <!-- Reduced the heading size and margin for a compact look -->
-                                <a href="{{ route('departments.show', $department->id) }}" class="btn btn-outline-secondary btn-sm">Consult Now</a> <!-- Smaller button size -->
+                            <!-- Display department-specific image or default image -->
+                            <img src="{{ asset('images/departments/' . $department->id . '.png') }}"
+                                 onerror="this.onerror=null;this.src='{{ asset('images/departments/default-department.png') }}';"
+                                 class="card-img-top" alt="{{ $department->name }}" style="height: 120px; object-fit: cover;">
+                            <div class="card-body text-center p-2">
+                                <h6 class="card-title mb-1">{{ $department->name }}</h6>
+                                <a href="{{ route('departments.show', $department->id) }}" class="btn btn-outline-secondary btn-sm">Consult Now</a>
                             </div>
                         </div>
                     </div>

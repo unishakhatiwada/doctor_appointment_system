@@ -68,7 +68,7 @@ class DoctorFactory extends Factory
             'date_of_birth_bs' => $bsDate,
             'marital_status' => $this->faker->randomElement(['married', 'single', 'divorced', 'widow']),
             'status' => 'active',
-            'department_id' => Department::factory(),
+            'department_id' => Department::inRandomOrder()->first()->id,
 
             // Permanent address
             'permanent_province_id' => $permanentProvinceId,
