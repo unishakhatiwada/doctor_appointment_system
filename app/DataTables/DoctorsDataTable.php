@@ -54,7 +54,7 @@ class DoctorsDataTable extends DataTable
         return [
             Column::make('name')
                 ->width(10),
-            Column::make('address')
+            Column::make('specialization')
                 ->width(10),
             Column::make('phone')
                 ->width(10),

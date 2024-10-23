@@ -60,7 +60,7 @@ class DoctorFactory extends Factory
         // Return the generated data
         return [
             'name' => $this->faker->name,
-            'address' => $this->faker->address,
+            'specialization' => $this->faker->text(maxNbChars: 50),
             'gender' => $this->faker->randomElement(['male', 'female', 'others']),
             'phone' => $this->faker->unique()->phoneNumber,
             'email' => $this->faker->unique()->safeEmail,
