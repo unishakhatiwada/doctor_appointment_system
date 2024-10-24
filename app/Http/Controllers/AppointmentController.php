@@ -31,17 +31,38 @@ class AppointmentController extends Controller
     }
 
     // Display available time slots for a doctor on a specific day
-    public function getAvailableSlots(Request $request)
+    public function availableSlots($doctorId)
     {
-        $doctor = Doctor::findOrFail($request->doctor_id);
+        // Fetch doctor and active schedules with their appointments (eager load to avoid N+1 problem)
+        $doctor = Doctor::with(['schedules' => function($query) {
+            $query->where('is_active', true);
+        }, 'schedules.appointments'])->findOrFail($doctorId);
 
-        // Format the day to match the doctor's schedule (e.g. Monday, Tuesday)
-        $dayOfWeek = \Carbon\Carbon::parse($request->day)->format('l');
+        // Loop through each schedule and calculate available slots
+        foreach ($doctor->schedules as $schedule) {
+            // Parse start and end times once
+            $startTime = \Carbon\Carbon::parse($schedule->start_time);
+            $endTime = \Carbon\Carbon::parse($schedule->end_time);
 
-        $schedules = $doctor->schedules()->where('day_of_week', $dayOfWeek)->get();  // Filter schedules by day of week
-        return response()->json($schedules);  // Return schedules for the selected day
+            // Calculate total duration in minutes
+            $totalDurationInMinutes = $startTime->diffInMinutes($endTime);
+
+            // Check if appointment duration is valid and calculate total slots and available slots
+            if ($schedule->appointment_duration > 0) {
+                $totalSlots = floor($totalDurationInMinutes / $schedule->appointment_duration);
+                $bookedAppointments = $schedule->appointments->count(); // Eager loaded count
+                $availableSlots = max(0, $totalSlots - $bookedAppointments);
+            } else {
+                $availableSlots = 0;
+            }
+
+            // Attach available slots directly to the schedule model
+            $schedule->available_slots = $availableSlots;
+        }
+
+        // Return the view with the doctor and schedules
+        return view('appointments.available_slots', compact('doctor'));
     }
-
 
     public function store(AppointmentRequest $request)
     {

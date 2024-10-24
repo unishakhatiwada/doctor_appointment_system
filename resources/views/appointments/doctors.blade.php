@@ -34,11 +34,17 @@
 
                         <!-- This div with mt-auto pushes the button to the bottom -->
                         <div class="mt-auto">
-                            <a href="#" class="btn btn-outline-success btn-lg btn-block">Select Doctor</a>
+                            <a href="{{ route('appointments.availableSlots', $doctor->id) }}" class="btn btn-outline-success btn-lg btn-block">Select Doctor</a>
                         </div>
                     </div>
                 </div>
             </div>
         @endforeach
+    </div>
+    <!-- Back to Department Button --><!-- Back to Welcome Button -->
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-6 text-center">
+            <a href="{{ url('/') }}" class="btn btn-outline-secondary btn-lg">Back to Home</a>
+        </div>
     </div>
 @endsection
