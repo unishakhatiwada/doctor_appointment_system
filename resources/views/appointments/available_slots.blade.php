@@ -57,7 +57,9 @@
                                     @endwhile
                                 </select>
                                 <!-- Button to select the time slot -->
-                                <a href="#" id="select-time-slot-{{ $schedule->id }}" class="btn btn-outline-primary btn-sm select-time-slot-btn" disabled>Select Time for Token</a>
+                                <a href="{{ route('appointments.registration', ['doctor' => $doctor->id, 'schedule' => $schedule->id, 'time' => $startTime->format('H:i')]) }}" class="btn btn-outline-primary btn-sm">
+                                    Select Time for Token
+                                </a>
                             @else
                                 <p class="text-danger">No Tokens Available</p>
                             @endif
