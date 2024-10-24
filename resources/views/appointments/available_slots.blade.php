@@ -42,7 +42,22 @@
                                 {{ $schedule->available_slots }} Tokens Left
                             </p>
                             @if($schedule->available_slots > 0)
-                                <a href="{{ route('appointments.registration', ['doctor' => $doctor->id, 'schedule' => $schedule->id]) }}" class="btn btn-outline-primary btn-sm">Select Time Slot</a>
+                                <!-- Dropdown to select time slot -->
+                                <select class="form-control mb-2 time-slot-dropdown" id="time-slot-{{ $schedule->id }}" data-schedule-id="{{ $schedule->id }}">
+                                    <option value="" disabled selected>Select Time Slot</option>
+                                    @php
+                                        $startTime = \Carbon\Carbon::parse($schedule->start_time);
+                                        $endTime = \Carbon\Carbon::parse($schedule->end_time);
+                                        $appointmentDuration = $schedule->appointment_duration;
+                                    @endphp
+                                    @while($startTime->lt($endTime))
+                                        <option value="{{ $startTime->format('H:i') }}">
+                                            {{ $startTime->format('g:i A') }} - {{ $startTime->addMinutes($appointmentDuration)->format('g:i A') }}
+                                        </option>
+                                    @endwhile
+                                </select>
+                                <!-- Button to select the time slot -->
+                                <a href="#" id="select-time-slot-{{ $schedule->id }}" class="btn btn-outline-primary btn-sm select-time-slot-btn" disabled>Select Time for Token</a>
                             @else
                                 <p class="text-danger">No Tokens Available</p>
                             @endif
@@ -50,7 +65,7 @@
                     </div>
                 </div>
             @endforeach
-    @else
+        @else
             <!-- Display the "No slots available" message in a card -->
             <div class="col-6 col-md-4 col-lg-3 mb-3">
                 <div class="card shadow-sm h-100 border-0 rounded text-center">
@@ -69,4 +84,27 @@
             <a href="{{ route('departments.showDoctors', $doctor->department_id) }}" class="btn btn-outline-secondary btn-lg">Back to Doctors</a>
         </div>
     </div>
+
+    <!-- Add custom JavaScript to handle dynamic link updates -->
+    <script>
+        document.querySelectorAll('.time-slot-dropdown').forEach(dropdown => {
+            dropdown.addEventListener('change', function() {
+                const scheduleId = this.dataset.scheduleId;
+                const selectedTime = this.value;
+                const selectButton = document.getElementById(`select-time-slot-${scheduleId}`);
+
+                if (selectedTime) {
+                    // Update the href of the link with the selected time
+                    const url = "{{ route('appointments.registration', ['doctor' => $doctor->id, 'schedule' => ':scheduleId', 'time' => ':time']) }}";
+                    selectButton.href = url.replace(':scheduleId', scheduleId).replace(':time', selectedTime);
+
+                    // Enable the button
+                    selectButton.removeAttribute('disabled');
+                } else {
+                    // Disable the button if no time is selected
+                    selectButton.setAttribute('disabled', 'disabled');
+                }
+            });
+        });
+    </script>
 @endsection
