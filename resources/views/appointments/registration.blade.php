@@ -76,11 +76,12 @@
 
                             <div class="form-group">
                                 <label for="phone">Phone<span class="text-danger">*</span></label>
-                                <input type="number" class="form-control" id="phone" name="phone" value="{{ old('phone') }}" required>
+                                <input type="tel" class="form-control" id="phone" name="phone" value="{{ old('phone') }}" required>
                                 @error('phone')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
+
 
                             <div class="form-group">
                                 <label for="age">Age<span class="text-danger">*</span></label>

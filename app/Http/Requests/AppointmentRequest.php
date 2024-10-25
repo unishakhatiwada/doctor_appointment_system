@@ -20,8 +20,11 @@ class AppointmentRequest extends FormRequest
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|string|email|unique:patients,email',
-            'phone' => 'required|string|max:15',
-            'age' => 'required|integer|min:1',
+            'phone' => [
+                'required',
+                'regex:/^(98|97)[0-9]{8}$|^\+?[1-9]\d{0,2}[\s\-\(\)]*\d{3}[\s\-\(\)]*\d{3,4}[\s\-\(\)]*\d{4}$/'
+            ],
+            'age' => 'required|integer|min:1|max:105',
             'gender' => 'required|string|in:male,female,other',
             'appointment_date' => 'required|date',
             'start_time' => 'required|date_format:H:i',
@@ -41,6 +44,7 @@ class AppointmentRequest extends FormRequest
             'email.required' => 'Email is required.',
             'email.email' => 'Please provide a valid email address.',
             'phone.required' => 'Phone number is required.',
+            'phone.regex' => 'Please enter a valid phone number. Nepali numbers must start with 98 or 97 and have 10 digits. International numbers must start with a country code.',
         ];
     }
 }
