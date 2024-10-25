@@ -13,8 +13,10 @@
                         <h3 class="card-title mb-4 text-center">Confirm Your Appointment</h3>
 
                         <!-- Doctor and Time Slot Information -->
-                        <p class="text-center">Dr. {{ $doctor->name }} | Time Slot: {{ \Carbon\Carbon::parse($time)->format('g:i A') }} -
-                            {{ \Carbon\Carbon::parse($time)->addMinutes($schedule->appointment_duration)->format('g:i A') }}</p>
+                        <p class="text-center">
+                            Dr. {{ $doctor->name }} | Time Slot: {{ \Carbon\Carbon::parse($time)->format('g:i A') }} -
+                            {{ \Carbon\Carbon::parse($time)->addMinutes($schedule->appointment_duration)->format('g:i A') }}
+                        </p>
 
                         <!-- Show validation error message -->
                         @if ($errors->any())
@@ -32,21 +34,22 @@
                             </div>
                         @endif
 
-                        <!-- Back to Time Slots Button -->
-                        <div class="text-center mb-4">
-                            <a href="{{ route('appointments.availableSlots', $doctor->id) }}" class="btn btn-outline-secondary">
-                                Back to Time Slots
-                            </a>
-                        </div>
-
                         <!-- Patient details form -->
                         <form action="{{ route('appointments.store') }}" method="POST">
                             @csrf
                             <input type="hidden" name="doctor_id" value="{{ $doctor->id }}">
                             <input type="hidden" name="schedule_id" value="{{ $schedule->id }}">
-                            <input type="hidden" name="appointment_time" value="{{ $time }}">
+
+                            <!-- Hidden fields to pass start_time and end_time -->
+                            @php
+                                $startTime = \Carbon\Carbon::parse($time);
+                                $endTime = $startTime->copy()->addMinutes($schedule->appointment_duration);
+                            @endphp
+                            <input type="hidden" name="start_time" value="{{ $startTime->format('H:i') }}">
+                            <input type="hidden" name="end_time" value="{{ $endTime->format('H:i') }}">
                             <input type="hidden" name="appointment_date" value="{{ $appointment_date }}">
 
+                            <!-- Form Fields -->
                             <div class="form-group">
                                 <label for="first_name">First Name<span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="first_name" name="first_name" value="{{ old('first_name') }}" required>

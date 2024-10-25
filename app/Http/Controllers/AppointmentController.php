@@ -38,36 +38,65 @@ class AppointmentController extends Controller
     // Display available time slots for a doctor on a specific day
     public function availableSlots($doctorId)
     {
-        // Fetch doctor and active schedules with their appointments (eager load to avoid N+1 problem)
+        // Fetch active doctor schedules and their appointments
         $doctor = Doctor::with(['schedules' => function($query) {
-            $query->where('is_active', true);
+            $query->where('is_active', true); // Only active schedules
         }, 'schedules.appointments'])->findOrFail($doctorId);
 
-        // Loop through each schedule and calculate available slots
+        $gapDuration = 2; // 2-minute gap between each slot
+
         foreach ($doctor->schedules as $schedule) {
-            // Parse start and end times once
             $startTime = \Carbon\Carbon::parse($schedule->start_time);
             $endTime = \Carbon\Carbon::parse($schedule->end_time);
+            $appointmentDuration = $schedule->appointment_duration;
 
-            // Calculate total duration in minutes
+            // Calculate total slots based on duration
             $totalDurationInMinutes = $startTime->diffInMinutes($endTime);
+            $totalSlots = floor($totalDurationInMinutes / ($appointmentDuration + $gapDuration));
 
-            // Check if appointment duration is valid and calculate total slots and available slots
-            if ($schedule->appointment_duration > 0) {
-                $totalSlots = floor($totalDurationInMinutes / $schedule->appointment_duration);
-                $bookedAppointments = $schedule->appointments->count(); // Eager loaded count
-                $availableSlots = max(0, $totalSlots - $bookedAppointments);
-            } else {
-                $availableSlots = 0;
+            // Get all booked times for this schedule (appointments)
+            $bookedTimes = $schedule->appointments->map(function ($appointment) use ($appointmentDuration) {
+                return [
+                    'start' => \Carbon\Carbon::parse($appointment->start_time),
+                    'end' => \Carbon\Carbon::parse($appointment->end_time)->addMinutes($appointmentDuration)
+                ];
+            });
+
+            // Initialize available time slots with gap interval
+            $timeSlots = [];
+            $slotStartTime = clone $startTime;
+            $availableSlots = 0;
+
+            // Generate slots until end time is reached or total slots are filled
+            while ($slotStartTime->lt($endTime) && $availableSlots < $totalSlots) {
+                $slotEndTime = $slotStartTime->copy()->addMinutes($appointmentDuration);
+
+                // Check for overlap with booked appointments
+                $isBooked = $bookedTimes->contains(function ($booked) use ($slotStartTime, $slotEndTime) {
+                    return $slotStartTime->lt($booked['end']) && $slotEndTime->gt($booked['start']);
+                });
+                // Only add the slot if it is not booked
+                if (!$isBooked) {
+                    $timeSlots[] = [
+                        'start' => $slotStartTime->format('H:i'),
+                        'display' => $slotStartTime->format('g:i A') . ' - ' . $slotEndTime->format('g:i A')
+                    ];
+                    $availableSlots++; // Increment available slot counter
+                }
+
+                // Move to the next available slot with gap duration
+                $slotStartTime->addMinutes($appointmentDuration + $gapDuration);
             }
 
-            // Attach available slots directly to the schedule model
-            $schedule->available_slots = $availableSlots;
+            // Attach available slots and time slots to schedule
+            $schedule->setAttribute('available_slots', $availableSlots);
+            $schedule->setAttribute('time_slots', $timeSlots);
+           // dd($timeSlots);
         }
 
-        // Return the view with the doctor and schedules
         return view('appointments.available_slots', compact('doctor'));
     }
+
     public function showRegistrationForm($doctorId, $scheduleId, $time)
     {
         $doctor = Doctor::findOrFail($doctorId);
@@ -79,66 +108,66 @@ class AppointmentController extends Controller
 
     public function store(AppointmentRequest $request)
     {
-        // Validate the input data
         $validated = $request->validated();
 
-        // Use a database transaction to ensure atomicity
+        // Use start_time and end_time directly from the form
+        $startTime = \Carbon\Carbon::parse($validated['start_time'])->format('H:i:s');
+        $endTime = \Carbon\Carbon::parse($validated['end_time'])->format('H:i:s');
+
+        // Check for existing appointments that overlap
+        $existingAppointment = Appointment::where('doctor_id', $validated['doctor_id'])
+            ->where('appointment_date', $validated['appointment_date'])
+            ->where(function ($query) use ($startTime, $endTime) {
+                // Check if any appointment starts within the range of the new appointment
+                $query->whereBetween('start_time', [$startTime, $endTime])
+                    ->orWhereBetween('end_time', [$startTime, $endTime])
+                    ->orWhere(function ($query) use ($startTime, $endTime) {
+                        $query->where('start_time', '<=', $startTime)
+                            ->where('end_time', '>=', $endTime);
+                    });
+            })
+            ->first();
+
+        if ($existingAppointment) {
+            // Rollback the transaction and redirect with an error message
+            return redirect()->back()->with('error', 'The doctor is already booked at this time.');
+        }
+
         DB::beginTransaction();
 
         try {
-            // Check if the doctor is already booked for the selected time and date
-            $existingAppointment = Appointment::where('doctor_id', $validated['doctor_id'])
-                ->where('appointment_date', $validated['appointment_date'])
-                ->where('appointment_time', $validated['appointment_time'])
-                ->first();
-
-            if ($existingAppointment) {
-                // Rollback the transaction and redirect with an error message
-                DB::rollBack();
-                return redirect()->back()->with('error', 'The doctor is already booked at this time.');
-            }
-
-            // Check if the patient already exists based on the email
-            $patient = Patient::where('email', $validated['email'])->first();
-
-            // If the patient does not exist, create a new patient
-            if (!$patient) {
-                $patient = Patient::create([
+            // Create or retrieve the patient
+            $patient = Patient::firstOrCreate(
+                ['email' => $validated['email']],
+                [
                     'first_name' => $validated['first_name'],
                     'last_name' => $validated['last_name'],
-                    'email' => $validated['email'],
                     'gender' => $validated['gender'],
                     'age' => $validated['age'],
                     'phone' => $validated['phone'],
-                ]);
-            }
+                ]
+            );
 
-            // Create a new appointment with the validated data
+            // Create appointment
             $appointment = Appointment::create([
                 'patient_id' => $patient->id,
                 'doctor_id' => $validated['doctor_id'],
                 'schedule_id' => $validated['schedule_id'],
                 'appointment_date' => $validated['appointment_date'],
-                'appointment_time' => $validated['appointment_time'],
+                'start_time' => $startTime,
+                'end_time' => $endTime,
             ]);
 
-            // Commit the transaction
             DB::commit();
 
-            // Redirect the user to the confirmation page with a success message
             return redirect()->route('appointments.confirmation', $appointment->id)
                 ->with('success', 'Your appointment has been successfully booked!');
-
-        } catch (Exception $e) {
-            // If something went wrong, rollback the transaction
+        } catch (\Exception $e) {
             DB::rollBack();
-            // Log the error for debugging (optional)
-            \Log::error('Appointment booking failed: ' . $e->getMessage());
-
-            // Redirect back with an error message
-            return redirect()->back()->with('error', 'There was an error processing your appointment. Please try again.');
+            return redirect()->back()->with('error', 'There was an error booking your appointment.');
         }
     }
+
 
     public function confirmation(Appointment $appointment): View
     {

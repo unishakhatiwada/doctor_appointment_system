@@ -3,7 +3,6 @@
 @section('background_image', asset('images/doctor-background.jpg'))
 
 @section('content')
-    <!-- Include the booking steps partial -->
     @include('partials._booking_steps')
 
     <!-- Step 3 Heading with Circle -->
@@ -42,24 +41,15 @@
                                 {{ $schedule->available_slots }} Tokens Left
                             </p>
                             @if($schedule->available_slots > 0)
-                                <!-- Dropdown to select time slot -->
                                 <select class="form-control mb-2 time-slot-dropdown" id="time-slot-{{ $schedule->id }}" data-schedule-id="{{ $schedule->id }}">
                                     <option value="" disabled selected>Select Time Slot</option>
-                                    @php
-                                        $startTime = \Carbon\Carbon::parse($schedule->start_time);
-                                        $endTime = \Carbon\Carbon::parse($schedule->end_time);
-                                        $appointmentDuration = $schedule->appointment_duration;
-                                    @endphp
-                                    @while($startTime->lt($endTime))
-                                        <option value="{{ $startTime->format('H:i') }}">
-                                            {{ $startTime->format('g:i A') }} - {{ $startTime->addMinutes($appointmentDuration)->format('g:i A') }}
+                                    @foreach($schedule->time_slots as $slot)
+                                        <option value="{{ $slot['start'] }}">
+                                            {{ $slot['display'] }}
                                         </option>
-                                    @endwhile
+                                    @endforeach
                                 </select>
-                                <!-- Button to select the time slot -->
-                                <a href="{{ route('appointments.registration', ['doctor' => $doctor->id, 'schedule' => $schedule->id, 'time' => $startTime->format('H:i')]) }}" class="btn btn-outline-primary btn-sm">
-                                    Select Time for Token
-                                </a>
+                                <a href="#" id="select-time-btn-{{ $schedule->id }}" class="btn btn-outline-primary btn-sm" disabled>Select Time for Token</a>
                             @else
                                 <p class="text-danger">No Tokens Available</p>
                             @endif
@@ -89,23 +79,20 @@
 
     <!-- Add custom JavaScript to handle dynamic link updates -->
     <script>
-        document.querySelectorAll('.time-slot-dropdown').forEach(dropdown => {
-            dropdown.addEventListener('change', function() {
-                const scheduleId = this.dataset.scheduleId;
-                const selectedTime = this.value;
-                const selectButton = document.getElementById(`select-time-slot-${scheduleId}`);
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.time-slot-dropdown').forEach(function (dropdown) {
+                dropdown.addEventListener('change', function () {
+                    const scheduleId = this.getAttribute('data-schedule-id');
+                    const selectedTime = this.value;
+                    const doctorId = "{{ $doctor->id }}";
+                    const selectButton = document.getElementById('select-time-btn-' + scheduleId);
 
-                if (selectedTime) {
-                    // Update the href of the link with the selected time
-                    const url = "{{ route('appointments.registration', ['doctor' => $doctor->id, 'schedule' => ':scheduleId', 'time' => ':time']) }}";
-                    selectButton.href = url.replace(':scheduleId', scheduleId).replace(':time', selectedTime);
-
-                    // Enable the button
-                    selectButton.removeAttribute('disabled');
-                } else {
-                    // Disable the button if no time is selected
-                    selectButton.setAttribute('disabled', 'disabled');
-                }
+                    if (selectedTime) {
+                        const newHref = `/appointments/registration/${doctorId}/${scheduleId}/${selectedTime}`;
+                        selectButton.setAttribute('href', newHref);
+                        selectButton.removeAttribute('disabled');
+                    }
+                });
             });
         });
     </script>
