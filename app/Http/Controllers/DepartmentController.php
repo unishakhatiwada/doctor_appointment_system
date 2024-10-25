@@ -17,11 +17,14 @@ class DepartmentController extends Controller
     {
         return $dataTable->render('departments.index');
     }
+
     public function publicIndex(): View
     {
         $departments = Department::all();  // Fetch all departments
+
         return view('welcome', compact('departments'));  // Return to welcome view
     }
+
     public function create(): View
     {
         $doctors = Doctor::all();

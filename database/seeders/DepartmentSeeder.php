@@ -24,7 +24,7 @@ class DepartmentSeeder extends Seeder
             ['code' => 'NEPHRO', 'name' => 'Nephrology', 'description' => 'Department of Nephrology.'],
             ['code' => 'RAD', 'name' => 'Radiology', 'description' => 'Department of Radiology.'],
             ['code' => 'DERM2', 'name' => 'Dermatology Special', 'description' => 'Specialist Dermatology Services.'],
-            ['code' => 'PATH', 'name' => 'Pathology', 'description' => 'Department of Pathology.']
+            ['code' => 'PATH', 'name' => 'Pathology', 'description' => 'Department of Pathology.'],
         ];
 
         // Insert the departments into the database

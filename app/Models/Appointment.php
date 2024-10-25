@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Appointment extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'patient_id',
         'doctor_id',

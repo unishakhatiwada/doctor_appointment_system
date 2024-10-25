@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class ScheduleRequest extends FormRequest
 {
@@ -18,10 +17,10 @@ class ScheduleRequest extends FormRequest
 
         foreach ($schedules as $day => $schedule) {
             if (isset($schedule['start_time'])) {
-                $schedules[$day]['start_time'] = $schedule['start_time'] . ':00'; // Append :00 for seconds
+                $schedules[$day]['start_time'] = $schedule['start_time'].':00'; // Append :00 for seconds
             }
             if (isset($schedule['end_time'])) {
-                $schedules[$day]['end_time'] = $schedule['end_time'] . ':00'; // Append :00 for seconds
+                $schedules[$day]['end_time'] = $schedule['end_time'].':00'; // Append :00 for seconds
             }
         }
 

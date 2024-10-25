@@ -7,7 +7,6 @@ use App\Http\Requests\ScheduleRequest;
 use App\Models\Doctor;
 use App\Models\Schedule;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
@@ -21,9 +20,9 @@ class ScheduleController extends Controller
     public function create(): View
     {
         $doctorsWithoutSchedule = Doctor::doesntHave('schedules')->get();
+
         return view('schedules.create_edit', compact('doctorsWithoutSchedule'));
     }
-
 
     public function store(ScheduleRequest $request): RedirectResponse
     {
@@ -33,7 +32,7 @@ class ScheduleController extends Controller
         $schedules = [];
 
         foreach (['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'] as $day) {
-            if (!empty($validated['schedule'][$day]['start_time']) && !empty($validated['schedule'][$day]['end_time'])) {
+            if (! empty($validated['schedule'][$day]['start_time']) && ! empty($validated['schedule'][$day]['end_time'])) {
                 $schedules[] = [
                     'doctor_id' => $doctorId,
                     'day_of_week' => $day,
@@ -104,7 +103,6 @@ class ScheduleController extends Controller
 
         return redirect()->route('schedules.index')->with('success', 'Schedule updated successfully.');
     }
-
 
     public function destroy(Doctor $doctor, Schedule $schedule): RedirectResponse
     {

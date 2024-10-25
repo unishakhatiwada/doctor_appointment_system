@@ -12,14 +12,13 @@ return new class extends Migration
             $table->id();
             $table->string('first_name');
             $table->string('last_name');
-            $table->enum('gender',['male','female','other']);
+            $table->enum('gender', ['male', 'female', 'other']);
             $table->integer('age');
             $table->string('email')->unique();
             $table->string('phone')->nullable();
             $table->timestamps();
         });
     }
-
 
     public function down(): void
     {
