@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AppointmentRequest;
+use App\Mail\AppointmentConfirmationMail;
 use App\Models\Appointment;
 use App\Models\Department;
 use App\Models\Doctor;
@@ -10,6 +11,7 @@ use App\Models\Patient;
 use App\Models\Schedule;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class AppointmentController extends Controller
 {
@@ -18,7 +20,7 @@ class AppointmentController extends Controller
     {
         $departments = Department::all();  // Get all departments
 
-        return view('appointments.create', compact('departments'));
+        return view('welcome', compact('departments'));
     }
 
     // Display available doctors in a department
@@ -106,8 +108,6 @@ class AppointmentController extends Controller
     public function store(AppointmentRequest $request)
     {
         $validated = $request->validated();
-
-        // Parse times directly from the validated data
         $startTime = \Carbon\Carbon::parse($validated['start_time'])->format('H:i:s');
         $endTime = \Carbon\Carbon::parse($validated['end_time'])->format('H:i:s');
 
@@ -131,6 +131,7 @@ class AppointmentController extends Controller
         DB::beginTransaction();
 
         try {
+            // Create or retrieve patient information
             $patient = Patient::firstOrCreate(
                 ['email' => $validated['email']],
                 array_merge($validated, [
@@ -139,6 +140,7 @@ class AppointmentController extends Controller
                 ])
             );
 
+            // Create the appointment
             $appointment = Appointment::create([
                 'patient_id' => $patient->id,
                 'doctor_id' => $validated['doctor_id'],
@@ -148,19 +150,19 @@ class AppointmentController extends Controller
                 'end_time' => $endTime,
             ]);
 
+            // Send email confirmation
+            Mail::to($patient->email)->send(new AppointmentConfirmationMail($appointment));
+
+            // Commit the transaction only if email is sent successfully
             DB::commit();
 
-            return redirect()->route('appointments.confirmation', $appointment->id)
-                ->with('success', 'Your appointment has been successfully booked!');
+            // Redirect to the welcome page with success message
+            return redirect()->route('appointments.create')->with('success', 'Your appointment has been successfully booked! Please check your Mail');
         } catch (\Exception $e) {
             DB::rollBack();
-
+            \Log::error('Error booking appointment or sending email: ' . $e->getMessage());
             return redirect()->back()->with('error', 'There was an error booking your appointment.');
         }
     }
 
-    public function confirmation(Appointment $appointment): View
-    {
-        return view('appointments.confirmation', compact('appointment'));
-    }
 }

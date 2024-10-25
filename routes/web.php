@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 
 // Default user routes
 Route::get('/', function () {
-    return view('welcome');
+    return view('welcome')->name('welcome');;
 });
 
 Route::get('/dashboard', function () {
@@ -22,7 +22,6 @@ Route::get('/appointments/{doctor}/available-slots', [AppointmentController::cla
 Route::get('/appointments/registration/{doctor}/{schedule}/{time}', [AppointmentController::class, 'showRegistrationForm'])->name('appointments.registration');
 Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
 Route::get('/appointments', [AppointmentController::class, 'create'])->name('appointments.create');
-Route::get('/appointments/confirmation/{appointment}', [AppointmentController::class, 'confirmation'])->name('appointments.confirmation');
 
 Route::middleware('auth')->group(function () {
     // Profile routes
