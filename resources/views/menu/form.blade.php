@@ -73,7 +73,7 @@
                     <div id="moduleField" class="form-group" style="display: {{ (old('type', $menuItem->type ?? '') == 'module') ? 'block' : 'none' }};">
                         <label for="module_id">Select Module</label>
                         <div class="d-flex align-items-center">
-                            <select class="form-control mr-2" id="module_id" name="type_id">
+                            <select class="form-control mr-2" id="module_id" onchange="setTypeId('module')">
                                 <option value="">Select a Module</option>
                                 @foreach($modules as $module)
                                     <option value="{{ $module->id }}" {{ (old('type_id', $menuItem->type_id ?? '') == $module->id) ? 'selected' : '' }}>
@@ -91,7 +91,7 @@
                     <div id="pageField" class="form-group" style="display: {{ (old('type', $menuItem->type ?? '') == 'page') ? 'block' : 'none' }};">
                         <label for="page_id">Select Page</label>
                         <div class="d-flex align-items-center">
-                            <select class="form-control mr-2" id="page_id" name="type_id">
+                            <select class="form-control mr-2" id="page_id" onchange="setTypeId('page')">
                                 <option value="">Select a Page</option>
                                 @foreach($pages as $page)
                                     <option value="{{ $page->id }}" {{ (old('type_id', $menuItem->type_id ?? '') == $page->id) ? 'selected' : '' }}>
@@ -120,6 +120,9 @@
                 </div>
             </div>
 
+            <!-- Hidden field to submit the correct type_id based on type selection -->
+            <input type="hidden" id="type_id" name="type_id" value="{{ old('type_id', $menuItem->type_id ?? '') }}">
+
             <button type="submit" class="btn btn-primary mt-3">{{ isset($menuItem) ? 'Update' : 'Create' }} Menu Item</button>
         </form>
     </div>
@@ -129,19 +132,27 @@
         function toggleTypeFields() {
             const type = document.getElementById('type').value;
 
-            // Show or hide fields based on the selected type
             document.getElementById('moduleField').style.display = (type === 'module') ? 'block' : 'none';
             document.getElementById('pageField').style.display = (type === 'page') ? 'block' : 'none';
             document.getElementById('externalLinkField').style.display = (type === 'external_link') ? 'block' : 'none';
 
-            // Clear the type_id value when not needed
-            if (type !== 'module' && type !== 'page') {
-                document.getElementById('module_id').value = ''; // Clear module selection
-                document.getElementById('page_id').value = ''; // Clear page selection
+            // Clear type_id if external link is selected
+            if (type === 'external_link') {
+                document.getElementById('type_id').value = '';
             }
         }
 
-        // Run function on page load for edit view
+        // Set the type_id value based on selected type and id in module/page fields
+        function setTypeId(type) {
+            const typeIdField = document.getElementById('type_id');
+            if (type === 'module') {
+                typeIdField.value = document.getElementById('module_id').value;
+            } else if (type === 'page') {
+                typeIdField.value = document.getElementById('page_id').value;
+            }
+        }
+
+        // Initialize fields on page load
         document.addEventListener('DOMContentLoaded', toggleTypeFields);
     </script>
 

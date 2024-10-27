@@ -14,7 +14,7 @@ class MenuRequest extends FormRequest
 
     public function rules(): array
     {
-    dd($this    );
+
          $rules = [
         'title' => 'required|string|max:255',
         'display' => 'required|string|in:visible,hidden',
