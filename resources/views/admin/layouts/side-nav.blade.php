@@ -53,6 +53,14 @@
                         </p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{route('menus.index')}}" class="nav-link "  >
+                        <i class="nav-icons fas fa-calendar-plus"></i>
+                        <p>
+                            Menus
+                        </p>
+                    </a>
+                </li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

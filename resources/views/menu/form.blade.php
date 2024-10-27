@@ -1,0 +1,151 @@
+@extends('admin.layouts.app')
+
+@section('content')
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <div class="container">
+        <h2>{{ isset($menuItem) ? 'Edit' : 'Create' }} Menu Item</h2>
+
+        <form action="{{ isset($menuItem) ? route('menus.update', $menuItem->id) : route('menus.store') }}" method="POST">
+            @csrf
+            @if(isset($menuItem))
+                @method('PUT')
+            @endif
+
+            <div class="row">
+                <!-- Left Column -->
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input type="text" class="form-control" id="title" name="title"
+                               value="{{ old('title', $menuItem->title ?? '') }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="display">Display</label>
+                        <select class="form-control" id="display" name="display">
+                            <option value="visible" {{ (old('display', $menuItem->display ?? '') == 'visible') ? 'selected' : '' }}>Visible</option>
+                            <option value="hidden" {{ (old('display', $menuItem->display ?? '') == 'hidden') ? 'selected' : '' }}>Hidden</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select class="form-control" id="status" name="status">
+                            <option value="1" {{ (old('status', $menuItem->status ?? '') == 1) ? 'selected' : '' }}>Active</option>
+                            <option value="0" {{ (old('status', $menuItem->status ?? '') == 0) ? 'selected' : '' }}>Inactive</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="parent_id">Parent Menu</label>
+                        <select class="form-control" id="parent_id" name="parent_id">
+                            <option value="">No Parent</option>
+                            @foreach($menuItems as $item)
+                                <option value="{{ $item->id }}" {{ (old('parent_id', $menuItem->parent_id ?? '') == $item->id) ? 'selected' : '' }}>
+                                    {{ $item->title }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="type">Type</label>
+                        <select class="form-control" id="type" name="type" onchange="toggleTypeFields()">
+                            <option value="module" {{ (old('type', $menuItem->type ?? '') == 'module') ? 'selected' : '' }}>Module</option>
+                            <option value="page" {{ (old('type', $menuItem->type ?? '') == 'page') ? 'selected' : '' }}>Page</option>
+                            <option value="external_link" {{ (old('type', $menuItem->type ?? '') == 'external_link') ? 'selected' : '' }}>External Link</option>
+                        </select>
+                    </div>
+
+                    <!-- Module Selector with "Create Module" Button -->
+                    <div id="moduleField" class="form-group" style="display: {{ (old('type', $menuItem->type ?? '') == 'module') ? 'block' : 'none' }};">
+                        <label for="module_id">Select Module</label>
+                        <div class="d-flex align-items-center">
+                            <select class="form-control mr-2" id="module_id" name="type_id">
+                                <option value="">Select a Module</option>
+                                @foreach($modules as $module)
+                                    <option value="{{ $module->id }}" {{ (old('type_id', $menuItem->type_id ?? '') == $module->id) ? 'selected' : '' }}>
+                                        {{ $module->title }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#createModuleModal">
+                                Create Module
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Page Selector with "Create Page" Button -->
+                    <div id="pageField" class="form-group" style="display: {{ (old('type', $menuItem->type ?? '') == 'page') ? 'block' : 'none' }};">
+                        <label for="page_id">Select Page</label>
+                        <div class="d-flex align-items-center">
+                            <select class="form-control mr-2" id="page_id" name="type_id">
+                                <option value="">Select a Page</option>
+                                @foreach($pages as $page)
+                                    <option value="{{ $page->id }}" {{ (old('type_id', $menuItem->type_id ?? '') == $page->id) ? 'selected' : '' }}>
+                                        {{ $page->title }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#createPageModal">
+                                Create Page
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- External Link Field -->
+                    <div id="externalLinkField" class="form-group" style="display: {{ (old('type', $menuItem->type ?? '') == 'external_link') ? 'block' : 'none' }};">
+                        <label for="external_link">External Link</label>
+                        <input type="url" class="form-control" id="external_link" name="external_link"
+                               value="{{ old('external_link', $menuItem->external_link ?? '') }}" placeholder="https://example.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="order">Order</label>
+                        <input type="number" class="form-control" id="order" name="order"
+                               value="{{ old('order', $menuItem->order ?? 0) }}">
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-3">{{ isset($menuItem) ? 'Update' : 'Create' }} Menu Item</button>
+        </form>
+    </div>
+
+    <!-- JavaScript to Handle Field Display Based on Type Selection -->
+    <script>
+        function toggleTypeFields() {
+            const type = document.getElementById('type').value;
+
+            // Show or hide fields based on the selected type
+            document.getElementById('moduleField').style.display = (type === 'module') ? 'block' : 'none';
+            document.getElementById('pageField').style.display = (type === 'page') ? 'block' : 'none';
+            document.getElementById('externalLinkField').style.display = (type === 'external_link') ? 'block' : 'none';
+
+            // Clear the type_id value when not needed
+            if (type !== 'module' && type !== 'page') {
+                document.getElementById('module_id').value = ''; // Clear module selection
+                document.getElementById('page_id').value = ''; // Clear page selection
+            }
+        }
+
+        // Run function on page load for edit view
+        document.addEventListener('DOMContentLoaded', toggleTypeFields);
+    </script>
+
+    <!-- Include Modals for Creating Module and Page -->
+    @include('menu.modals.create_module')
+    @include('menu.modals.create_page')
+@endsection
