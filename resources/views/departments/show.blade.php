@@ -1,6 +1,11 @@
 @extends('admin.layouts.app')
 
 @section('content')
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
     <div class="container">
         <h1>Department Details</h1>
 
@@ -70,10 +75,6 @@
 
             <a href="{{ route('departments.addDoctorForm', $department->id) }}" class="btn btn-primary">Add Doctor</a>
         </div>
-        @if(session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
+
     </div>
 @endsection

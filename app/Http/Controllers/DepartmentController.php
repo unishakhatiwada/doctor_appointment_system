@@ -99,6 +99,6 @@ class DepartmentController extends Controller
             ->update(['department_id' => $department->id]);
 
         // Redirect back to the department's show page with a success message
-        return redirect()->route('departments.show', $department->id)->with('success', 'Doctors added successfully.');
+        return redirect()->route('departments.show', $department->id)->with('success', 'Doctors added successfully to this department.');
     }
 }

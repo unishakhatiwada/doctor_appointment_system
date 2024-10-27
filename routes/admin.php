@@ -19,7 +19,7 @@ Route::middleware(['admin_auth:admin'])->prefix('admin')->group(function () {
     Route::get('logout', [DashboardController::class, 'logout'])->name('admin.logout');
 
     Route::resource('doctors', DoctorController::class)->names('doctors');
-    Route::get('admin/doctors/{doctor}/assign', [DoctorController::class, 'assign'])->name('doctors.assign');
+    Route::get('doctors/{doctor}/assign', [DoctorController::class, 'assign'])->name('doctors.assign');
 
     Route::resource('educations', EducationController::class)->names('educations');
     Route::resource('experiences', ExperienceController::class)->names('experiences');
