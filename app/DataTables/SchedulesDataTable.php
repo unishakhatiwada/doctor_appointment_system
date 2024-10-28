@@ -45,10 +45,10 @@ class SchedulesDataTable extends DataTable
 
     public function query(): QueryBuilder
     {
-    // Add select for doctor_name and allow the search for doctor_name
-    return Schedule::query()
-        ->select('schedules.*', 'doctors.name as doctor_name')  // Select doctor's name
-        ->join('doctors', 'schedules.doctor_id', '=', 'doctors.id');  // Join with doctors table
+        // Add select for doctor_name and allow the search for doctor_name
+        return Schedule::query()
+            ->select('schedules.*', 'doctors.name as doctor_name')  // Select doctor's name
+            ->join('doctors', 'schedules.doctor_id', '=', 'doctors.id');  // Join with doctors table
     }
 
     public function html(): HtmlBuilder

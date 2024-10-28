@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('gender');
             $table->string('marital_status');
-            $table->string('address')->nullable();
+            $table->string('specialization')->nullable();
             $table->string('phone')->unique();
             $table->string('email')->unique();
             $table->string('status')->default('active');

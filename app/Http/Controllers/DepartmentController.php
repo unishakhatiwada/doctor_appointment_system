@@ -18,6 +18,13 @@ class DepartmentController extends Controller
         return $dataTable->render('departments.index');
     }
 
+    public function publicIndex(): View
+    {
+        $departments = Department::all();  // Fetch all departments
+
+        return view('welcome', compact('departments'));  // Return to welcome view
+    }
+
     public function create(): View
     {
         $doctors = Doctor::all();
@@ -92,6 +99,6 @@ class DepartmentController extends Controller
             ->update(['department_id' => $department->id]);
 
         // Redirect back to the department's show page with a success message
-        return redirect()->route('departments.show', $department->id)->with('success', 'Doctors added successfully.');
+        return redirect()->route('departments.show', $department->id)->with('success', 'Doctors added successfully to this department.');
     }
 }

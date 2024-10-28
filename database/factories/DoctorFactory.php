@@ -60,7 +60,7 @@ class DoctorFactory extends Factory
         // Return the generated data
         return [
             'name' => $this->faker->name,
-            'address' => $this->faker->address,
+            'specialization' => $this->faker->text(maxNbChars: 50),
             'gender' => $this->faker->randomElement(['male', 'female', 'others']),
             'phone' => $this->faker->unique()->phoneNumber,
             'email' => $this->faker->unique()->safeEmail,
@@ -68,7 +68,7 @@ class DoctorFactory extends Factory
             'date_of_birth_bs' => $bsDate,
             'marital_status' => $this->faker->randomElement(['married', 'single', 'divorced', 'widow']),
             'status' => 'active',
-            'department_id' => Department::factory(),
+            'department_id' => Department::inRandomOrder()->first()->id,
 
             // Permanent address
             'permanent_province_id' => $permanentProvinceId,
