@@ -10,6 +10,7 @@ class ModuleController extends Controller
     public function show($slug)
     {
         $module = Module::where('slug', $slug)->firstOrFail();
+
         return view('modules.show', compact('module'));
     }
 
@@ -21,6 +22,7 @@ class ModuleController extends Controller
         ]);
 
         Module::create($request->all());
+
         return back()->with('success', 'Module created successfully!');
     }
 }

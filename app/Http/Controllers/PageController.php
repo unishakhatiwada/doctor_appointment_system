@@ -10,6 +10,7 @@ class PageController extends Controller
     public function show($slug)
     {
         $page = Page::where('slug', $slug)->firstOrFail();
+
         return view('pages.show', compact('page'));
     }
 
@@ -23,6 +24,7 @@ class PageController extends Controller
         ]);
 
         Page::create($request->all());
+
         return back()->with('success', 'Page created successfully!');
     }
 }

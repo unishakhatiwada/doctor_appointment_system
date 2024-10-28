@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 
 // Default user routes
 Route::get('/', function () {
-    return view('welcome')->name('welcome');;
+    return view('welcome')->name('welcome');
 });
 
 Route::get('/dashboard', function () {

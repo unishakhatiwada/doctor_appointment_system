@@ -7,8 +7,6 @@ use App\Models\MenuItem;
 use App\Models\Module;
 use App\Models\Page;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class MenuController extends Controller
@@ -67,6 +65,4 @@ class MenuController extends Controller
 
         return redirect()->route('menus.index')->with('success', 'Menu item deleted successfully.');
     }
-
-
 }

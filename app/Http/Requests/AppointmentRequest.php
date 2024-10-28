@@ -22,7 +22,7 @@ class AppointmentRequest extends FormRequest
             'email' => 'required|string|email|unique:patients,email',
             'phone' => [
                 'required',
-                'regex:/^(98|97)[0-9]{8}$|^\+?[1-9]\d{0,2}[\s\-\(\)]*\d{3}[\s\-\(\)]*\d{3,4}[\s\-\(\)]*\d{4}$/'
+                'regex:/^(98|97)[0-9]{8}$|^\+?[1-9]\d{0,2}[\s\-\(\)]*\d{3}[\s\-\(\)]*\d{3,4}[\s\-\(\)]*\d{4}$/',
             ],
             'age' => 'required|integer|min:1|max:105',
             'gender' => 'required|string|in:male,female,other',

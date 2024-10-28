@@ -160,9 +160,9 @@ class AppointmentController extends Controller
             return redirect()->route('appointments.create')->with('success', 'Your appointment has been successfully booked! Please check your Mail');
         } catch (\Exception $e) {
             DB::rollBack();
-            \Log::error('Error booking appointment or sending email: ' . $e->getMessage());
+            \Log::error('Error booking appointment or sending email: '.$e->getMessage());
+
             return redirect()->back()->with('error', 'There was an error booking your appointment.');
         }
     }
-
 }
