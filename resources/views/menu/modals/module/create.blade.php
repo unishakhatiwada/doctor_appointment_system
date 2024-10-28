@@ -1,7 +1,7 @@
 
 <div class="modal fade" id="createModuleModal" tabindex="-1" role="dialog" aria-labelledby="createModuleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <form action="{{ route('modules.store') }}" method="POST">
+        <form action="{{ route('module.store') }}" method="POST">
             @csrf
             <div class="modal-content">
                 <div class="modal-header">

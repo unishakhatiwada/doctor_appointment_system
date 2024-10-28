@@ -32,8 +32,7 @@ Route::middleware(['admin_auth:admin'])->prefix('admin')->group(function () {
     Route::post('/departments/{department}/add-doctors', [DepartmentController::class, 'addDoctors'])->name('departments.addDoctors');
     Route::resource('schedules', ScheduleController::class)->names('schedules');
     Route::resource('menus', MenuController::class)->names('menus');
-    Route::post('modules', [ModuleController::class, 'store'])->name('modules.store');
-    Route::post('pages', [PageController::class, 'store'])->name('pages.store');
-    Route::get('/module/{slug}', [ModuleController::class, 'show'])->name('module.show');
-    Route::get('/page/{slug}', [PageController::class, 'show'])->name('page.show');
+    Route::resource('module', ModuleController::class);
+    Route::resource('page', PageController::class);
+
 });

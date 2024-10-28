@@ -2,7 +2,7 @@
 
 <div class="modal fade" id="createPageModal" tabindex="-1" role="dialog" aria-labelledby="createPageModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <form action="{{ route('pages.store') }}" method="POST">
+        <form action="{{ route('page.store') }}" method="POST">
             @csrf
             <div class="modal-content">
                 <div class="modal-header">
