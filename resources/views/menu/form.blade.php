@@ -164,6 +164,6 @@
     </script>
 
     <!-- Include Modals for Creating Module and Page -->
-    @include('menu.modals.create_module')
-    @include('menu.modals.create_page')
+    @include('menu.modals.module.create')
+    @include('menu.modals.pages.create')
 @endsection
