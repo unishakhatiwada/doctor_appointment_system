@@ -1,5 +1,9 @@
 @extends('admin.layouts.app')
-
+@php
+    function requiredField($isRequired = false) {
+        return $isRequired ? '<span class="text-danger">*</span>' : '';
+    }
+@endphp
 @section('content')
     @if ($errors->any())
         <div class="alert alert-danger">
@@ -24,13 +28,13 @@
                 <!-- Left Column -->
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="title">Title</label>
+                        <label for="title">Title{!! requiredField(true) !!}</label>
                         <input type="text" class="form-control" id="title" name="title"
                                value="{{ old('title', $menuItem->title ?? '') }}" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="display">Display</label>
+                        <label for="display">Display{!! requiredField(true) !!}</label>
                         <select class="form-control" id="display" name="display">
                             <option value="visible" {{ (old('display', $menuItem->display ?? '') == 'visible') ? 'selected' : '' }}>Visible</option>
                             <option value="hidden" {{ (old('display', $menuItem->display ?? '') == 'hidden') ? 'selected' : '' }}>Hidden</option>
@@ -38,7 +42,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="status">Status</label>
+                        <label for="status">Status{!! requiredField(true) !!}</label>
                         <select class="form-control" id="status" name="status">
                             <option value="1" {{ (old('status', $menuItem->status ?? '') == 1) ? 'selected' : '' }}>Active</option>
                             <option value="0" {{ (old('status', $menuItem->status ?? '') == 0) ? 'selected' : '' }}>Inactive</option>
@@ -46,7 +50,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="parent_id">Parent Menu</label>
+                        <label for="parent_id">Parent Menu{!! requiredField(true) !!}</label>
                         <select class="form-control" id="parent_id" name="parent_id">
                             <option value="">No Parent</option>
                             @foreach($menuItems as $item)
@@ -61,7 +65,7 @@
                 <!-- Right Column -->
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="type">Type</label>
+                        <label for="type">Type{!! requiredField(true) !!}</label>
                         <select class="form-control" id="type" name="type" onchange="toggleTypeFields()">
                             <option value="module" {{ (old('type', $menuItem->type ?? '') == 'module') ? 'selected' : '' }}>Module</option>
                             <option value="page" {{ (old('type', $menuItem->type ?? '') == 'page') ? 'selected' : '' }}>Page</option>
@@ -71,7 +75,7 @@
 
                     <!-- Module Selector with "Create Module" Button -->
                     <div id="moduleField" class="form-group" style="display: {{ (old('type', $menuItem->type ?? '') == 'module') ? 'block' : 'none' }};">
-                        <label for="module_id">Select Module</label>
+                        <label for="module_id">Select Module{!! requiredField(true) !!}</label>
                         <div class="d-flex align-items-center">
                             <select class="form-control mr-2" id="module_id" onchange="setTypeId('module')">
                                 <option value="">Select a Module</option>
@@ -89,7 +93,7 @@
 
                     <!-- Page Selector with "Create Page" Button -->
                     <div id="pageField" class="form-group" style="display: {{ (old('type', $menuItem->type ?? '') == 'page') ? 'block' : 'none' }};">
-                        <label for="page_id">Select Page</label>
+                        <label for="page_id">Select Page{!! requiredField(true) !!}</label>
                         <div class="d-flex align-items-center">
                             <select class="form-control mr-2" id="page_id" onchange="setTypeId('page')">
                                 <option value="">Select a Page</option>
@@ -107,13 +111,13 @@
 
                     <!-- External Link Field -->
                     <div id="externalLinkField" class="form-group" style="display: {{ (old('type', $menuItem->type ?? '') == 'external_link') ? 'block' : 'none' }};">
-                        <label for="external_link">External Link</label>
+                        <label for="external_link">External Link{!! requiredField(true) !!}</label>
                         <input type="url" class="form-control" id="external_link" name="external_link"
                                value="{{ old('external_link', $menuItem->external_link ?? '') }}" placeholder="https://example.com">
                     </div>
 
                     <div class="form-group">
-                        <label for="order">Order</label>
+                        <label for="order">Order{!! requiredField(true) !!}</label>
                         <input type="number" class="form-control" id="order" name="order"
                                value="{{ old('order', $menuItem->order ?? 0) }}">
                     </div>
