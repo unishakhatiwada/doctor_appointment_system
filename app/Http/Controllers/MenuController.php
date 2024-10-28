@@ -6,7 +6,10 @@ use App\Http\Requests\MenuRequest;
 use App\Models\MenuItem;
 use App\Models\Module;
 use App\Models\Page;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 
 class MenuController extends Controller
 {
@@ -31,26 +34,39 @@ class MenuController extends Controller
 
     public function store(MenuRequest $request)
     {
+
         MenuItem::create($request->validated());
 
         return redirect()->route('menus.index')->with('success', 'Menu item created successfully.');
     }
 
-
-    public function edit(MenuItem $menuItem)
+    public function edit($id): View
     {
+
+        $menuItem = MenuItem::findOrFail($id);
         $menuItems = MenuItem::all();
         $modules = Module::all();
         $pages = Page::all();
 
-        return view('admin.menu.form', compact('menuItem', 'menuItems', 'modules', 'pages'));
+        return view('menu.form', compact('menuItem', 'menuItems', 'modules', 'pages'));
     }
 
-    public function update(MenuRequest $request, MenuItem $menuItem)
+    public function update(MenuRequest $request, $id): RedirectResponse
     {
-        $menuItem->update($request->validated());
+        $menuItem = MenuItem::findOrFail($id);
 
-        return redirect()->route('admin.menu.index')->with('success', 'Menu item updated successfully.');
+        $menuItem->fill($request->validated())->save();
+
+        return redirect()->route('menus.index')->with('success', 'Menu item updated successfully.');
     }
+
+    public function destroy($id): RedirectResponse
+    {
+        $menuItem = MenuItem::findOrFail($id);
+        $menuItem->delete();
+
+        return redirect()->route('menus.index')->with('success', 'Menu item deleted successfully.');
+    }
+
 
 }
