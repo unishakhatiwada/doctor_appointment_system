@@ -3,10 +3,10 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class MenuRequest extends FormRequest
 {
-
     public function authorize(): bool
     {
         return true;
@@ -15,14 +15,26 @@ class MenuRequest extends FormRequest
     public function rules(): array
     {
 
-         $rules = [
-        'title' => 'required|string|max:255',
-        'display' => 'required|string|in:visible,hidden',
-        'status' => 'required|boolean',
-        'parent_id' => 'nullable|exists:menu_items,id',
-        'type' => 'required|in:module,page,external_link',
-        'order' => 'integer',
-    ];
+        $rules = [
+            'title' => 'required|string|max:255',
+            'display' => 'required|string|in:visible,hidden',
+            'status' => 'required|boolean',
+            'parent_id' => 'nullable|exists:menu_items,id',
+            'type' => [
+                'required',
+                Rule::in(['module', 'page', 'external_link']),
+            ],
+            // Unique within the same parent_id scope
+            'order' => [
+                'required',
+                'integer',
+                'min:1',
+                Rule::unique('menu_items', 'order')
+                    ->where('parent_id', $this->input('parent_id'))
+                    ->ignore($this->route('menu')) // Ignore the current menu item for updates
+            ],
+
+        ];
 
         // Conditionally require type_id for module and page types
         if ($this->input('type') === 'module' || $this->input('type') === 'page') {
@@ -40,6 +52,7 @@ class MenuRequest extends FormRequest
 
         return $rules;
     }
+
     public function messages()
     {
         return [
@@ -52,6 +65,8 @@ class MenuRequest extends FormRequest
             'type_id.required' => 'A type ID is required for module and page types.',
             'external_link.required' => 'An external link URL is required for external link type.',
             'external_link.url' => 'The external link must be a valid URL.',
+            'order.min' => 'The order must be at least 1.',
+            'order.unique' => 'The order value must be unique within the same parent menu.',
         ];
     }
 }
