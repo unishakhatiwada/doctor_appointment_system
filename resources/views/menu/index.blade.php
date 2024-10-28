@@ -3,7 +3,6 @@
 @section('content')
     <div class="d-flex justify-content-center align-items-center text-primary bg-primary mb-4">
         <h2>Menu Items</h2>
-
     </div>
     @if(session('success'))
         <div class="alert alert-success">
@@ -19,6 +18,7 @@
                 <li class="list-group-item">
                     <div class="d-flex justify-content-between">
                         <div>
+                            {{-- Display the title and type link --}}
                             @if($item->type == 'external_link')
                                 <a href="{{ $item->external_link }}" target="_blank" class="font-weight-bold text-primary">
                                     <i class="fas fa-external-link-alt"></i> {{ $item->title }}
@@ -29,9 +29,14 @@
                                 </a>
                             @endif
 
-                            @if(!$item->status)
-                                <span class="badge badge-secondary ml-2">Inactive</span>
-                            @endif
+                            {{-- Status and Display Badges --}}
+                            <span class="badge ml-2 {{ $item->status ? 'badge-success' : 'badge-secondary' }}">
+                                {{ $item->status ? 'Active' : 'Inactive' }}
+                            </span>
+
+                            <span class="badge ml-1 {{ $item->display === 'visible' ? 'badge-info' : 'badge-dark' }}">
+                                {{ ucfirst($item->display) }}
+                            </span>
                         </div>
 
                         <div>
@@ -48,6 +53,7 @@
                         </div>
                     </div>
 
+                    {{-- Display child menu items, if any --}}
                     @if($item->children->isNotEmpty())
                         <ul class="list-group mt-2 ml-4">
                             @foreach($item->children as $child)
@@ -64,9 +70,14 @@
                                                 </a>
                                             @endif
 
-                                            @if(!$child->status)
-                                                <span class="badge badge-secondary ml-2">Inactive</span>
-                                            @endif
+                                            {{-- Status and Display Badges for Child --}}
+                                            <span class="badge ml-2 {{ $child->status ? 'badge-success' : 'badge-secondary' }}">
+                                                {{ $child->status ? 'Active' : 'Inactive' }}
+                                            </span>
+
+                                            <span class="badge ml-1 {{ $child->display === 'visible' ? 'badge-info' : 'badge-dark' }}">
+                                                {{ ucfirst($child->display) }}
+                                            </span>
                                         </div>
 
                                         <div>
