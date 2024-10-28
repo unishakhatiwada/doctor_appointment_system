@@ -12,7 +12,7 @@
     @endif
 
     <div class="container">
-        <h2>{{ isset($menuItem) ? 'Edit' : 'Create' }} Menu Item</h2>
+        <h2 class="text-primary text-center bg-primary">{{ isset($menuItem) ? 'Edit' : 'Create' }} Menu Item</h2>
 
         <form action="{{ isset($menuItem) ? route('menus.update', $menuItem->id) : route('menus.store') }}" method="POST">
             @csrf
@@ -124,6 +124,9 @@
             <input type="hidden" id="type_id" name="type_id" value="{{ old('type_id', $menuItem->type_id ?? '') }}">
 
             <button type="submit" class="btn btn-primary mt-3">{{ isset($menuItem) ? 'Update' : 'Create' }} Menu Item</button>
+            <a href="{{ route('menus.index') }}" class="btn btn-secondary mt-3">
+                <i class="fas fa-arrow-left"></i> Back to Menu Items
+            </a>
         </form>
     </div>
 
