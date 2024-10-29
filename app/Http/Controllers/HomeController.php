@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MenuItem;
+
 class HomeController extends Controller
 {
     /**
@@ -21,6 +23,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        // Fetch top-level menu items with nested children
+        $menuItems = MenuItem::whereNull('parent_id')
+            ->with('children')
+            ->orderBy('order')
+            ->get();
+
+        return view('home', compact('menuItems'));
     }
 }

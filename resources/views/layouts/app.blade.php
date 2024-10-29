@@ -10,49 +10,7 @@
 </head>
 <body>
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand text-blue" href="{{ url('/') }}">Doctor Appointment System</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="{{ url('/') }}">Home</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('departments.index') }}">Departments</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('doctors.index') }}">Doctors</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('appointments.create') }}">My Appointments</a>
-            </li>
-            @guest
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('login') }}">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('register') }}">Register</a>
-                </li>
-            @else
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('profile.edit') }}">Profile</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('logout') }}"
-                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        Logout
-                    </a>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                        @csrf
-                    </form>
-                </li>
-            @endguest
-        </ul>
-    </div>
-</nav>
+@include('layouts.navigation')
 
 <!-- Background image section (can be enabled or disabled in individual views) -->
 @hasSection('background_image')
