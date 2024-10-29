@@ -1,4 +1,3 @@
-{{-- resources/views/pages/index.blade.php --}}
 @extends('admin.layouts.app')
 
 @section('content')
@@ -7,12 +6,13 @@
     </div>
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#createPageModal">
+            <!-- Button to open the Create Page modal -->
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#createPageModal"
+                    onclick="openCreatePageModal()">
                 Create Page
             </button>
         </div>
 
-        {{-- Success Message --}}
         @if(session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
@@ -42,13 +42,17 @@
                         <td>{{ $page->date }}</td>
                         <td>{{ $page->img }}</td>
                         <td>
-                            {{-- Include action buttons --}}
+                            <!-- Edit button with page data attributes -->
+                            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#createPageModal"
+                                    onclick="openEditPageModal({{ $page->id }}, '{{ $page->title }}', '{{ $page->slug }}', '{{ $page->content }}', '{{ $page->date }}')">
+                                <i class="fas fa-pencil-alt"></i> Edit
+                            </button>
                             @include('components.action-button', [
                                 'url' => route('page.index'),
                                 'data' => $page,
                                 'buttons' => [
                                     'view' => false,
-                                    'edit' => true,
+                                    'edit' => false,
                                     'delete' => true,
                                     'download' => false,
                                 ]
@@ -61,6 +65,32 @@
         @endif
     </div>
 
-    {{-- Include the Create Page Modal --}}
+    <!-- Include the Create Page Modal -->
     @include('menu.modals.pages.create')
 @endsection
+
+<script>
+    function openCreatePageModal() {
+        const pageForm = document.getElementById('pageForm');
+        pageForm.action = "{{ route('page.store') }}";  // Use store route for creating
+        pageForm.querySelector('input[name="_method"]').value = 'POST'; // Set method to POST
+        document.getElementById('createPageModalLabel').textContent = 'Create Page';
+        document.getElementById('pageTitle').value = '';
+        document.getElementById('pageSlug').value = '';
+        document.getElementById('pageContent').value = '';
+        document.getElementById('pageDate').value = '';
+        pageForm.querySelector('button[type="submit"]').textContent = 'Save Page';
+    }
+
+    function openEditPageModal(pageId, title, slug, content, date) {
+        const pageForm = document.getElementById('pageForm');
+        pageForm.action = `{{ url('admin/page') }}/${pageId}`;  // Set action URL for update
+        pageForm.querySelector('input[name="_method"]').value = 'PUT'; // Set method to PUT for update
+        document.getElementById('createPageModalLabel').textContent = 'Edit Page';
+        document.getElementById('pageTitle').value = title;
+        document.getElementById('pageSlug').value = slug;
+        document.getElementById('pageContent').value = content;
+        document.getElementById('pageDate').value = date;
+        pageForm.querySelector('button[type="submit"]').textContent = 'Update Page';
+    }
+</script>

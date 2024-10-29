@@ -1,9 +1,8 @@
-
-
 <div class="modal fade" id="createPageModal" tabindex="-1" role="dialog" aria-labelledby="createPageModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <form action="{{ route('page.store') }}" method="POST">
+        <form id="pageForm" method="POST">
             @csrf
+            <input type="hidden" name="_method" value="POST"> <!-- Default to POST for create -->
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="createPageModalLabel">Create Page</h5>

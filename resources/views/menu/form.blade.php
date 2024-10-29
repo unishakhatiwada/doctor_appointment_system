@@ -106,9 +106,9 @@
                             </select>
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <!-- Button to open the Create Module modal -->
-                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#moduleModal"
-                                        onclick="openCreateModuleModal()">
-                                    Create Module
+                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#createPageModal"
+                                        onclick="openCreatePageModal()">
+                                    Create Page
                                 </button>
                             </div>
                         </div>
@@ -171,6 +171,17 @@
             document.getElementById('moduleTitle').value = '';
             document.getElementById('moduleSlug').value = '';
             moduleForm.querySelector('button[type="submit"]').textContent = 'Save Module';
+        }
+        function openCreatePageModal() {
+            const pageForm = document.getElementById('pageForm');
+            pageForm.action = "{{ route('page.store') }}";  // Use store route for creating
+            pageForm.querySelector('input[name="_method"]').value = 'POST'; // Set method to POST
+            document.getElementById('createPageModalLabel').textContent = 'Create Page';
+            document.getElementById('pageTitle').value = '';
+            document.getElementById('pageSlug').value = '';
+            document.getElementById('pageContent').value = '';
+            document.getElementById('pageDate').value = '';
+            pageForm.querySelector('button[type="submit"]').textContent = 'Save Page';
         }
 
         // Initialize fields on page load
