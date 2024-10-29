@@ -43,7 +43,8 @@
                         <td>{{ $page->img }}</td>
                         <td>
                             <!-- Edit button with page data attributes -->
-                            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#createPageModal"
+                            <button type="button" class="btn btn-warning" data-toggle="modal"
+                                    data-target="#createPageModal"
                                     onclick="openEditPageModal({{ $page->id }}, '{{ $page->title }}', '{{ $page->slug }}', '{{ $page->content }}', '{{ $page->date }}')">
                                 <i class="fas fa-pencil-alt"></i> Edit
                             </button>
@@ -66,7 +67,7 @@
     </div>
 
     <!-- Include the Create Page Modal -->
-    @include('menu.modals.pages.create')
+    @include('menu.pages.create')
 @endsection
 
 <script>

@@ -12,12 +12,12 @@ class ModuleController extends Controller
     public function index()
     {
         $modules = Module::orderBy('title', 'asc')->get();
-        return view('menu.modals.module.index', compact('modules'));
+        return view('menu.module.index', compact('modules'));
     }
 
     public function create():View
     {
-        return view('menu.modals.module.create');
+        return view('menu.module.create');
     }
 
     public function store(Request $request):RedirectResponse
@@ -34,7 +34,7 @@ class ModuleController extends Controller
 
     public function edit(Module $module): View
     {
-        return view('menu.modals.module.create', compact('module'));
+        return view('menu.module.create', compact('module'));
     }
 
     public function update(Request $request, Module $module):RedirectResponse

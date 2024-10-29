@@ -189,6 +189,6 @@
     </script>
 
     <!-- Include Modals for Creating Module and Page -->
-    @include('menu.modals.module.create')
-    @include('menu.modals.pages.create')
+    @include('menu.module.create')
+    @include('menu.pages.create')
 @endsection

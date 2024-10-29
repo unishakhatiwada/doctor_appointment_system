@@ -12,12 +12,12 @@ class PageController extends Controller
     public function index():View
     {
         $pages = Page::orderBy('title', 'asc')->get();
-        return view('menu.modals.pages.index', compact('pages'));
+        return view('menu.pages.index', compact('pages'));
     }
 
     public function create():View
     {
-        return view('menu.modals.pages.create');
+        return view('menu.pages.create');
     }
 
     public function store(Request $request): RedirectResponse
@@ -36,7 +36,7 @@ class PageController extends Controller
 
     public function edit(Page $page): View
     {
-        return view('menu.modals.pages.create', compact('page'));
+        return view('menu.pages.create', compact('page'));
     }
     public function show($id): View
     {
@@ -44,7 +44,7 @@ class PageController extends Controller
         $page = Page::findOrFail($id);
 
         // Pass the page data to a Blade view
-        return view('menu.modals.pages.show', compact('page'));
+        return view('menu.pages.show', compact('page'));
     }
     public function update(Request $request, Page $page):RedirectResponse
     {

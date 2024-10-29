@@ -60,7 +60,7 @@
     </div>
 
     <!-- Include the reusable modal component -->
-    @include('menu.modals.module.create')
+    @include('menu.module.create')
 @endsection
 <script>
     function openCreateModuleModal() {
