@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Module;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class ModuleController extends Controller
 {
@@ -13,12 +15,12 @@ class ModuleController extends Controller
         return view('menu.modals.module.index', compact('modules'));
     }
 
-    public function create()
+    public function create():View
     {
         return view('menu.modals.module.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request):RedirectResponse
     {
         $request->validate([
             'title' => 'required|string|max:255',
@@ -30,12 +32,12 @@ class ModuleController extends Controller
         return back()->with('success', 'Module created successfully!');
     }
 
-    public function edit(Module $module)
+    public function edit(Module $module): View
     {
         return view('menu.modals.module.create', compact('module'));
     }
 
-    public function update(Request $request, Module $module)
+    public function update(Request $request, Module $module):RedirectResponse
     {
         $request->validate([
             'title' => 'required|string|max:255',
@@ -44,13 +46,13 @@ class ModuleController extends Controller
 
         $module->update($request->all());
 
-        return redirect()->route('module.index')->with('success', 'Module updated successfully.');
+        return redirect()->route('admin.modules.index')->with('success', 'Module updated successfully.');
     }
 
-    public function destroy(Module $module)
+    public function destroy(Module $module):RedirectResponse
     {
         $module->delete();
 
-        return redirect()->route('module.index')->with('success', 'Module deleted successfully.');
+        return redirect()->route('admin.modules.index')->with('success', 'Module deleted successfully.');
     }
 }

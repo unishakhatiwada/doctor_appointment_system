@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -22,6 +23,7 @@ Route::get('/appointments/{doctor}/available-slots', [AppointmentController::cla
 Route::get('/appointments/registration/{doctor}/{schedule}/{time}', [AppointmentController::class, 'showRegistrationForm'])->name('appointments.registration');
 Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
 Route::get('/appointments', [AppointmentController::class, 'create'])->name('appointments.create');
+Route::get('pages/{page}', [PageController::class, 'show'])->name('pages.show');
 
 Route::middleware('auth')->group(function () {
     // Profile routes

@@ -48,7 +48,7 @@
                                 <i class="fas fa-pencil-alt"></i> Edit
                             </button>
                             @include('components.action-button', [
-                                'url' => route('page.index'),
+                                'url' => route('admin.pages.index') . '/',
                                 'data' => $page,
                                 'buttons' => [
                                     'view' => false,
@@ -72,7 +72,7 @@
 <script>
     function openCreatePageModal() {
         const pageForm = document.getElementById('pageForm');
-        pageForm.action = "{{ route('page.store') }}";  // Use store route for creating
+        pageForm.action = "{{ route('admin.pages.store') }}";  // Use store route for creating
         pageForm.querySelector('input[name="_method"]').value = 'POST'; // Set method to POST
         document.getElementById('createPageModalLabel').textContent = 'Create Page';
         document.getElementById('pageTitle').value = '';
@@ -84,7 +84,7 @@
 
     function openEditPageModal(pageId, title, slug, content, date) {
         const pageForm = document.getElementById('pageForm');
-        pageForm.action = `{{ url('admin/page') }}/${pageId}`;  // Set action URL for update
+        pageForm.action = `{{ url('admin/pages') }}/${pageId}`;  // Set action URL for update
         pageForm.querySelector('input[name="_method"]').value = 'PUT'; // Set method to PUT for update
         document.getElementById('createPageModalLabel').textContent = 'Edit Page';
         document.getElementById('pageTitle').value = title;

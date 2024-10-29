@@ -165,7 +165,7 @@
         }
         function openCreateModuleModal() {
             const moduleForm = document.getElementById('moduleForm');
-            moduleForm.action = "{{ route('module.store') }}";  // Use store route for creating
+            moduleForm.action = "{{ route('admin.modules.store') }}";  // Use store route for creating
             moduleForm.querySelector('input[name="_method"]').value = 'POST'; // Set method to POST
             document.getElementById('moduleModalLabel').textContent = 'Create Module';
             document.getElementById('moduleTitle').value = '';
@@ -174,7 +174,7 @@
         }
         function openCreatePageModal() {
             const pageForm = document.getElementById('pageForm');
-            pageForm.action = "{{ route('page.store') }}";  // Use store route for creating
+            pageForm.action = "{{ route('admin.pages.store') }}";  // Use store route for creating
             pageForm.querySelector('input[name="_method"]').value = 'POST'; // Set method to POST
             document.getElementById('createPageModalLabel').textContent = 'Create Page';
             document.getElementById('pageTitle').value = '';

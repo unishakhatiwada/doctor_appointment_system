@@ -63,7 +63,7 @@
                 </li>
                 {{-- Indented Module Link --}}
                 <li class="nav-item ml-4"> {{-- Adjust `ml-4` as needed for desired indentation --}}
-                    <a href="{{route('module.index')}}" class="nav-link">
+                    <a href="{{route('admin.modules.index')}}" class="nav-link">
                         <i class="nav-icon fas fa-folder"></i>
                         <p>Modules</p>
                     </a>
@@ -71,7 +71,7 @@
 
                 {{-- Indented Pages Link --}}
                 <li class="nav-item ml-4">
-                    <a href="{{route('page.index')}}" class="nav-link">
+                    <a href="{{route('admin.pages.index')}}" class="nav-link">
                         <i class="nav-icon fas fa-file-alt"></i>
                         <p>Pages</p>
                     </a>

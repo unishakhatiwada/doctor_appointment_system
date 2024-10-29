@@ -42,7 +42,7 @@
                                 <i class="fas fa-pencil-alt"></i> Edit
                             </button>
                             @include('components.action-button', [
-                                'url' => route('module.index') . '/',
+                                'url' => route('admin.modules.index') . '/',
                                 'data' => $module,
                                 'buttons' => [
                                     'view' => false,
@@ -65,7 +65,7 @@
 <script>
     function openCreateModuleModal() {
         const moduleForm = document.getElementById('moduleForm');
-        moduleForm.action = "{{ route('module.store') }}";  // Use store route for creating
+        moduleForm.action = "{{ route('admin.modules.store') }}";  // Use store route for creating
         moduleForm.querySelector('input[name="_method"]').value = 'POST'; // Set method to POST
         document.getElementById('moduleModalLabel').textContent = 'Create Module';
         document.getElementById('moduleTitle').value = '';
@@ -75,7 +75,7 @@
 
     function openEditModuleModal(moduleId, title, slug) {
         const moduleForm = document.getElementById('moduleForm');
-        moduleForm.action = `{{ url('admin/module') }}/${moduleId}`;  // Update URL for PUT
+        moduleForm.action = `{{ url('admin/modules') }}/${moduleId}`;  // Update URL for PUT
         moduleForm.querySelector('input[name="_method"]').value = 'PUT'; // Set method to PUT for update
         document.getElementById('moduleModalLabel').textContent = 'Edit Module';
         document.getElementById('moduleTitle').value = title;

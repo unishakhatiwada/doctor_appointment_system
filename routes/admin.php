@@ -32,7 +32,6 @@ Route::middleware(['admin_auth:admin'])->prefix('admin')->group(function () {
     Route::post('/departments/{department}/add-doctors', [DepartmentController::class, 'addDoctors'])->name('departments.addDoctors');
     Route::resource('schedules', ScheduleController::class)->names('schedules');
     Route::resource('menus', MenuController::class)->names('menus');
-    Route::resource('module', ModuleController::class);
-    Route::resource('page', PageController::class);
-
+    Route::resource('modules', ModuleController::class)->names('admin.modules');
+    Route::resource('pages', PageController::class)->names('admin.pages');
 });

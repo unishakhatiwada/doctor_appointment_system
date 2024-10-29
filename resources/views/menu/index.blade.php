@@ -24,7 +24,7 @@
                                     <i class="fas fa-external-link-alt"></i> {{ $item->title }}
                                 </a>
                             @else
-                                <a href="{{ route($item->type . '.show', $item->typeItem->slug ?? '#') }}" class="font-weight-bold">
+                                <a href="{{ route('admin.'.$item->type .'s'. '.show', $item->typeItem->slug ?? '#') }}" class="font-weight-bold">
                                     {{ $item->title }}
                                 </a>
                             @endif
@@ -65,7 +65,7 @@
                                                     <i class="fas fa-external-link-alt"></i> {{ $child->title }}
                                                 </a>
                                             @else
-                                                <a href="{{ route($child->type . '.show', $child->typeItem->slug ?? '#') }}">
+                                                <a href="{{ route($child->type .'s'. '.show', $child->typeItem->slug ?? '#') }}">
                                                     {{ $child->title }}
                                                 </a>
                                             @endif
