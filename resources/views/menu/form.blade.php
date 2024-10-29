@@ -3,7 +3,23 @@
     function requiredField($isRequired = false) {
         return $isRequired ? '<span class="text-danger">*</span>' : '';
     }
+
+    // Recursive function to generate nested options for parent selector with selected value
+    function displayMenuOptions($menuItems, $level = 0, $selectedParentId = null) {
+        $output = '';
+        foreach ($menuItems as $item) {
+            $indent = str_repeat('--', $level) . ' ';
+            $selected = $selectedParentId == $item->id ? 'selected' : '';
+            $output .= "<option value=\"{$item->id}\" {$selected}>{$indent}{$item->title}</option>";
+
+            if ($item->children->isNotEmpty()) {
+                $output .= displayMenuOptions($item->children, $level + 1, $selectedParentId);
+            }
+        }
+        return $output;
+    }
 @endphp
+
 @section('content')
     @if ($errors->any())
         <div class="alert alert-danger">
@@ -49,15 +65,12 @@
                         </select>
                     </div>
 
+                    <!-- Parent Menu Selector -->
                     <div class="form-group">
                         <label for="parent_id">Parent Menu{!! requiredField(true) !!}</label>
                         <select class="form-control" id="parent_id" name="parent_id">
                             <option value="">No Parent</option>
-                            @foreach($menuItems as $item)
-                                <option value="{{ $item->id }}" {{ (old('parent_id', $menuItem->parent_id ?? '') == $item->id) ? 'selected' : '' }}>
-                                    {{ $item->title }}
-                                </option>
-                            @endforeach
+                            {!! displayMenuOptions($menuItems, 0, old('parent_id', $menuItem->parent_id ?? null)) !!}
                         </select>
                     </div>
                 </div>
@@ -73,7 +86,6 @@
                         </select>
                     </div>
 
-                    <!-- Module Selector with "Create Module" Button -->
                     <div id="moduleField" class="form-group" style="display: {{ (old('type', $menuItem->type ?? '') == 'module') ? 'block' : 'none' }};">
                         <label for="module_id">Select Module{!! requiredField(true) !!}</label>
                         <div class="d-flex align-items-center">
@@ -86,9 +98,7 @@
                                 @endforeach
                             </select>
                             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#moduleModal"
-                                    onclick="openCreateModuleModal()">
-                                Create Module
-                            </button>
+                                    onclick="openCreateModuleModal()">Create Module</button>
                         </div>
                     </div>
 
@@ -104,13 +114,8 @@
                                     </option>
                                 @endforeach
                             </select>
-                            <div class="d-flex justify-content-between align-items-center mb-4">
-                                <!-- Button to open the Create Module modal -->
-                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#createPageModal"
-                                        onclick="openCreatePageModal()">
-                                    Create Page
-                                </button>
-                            </div>
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#createPageModal"
+                                    onclick="openCreatePageModal()">Create Page</button>
                         </div>
                     </div>
 
@@ -129,7 +134,6 @@
                 </div>
             </div>
 
-            <!-- Hidden field to submit the correct type_id based on type selection -->
             <input type="hidden" id="type_id" name="type_id" value="{{ old('type_id', $menuItem->type_id ?? '') }}">
 
             <button type="submit" class="btn btn-primary mt-3">{{ isset($menuItem) ? 'Update' : 'Create' }} Menu Item</button>
@@ -139,22 +143,17 @@
         </form>
     </div>
 
-    <!-- JavaScript to Handle Field Display Based on Type Selection -->
     <script>
         function toggleTypeFields() {
             const type = document.getElementById('type').value;
-
             document.getElementById('moduleField').style.display = (type === 'module') ? 'block' : 'none';
             document.getElementById('pageField').style.display = (type === 'page') ? 'block' : 'none';
             document.getElementById('externalLinkField').style.display = (type === 'external_link') ? 'block' : 'none';
-
-            // Clear type_id if external link is selected
             if (type === 'external_link') {
                 document.getElementById('type_id').value = '';
             }
         }
 
-        // Set the type_id value based on selected type and id in module/page fields
         function setTypeId(type) {
             const typeIdField = document.getElementById('type_id');
             if (type === 'module') {
@@ -184,7 +183,6 @@
             pageForm.querySelector('button[type="submit"]').textContent = 'Save Page';
         }
 
-        // Initialize fields on page load
         document.addEventListener('DOMContentLoaded', toggleTypeFields);
     </script>
 

@@ -13,7 +13,7 @@ class MenuItem extends Model
 
     public function children()
     {
-        return $this->hasMany(MenuItem::class, 'parent_id');
+        return $this->hasMany(MenuItem::class, 'parent_id')->with('children'); // Recursively load children
     }
 
     public function parent()

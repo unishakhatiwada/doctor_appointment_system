@@ -13,8 +13,9 @@ class MenuController extends Controller
 {
     public function index()
     {
+        // Fetch top-level menu items with all descendant children
         $menuItems = MenuItem::whereNull('parent_id')
-            ->with(['children', 'typeItem']) // Eager load children and typeItem relationships
+            ->with('children')
             ->orderBy('order')
             ->get();
 
