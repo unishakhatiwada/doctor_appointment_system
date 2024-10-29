@@ -1,4 +1,3 @@
-{{-- resources/views/modules/index.blade.php --}}
 @extends('admin.layouts.app')
 
 @section('content')
@@ -7,8 +6,9 @@
     </div>
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            {{-- Button to open the Create Module modal --}}
-            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#createModuleModal">
+            <!-- Button to open the Create Module modal -->
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#moduleModal"
+                    onclick="openCreateModuleModal()">
                 Create Module
             </button>
         </div>
@@ -36,13 +36,17 @@
                         <td>{{ $module->title }}</td>
                         <td>{{ $module->slug }}</td>
                         <td>
-                            {{-- Include action buttons --}}
+                            <!-- Edit button with module data attributes -->
+                            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#moduleModal"
+                                    onclick="openEditModuleModal({{ $module->id }}, '{{ $module->title }}', '{{ $module->slug }}')">
+                                <i class="fas fa-pencil-alt"></i> Edit
+                            </button>
                             @include('components.action-button', [
                                 'url' => route('module.index') . '/',
                                 'data' => $module,
                                 'buttons' => [
                                     'view' => false,
-                                    'edit' => true,
+                                    'edit' => false,
                                     'delete' => true,
                                     'download' => false
                                 ]
@@ -55,5 +59,27 @@
         @endif
     </div>
 
+    <!-- Include the reusable modal component -->
     @include('menu.modals.module.create')
 @endsection
+<script>
+    function openCreateModuleModal() {
+        const moduleForm = document.getElementById('moduleForm');
+        moduleForm.action = "{{ route('module.store') }}";  // Use store route for creating
+        moduleForm.querySelector('input[name="_method"]').value = 'POST'; // Set method to POST
+        document.getElementById('moduleModalLabel').textContent = 'Create Module';
+        document.getElementById('moduleTitle').value = '';
+        document.getElementById('moduleSlug').value = '';
+        moduleForm.querySelector('button[type="submit"]').textContent = 'Save Module';
+    }
+
+    function openEditModuleModal(moduleId, title, slug) {
+        const moduleForm = document.getElementById('moduleForm');
+        moduleForm.action = `{{ url('admin/module') }}/${moduleId}`;  // Update URL for PUT
+        moduleForm.querySelector('input[name="_method"]').value = 'PUT'; // Set method to PUT for update
+        document.getElementById('moduleModalLabel').textContent = 'Edit Module';
+        document.getElementById('moduleTitle').value = title;
+        document.getElementById('moduleSlug').value = slug;
+        moduleForm.querySelector('button[type="submit"]').textContent = 'Update Module';
+    }
+</script>

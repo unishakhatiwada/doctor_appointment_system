@@ -85,7 +85,8 @@
                                     </option>
                                 @endforeach
                             </select>
-                            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#createModuleModal">
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#moduleModal"
+                                    onclick="openCreateModuleModal()">
                                 Create Module
                             </button>
                         </div>
@@ -103,9 +104,13 @@
                                     </option>
                                 @endforeach
                             </select>
-                            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#createPageModal">
-                                Create Page
-                            </button>
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <!-- Button to open the Create Module modal -->
+                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#moduleModal"
+                                        onclick="openCreateModuleModal()">
+                                    Create Module
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -157,6 +162,15 @@
             } else if (type === 'page') {
                 typeIdField.value = document.getElementById('page_id').value;
             }
+        }
+        function openCreateModuleModal() {
+            const moduleForm = document.getElementById('moduleForm');
+            moduleForm.action = "{{ route('module.store') }}";  // Use store route for creating
+            moduleForm.querySelector('input[name="_method"]').value = 'POST'; // Set method to POST
+            document.getElementById('moduleModalLabel').textContent = 'Create Module';
+            document.getElementById('moduleTitle').value = '';
+            document.getElementById('moduleSlug').value = '';
+            moduleForm.querySelector('button[type="submit"]').textContent = 'Save Module';
         }
 
         // Initialize fields on page load
