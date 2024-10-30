@@ -12,15 +12,16 @@ class ModuleController extends Controller
     public function index()
     {
         $modules = Module::orderBy('title', 'asc')->get();
+
         return view('menu.module.index', compact('modules'));
     }
 
-    public function create():View
+    public function create(): View
     {
         return view('menu.module.create');
     }
 
-    public function store(Request $request):RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
         $request->validate([
             'title' => 'required|string|max:255',
@@ -37,7 +38,7 @@ class ModuleController extends Controller
         return view('menu.module.create', compact('module'));
     }
 
-    public function update(Request $request, Module $module):RedirectResponse
+    public function update(Request $request, Module $module): RedirectResponse
     {
         $request->validate([
             'title' => 'required|string|max:255',
@@ -49,7 +50,7 @@ class ModuleController extends Controller
         return redirect()->route('admin.modules.index')->with('success', 'Module updated successfully.');
     }
 
-    public function destroy(Module $module):RedirectResponse
+    public function destroy(Module $module): RedirectResponse
     {
         $module->delete();
 

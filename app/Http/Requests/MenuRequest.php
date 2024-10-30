@@ -31,7 +31,7 @@ class MenuRequest extends FormRequest
                 'min:1',
                 Rule::unique('menu_items', 'order')
                     ->where('parent_id', $this->input('parent_id'))
-                    ->ignore($this->route('menu')) // Ignore the current menu item for updates
+                    ->ignore($this->route('menu')), // Ignore the current menu item for updates
             ],
 
         ];

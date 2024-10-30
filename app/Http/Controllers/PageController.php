@@ -9,13 +9,14 @@ use Illuminate\View\View;
 
 class PageController extends Controller
 {
-    public function index():View
+    public function index(): View
     {
         $pages = Page::orderBy('title', 'asc')->get();
+
         return view('menu.pages.index', compact('pages'));
     }
 
-    public function create():View
+    public function create(): View
     {
         return view('menu.pages.create');
     }
@@ -38,6 +39,7 @@ class PageController extends Controller
     {
         return view('menu.pages.create', compact('page'));
     }
+
     public function show($id): View
     {
         // Find the page by ID or return a 404 if not found
@@ -46,12 +48,13 @@ class PageController extends Controller
         // Pass the page data to a Blade view
         return view('menu.pages.show', compact('page'));
     }
-    public function update(Request $request, Page $page):RedirectResponse
+
+    public function update(Request $request, Page $page): RedirectResponse
     {
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'nullable|string',
-            'slug' => 'required|string|max:255|unique:pages,slug,' . $page->id,
+            'slug' => 'required|string|max:255|unique:pages,slug,'.$page->id,
             'published_at' => 'nullable|date',
         ]);
 
@@ -60,7 +63,7 @@ class PageController extends Controller
         return redirect()->route('admin.pages.index')->with('success', 'Page updated successfully.');
     }
 
-    public function destroy(Page $page):RedirectResponse
+    public function destroy(Page $page): RedirectResponse
     {
         $page->delete();
 

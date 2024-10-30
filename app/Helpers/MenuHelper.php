@@ -49,12 +49,12 @@ class MenuHelper
         foreach ($menuItems as $menuItem) {
             $hasChildren = $menuItem->children->isNotEmpty();
 
-            $html .= '<li class="nav-item ' . ($hasChildren ? 'dropdown' : '') . '">';
+            $html .= '<li class="nav-item '.($hasChildren ? 'dropdown' : '').'">';
 
             // Adding Bootstrap utility classes for font size and padding
-            $html .= '<a href="' . ($menuItem->external_link ?? $menuItem->url) . '" ' .
-                'class="nav-link ' . ($hasChildren ? 'dropdown-toggle' : '') . ' fs-4 py-2 px-4" ' .
-                ($hasChildren ? 'data-bs-toggle="dropdown" role="button" aria-expanded="false"' : '') . '>' .
+            $html .= '<a href="'.($menuItem->external_link ?? $menuItem->url).'" '.
+                'class="nav-link '.($hasChildren ? 'dropdown-toggle' : '').' fs-4 py-2 px-4" '.
+                ($hasChildren ? 'data-bs-toggle="dropdown" role="button" aria-expanded="false"' : '').'>'.
                 $menuItem->title;
 
             if ($hasChildren) {
@@ -74,5 +74,4 @@ class MenuHelper
 
         return $html;
     }
-
 }
