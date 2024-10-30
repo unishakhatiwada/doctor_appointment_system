@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Helpers\MenuHelper;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use App\Models\MenuItem;
@@ -16,11 +18,7 @@ class ViewServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        // Make $menuItems available to all views
-        View::composer('*', function ($view) {
-            // Fetch the menu items with their children
-            $menuItems = MenuItem::whereNull('parent_id')->with('children')->orderBy('order')->get();
-            $view->with('menuItems', $menuItems);
-        });
+        View::share('menuHierarchy', MenuHelper::getMenuHierarchy());
     }
+
 }

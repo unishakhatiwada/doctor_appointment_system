@@ -1,8 +1,9 @@
+@php use App\Helpers\MenuHelper; @endphp
+
 <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-    <ul class="navbar-nav ml-auto">
-        {{-- Loop through the main menu items --}}
-        @foreach($menuItems as $menuItem)
-            @include('layouts.menu-item', ['menuItem' => $menuItem])
-        @endforeach
-    </ul>
+    <div class="container-fluid justify-content-center">
+        <ul class="navbar-nav h5"> <!-- Applying font size and padding here as a test -->
+            {!! MenuHelper::renderMenuItems($menuHierarchy) !!}
+        </ul>
+    </div>
 </nav>
