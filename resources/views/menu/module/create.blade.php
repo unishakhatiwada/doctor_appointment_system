@@ -15,10 +15,6 @@
                         <label for="moduleTitle">Title</label>
                         <input type="text" class="form-control" id="moduleTitle" name="title" required>
                     </div>
-                    <div class="form-group">
-                        <label for="moduleSlug">Slug</label>
-                        <input type="text" class="form-control" id="moduleSlug" name="slug" required>
-                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Save Module</button>

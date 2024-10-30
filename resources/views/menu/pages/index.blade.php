@@ -69,29 +69,44 @@
     <!-- Include the Create Page Modal -->
     @include('menu.pages.create')
 @endsection
-
 <script>
     function openCreatePageModal() {
         const pageForm = document.getElementById('pageForm');
-        pageForm.action = "{{ route('admin.pages.store') }}";  // Use store route for creating
-        pageForm.querySelector('input[name="_method"]').value = 'POST'; // Set method to POST
+
+        // Set the action URL to create a new page
+        pageForm.action = "{{ route('admin.pages.store') }}";
+
+        // Set method to POST for creating a new entry
+        pageForm.querySelector('input[name="_method"]').value = 'POST';
+
+        // Set modal title and button text for create mode
         document.getElementById('createPageModalLabel').textContent = 'Create Page';
+        pageForm.querySelector('button[type="submit"]').textContent = 'Save Page';
+
+        // Clear input fields for create mode
         document.getElementById('pageTitle').value = '';
-        document.getElementById('pageSlug').value = '';
         document.getElementById('pageContent').value = '';
         document.getElementById('pageDate').value = '';
-        pageForm.querySelector('button[type="submit"]').textContent = 'Save Page';
     }
 
     function openEditPageModal(pageId, title, slug, content, date) {
         const pageForm = document.getElementById('pageForm');
-        pageForm.action = `{{ url('admin/pages') }}/${pageId}`;  // Set action URL for update
-        pageForm.querySelector('input[name="_method"]').value = 'PUT'; // Set method to PUT for update
+
+        // Set the action URL to update the specific page
+        pageForm.action = `{{ url('admin/pages') }}/${pageId}`;
+
+        // Set method to PUT for updating the entry
+        pageForm.querySelector('input[name="_method"]').value = 'PUT';
+
+        // Set modal title and button text for edit mode
         document.getElementById('createPageModalLabel').textContent = 'Edit Page';
-        document.getElementById('pageTitle').value = title;
-        document.getElementById('pageSlug').value = slug;
-        document.getElementById('pageContent').value = content;
-        document.getElementById('pageDate').value = date;
         pageForm.querySelector('button[type="submit"]').textContent = 'Update Page';
+
+        // Populate form fields with existing data for edit mode
+        document.getElementById('pageTitle').value = title;
+        document.getElementById('pageContent').value = content;
+
+        // Format date correctly to display in date input field
+        document.getElementById('pageDate').value = new Date(date).toISOString().slice(0, 10);
     }
 </script>

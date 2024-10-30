@@ -168,19 +168,17 @@
             moduleForm.querySelector('input[name="_method"]').value = 'POST'; // Set method to POST
             document.getElementById('moduleModalLabel').textContent = 'Create Module';
             document.getElementById('moduleTitle').value = '';
-            document.getElementById('moduleSlug').value = '';
             moduleForm.querySelector('button[type="submit"]').textContent = 'Save Module';
         }
         function openCreatePageModal() {
             const pageForm = document.getElementById('pageForm');
-            pageForm.action = "{{ route('admin.pages.store') }}";  // Use store route for creating
-            pageForm.querySelector('input[name="_method"]').value = 'POST'; // Set method to POST
+            pageForm.action = "{{ route('admin.pages.store') }}";
+            pageForm.querySelector('input[name="_method"]').value = 'POST';
             document.getElementById('createPageModalLabel').textContent = 'Create Page';
+            pageForm.querySelector('button[type="submit"]').textContent = 'Save Page';
             document.getElementById('pageTitle').value = '';
-            document.getElementById('pageSlug').value = '';
             document.getElementById('pageContent').value = '';
             document.getElementById('pageDate').value = '';
-            pageForm.querySelector('button[type="submit"]').textContent = 'Save Page';
         }
 
         document.addEventListener('DOMContentLoaded', toggleTypeFields);

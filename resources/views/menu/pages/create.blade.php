@@ -2,7 +2,7 @@
     <div class="modal-dialog" role="document">
         <form id="pageForm" method="POST">
             @csrf
-            <input type="hidden" name="_method" value="POST"> <!-- Default to POST for create -->
+            <input type="hidden" name="_method" value="POST"> <!-- Default to POST for create mode -->
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="createPageModalLabel">Create Page</h5>
@@ -14,10 +14,6 @@
                     <div class="form-group">
                         <label for="pageTitle">Title</label>
                         <input type="text" class="form-control" id="pageTitle" name="title" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="pageSlug">Slug</label>
-                        <input type="text" class="form-control" id="pageSlug" name="slug" required>
                     </div>
                     <div class="form-group">
                         <label for="pageContent">Content</label>

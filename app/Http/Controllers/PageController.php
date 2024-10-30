@@ -25,16 +25,15 @@ class PageController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'content' => 'nullable|string',
-            'slug' => 'required|string|max:255|unique:pages',
+            'content' => 'required|string',
             'date' => 'required|date',
+            'img' => 'nullable|image|max:2048',
         ]);
 
         Page::create($request->all());
 
-        return back()->with('success', 'Page created successfully!');
+        return redirect()->route('admin.pages.index')->with('success', 'Page created successfully!');
     }
-
     public function edit(Page $page): View
     {
         return view('menu.pages.create', compact('page'));
@@ -53,14 +52,14 @@ class PageController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'content' => 'nullable|string',
-            'slug' => 'required|string|max:255|unique:pages,slug,'.$page->id,
-            'published_at' => 'nullable|date',
+            'content' => 'required|string',
+            'date' => 'required|date',
+            'img' => 'nullable|image|max:2048',
         ]);
 
         $page->update($request->all());
 
-        return redirect()->route('admin.pages.index')->with('success', 'Page updated successfully.');
+        return redirect()->route('admin.pages.index')->with('success', 'Page updated successfully!');
     }
 
     public function destroy(Page $page): RedirectResponse
