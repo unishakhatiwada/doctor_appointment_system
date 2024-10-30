@@ -89,7 +89,7 @@
         document.getElementById('pageDate').value = '';
     }
 
-    function openEditPageModal(pageId, title, slug, content, date) {
+    function openEditPageModal(pageId, title, content, date) {
         const pageForm = document.getElementById('pageForm');
 
         // Set the action URL to update the specific page
