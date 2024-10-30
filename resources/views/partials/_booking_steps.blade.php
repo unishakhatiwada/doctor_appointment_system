@@ -8,7 +8,7 @@
                 <p class="lead ">Book an appointment in just a few steps</p>
                     <!-- Booking Steps Section -->
                     <div class="row justify-content-center mt-4 text-dark">
-                        @foreach (['Select a Department', 'Choose a Doctor', 'Pick an Available Time', 'Patient Registration', 'Confirm and Book'] as $index => $step)
+                        @foreach (['Select Department', 'Choose Doctor', 'Pick Available Time', 'Patient Registration', 'Confirm'] as $index => $step)
                             <div class="col-6 col-md-2 mx-2"> <!-- Adjusted column width and spacing -->
                                 <div class="step-box">
                                     <div class="circle bg-primary text-white rounded-circle mx-auto mb-2 d-flex justify-content-center align-items-center" style="width: 60px; height: 60px;">
